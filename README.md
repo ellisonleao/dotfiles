@@ -1,4 +1,5 @@
-dotfiles
-========
+The only required repo for a coder.
 
-The only required repo for a code.
+The vimrc was based on the nice [vim-bootstrap](http://vim-bootstrap.com) project with some special changes for my taste and it uses the nice [NeoBundle](https://github.com/Shougo/neobundle.vim) project.
+
+The bashrc file is suited for mac users.
