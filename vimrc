@@ -220,12 +220,10 @@ cab Q q
 
 " python support
 " --------------
-"  don't highlight exceptions and builtins. I love to override them in local
-"  scopes and it sucks ass if it's highlighted then. And for exceptions I
-"  don't really want to have different colors for my own exceptions ;-)
+"  don't highlight exceptions.
 let python_highlight_all=1
 let python_highlight_exceptions=0
-let python_highlight_builtins=0
+let python_highlight_builtins=1
 
 let html_no_rendering=1
 let javascript_enable_domhtmlcss=1
