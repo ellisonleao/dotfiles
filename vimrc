@@ -30,6 +30,8 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'sheerun/vim-polyglot'
+NeoBundle 'kien/ctrlp.vim'
+
 
  call neobundle#end()
 
@@ -233,8 +235,6 @@ let g:sparkupNextMapping='<c-l>'
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
-" FindFile
-let g:FindFileIgnore = ['*.o', '*.pyc', '*.py~', '*.obj', '.git', '*.rbc', '*/tmp/*', '__pycache__']
 
 "}}}
 
@@ -391,10 +391,6 @@ nnoremap <leader>. :lcd %:p:h<CR>
 " Normal mode: <Leader>e
 noremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
-" Opens a tab edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>t
-noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
-
 " try to make possible to navigate within lines of wrapped lines
 nmap <Down> gj
 nmap <Up> gk
@@ -446,6 +442,16 @@ imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
   \ "\<Plug>(neosnippet_expand_or_jump)"
   \: "\<TAB>"
+
+" CtrlP
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|tox)$'
+let g:ctrlp_user_command = "find %s -type f | grep -Ev '"+ g:ctrlp_custom_ignore +"'"
+let g:ctrlp_use_caching = 0
+cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+noremap <leader>b :CtrlPBuffer<CR>
+let g:ctrlp_map = ',e'
+let g:ctrlp_open_new_file = 'r'
+
 
 " For snippet_complete marker.
 if has('conceal')
