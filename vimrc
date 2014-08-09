@@ -31,6 +31,7 @@ NeoBundle 'mileszs/ack.vim'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'gorodinskiy/vim-coloresque.git'
 
 
  call neobundle#end()
@@ -367,9 +368,6 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 "                                  Mappings
 "*****************************************************************************
 "{{{
-
-" How do i plugin map
-map <Leader>l <Plug>Howdoi
 
 " Chrome OS remap <C-w> (command close tab)
 map <tab> <c-w>
