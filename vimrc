@@ -32,7 +32,7 @@ NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'gorodinskiy/vim-coloresque.git'
-
+NeoBundle 'tpope/vim-surround'
 
  call neobundle#end()
 
