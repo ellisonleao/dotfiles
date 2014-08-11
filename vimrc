@@ -141,24 +141,26 @@ let no_buffers_menu=1
 set mousemodel=popup
 highlight BadWhitespace ctermbg=red guibg=red
 colorscheme molokai
+
 set t_Co=256
 set nocursorline
 set guioptions=egmrt
-if has("gui_running")
-if has("gui_mac") || has("gui_macvim")
-  set guifont=Menlo:h12
-  set transparency=7
-endif
-else
-let g:CSApprox_loaded = 1
 
-if $COLORTERM == 'gnome-terminal'
-  set term=gnome-256color
-else
-  if $TERM == 'xterm'
-    set term=xterm-256color
+if has("gui_running")
+  if has("gui_mac") || has("gui_macvim")
+    set guifont=Menlo:h12
+    set transparency=7
   endif
-endif
+  else
+  let g:CSApprox_loaded = 1
+
+  if $COLORTERM == 'gnome-terminal'
+    set term=gnome-256color
+  else
+    if $TERM == 'xterm'
+      set term=xterm-256color
+    endif
+  endif
 endif
 
 if &term =~ '256color'
@@ -185,9 +187,10 @@ set backspace=indent,eol,start
 set modeline
 set modelines=10
 
-let g:airline_theme = 'molokai'
+let g:airline_theme = 'luna'
 let g:airline_enable_branch = 1
 let g:airline_enable_syntastic = 1
+let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
