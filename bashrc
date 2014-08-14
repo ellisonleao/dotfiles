@@ -4,6 +4,10 @@ export HISTCONTROL=ignoreboth:erasedups
 HISTFILESIZE=1000000000
 HISTSIZE=1000000
 
+# dir colors
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
 # append to the history file, don't overwrite it
 shopt -s histappend
 # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
