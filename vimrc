@@ -286,12 +286,10 @@ set guitablabel=%{GuiTabLabel()}
 autocmd BufEnter * :syntax sync fromstart
 " Remember cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-" less comprez
-autocmd BufNewFile,BufRead *.less set filetype=less
+
+" Clean whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
-" txt
-au BufRead,BufNewFile *.txt call s:setupWrapping()
 " make use real tabs
 au FileType make set noexpandtab
 
@@ -308,7 +306,6 @@ autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^
 autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /\s\+$/
 autocmd BufNewFile *.py,*.pyw set fileformat=unix
-autocmd BufWritePre *.py,*.pyw normal :%s/\s\+$//e
 autocmd BufRead *.py,*.pyw set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd BufNewFile,BufRead *.py_tmpl,*.cover setlocal ft=python
 " Ignore line width for syntax checking
@@ -326,7 +323,6 @@ autocmd FileType html,xhtml,xml,htmldjango,htmljinja setlocal colorcolumn=100 ex
 "********** C/Obj-C/C++
 autocmd FileType c setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab colorcolumn=79
 autocmd FileType cpp setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab colorcolumn=79
-autocmd FileType objc setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab colorcolumn=79
 
 "********** vim
 autocmd FileType vim setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
@@ -341,15 +337,7 @@ autocmd BufNewFile,BufRead CMakeLists.txt setlocal ft=cmake
 
 "********** Ruby
 " Thorfile, Rakefile and Gemfile are Ruby
-au BufRead,BufNewFile {Gemfile,Rakefile,Thorfile,config.ru}    set ft=ruby
-
-"********** Markdown
-" md, markdown, and mk are markdown and define buffer-local preview
-au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
-
-"********** Markdown
-au BufNewFile,BufRead *.dartset filetype=dart shiftwidth=2 expandtab
-
+au BufRead,BufNewFile {Gemfile,Rakefile,Thorfile,config.ru} set ft=ruby
 
 " Set auto reload file
 set autoread
@@ -360,7 +348,7 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-"autocmd FileType go setlocal omnifunc=gocomplete#Complete
+autocmd FileType go setlocal omnifunc=gocomplete#Complete
 
 "}}}
 
