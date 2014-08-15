@@ -23,6 +23,9 @@
 	# Commit all changes
 	ca = !git add -A && git commit -av
 
+	# Commit partial changes
+	cp = commit -p
+
 	# Switch to a branch, creating it if necessary
 	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
 
@@ -58,6 +61,9 @@
 
 	# List contributors with number of commits
 	contributors = shortlog --summary --numbered
+
+	# Erase the current work
+	cf = checkout -f
 
 [apply]
 	# Detect whitespace errors when applying a patch
