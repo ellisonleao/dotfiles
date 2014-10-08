@@ -157,3 +157,8 @@ if which brew > /dev/null && [ -f "$(brew --prefix)/etc/bash_completion" ]; then
 elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
+
+# Bash aliases
+if [ -f ~/.bash_aliases ]; then
+	. ~/.bash_aliases
+fi
