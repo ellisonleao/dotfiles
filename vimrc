@@ -33,6 +33,9 @@ NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'gorodinskiy/vim-coloresque.git'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'ryanss/vim-hackernews'
+NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
+
 
  call neobundle#end()
 
@@ -280,6 +283,7 @@ set guitablabel=%{GuiTabLabel()}
 "*****************************************************************************
 "                               Autocmd Rules
 "*****************************************************************************
+
 "{{{
 " Some minor or more generic autocmd rules
 " The PC is fast enough, do syntax highlight syncing from start
