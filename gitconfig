@@ -137,5 +137,3 @@
 
 [url "git://gist.github.com/"]
 	insteadOf = "gist:"
-[web]
-	browser = firefox
