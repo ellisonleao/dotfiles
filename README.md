@@ -9,9 +9,9 @@ Screenshots:
 VIM
 ---
 
-![](http://i.imgur.com/0qn6RV3.png)
+![](http://i.imgur.com/KoMWtiX.png)
 
 BASH TERMINAL
 -------------
 
-![](http://i.imgur.com/WQYYMII.png)
+![](http://i.imgur.com/kiw4VTV.png)
