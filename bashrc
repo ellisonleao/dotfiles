@@ -158,6 +158,17 @@ elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
 
+# Visual studio code alias
+visu () {
+    if [[ $# = 0 ]]
+    then
+        open -a "Visual Studio Code"
+    else
+        [[ $1 = /* ]] && F="$1" || F="$PWD/${1#./}"
+        open -a "Visual Studio Code" --args "$F"
+    fi
+}
+
 # Bash aliases
 if [ -f ~/.bash_aliases ]; then
 	. ~/.bash_aliases

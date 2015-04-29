@@ -230,7 +230,7 @@ cab Q q
 " --------------
 "  don't highlight exceptions.
 let python_highlight_all=1
-let python_highlight_exceptions=0
+let python_highlight_exceptions=1
 let python_highlight_builtins=1
 
 let html_no_rendering=1
