@@ -28,6 +28,7 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 
 export PATH=/usr/local/share/npm/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/opt/go/libexec/bin
 export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$PATH:$GOPATH/bin"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 export WORKON_HOME=~/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
