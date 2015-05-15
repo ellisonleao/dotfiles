@@ -46,7 +46,6 @@ export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
 
 alias rake='noglob rake'
-alias git=hub
 
 # django run helper
 run () {
@@ -173,3 +172,6 @@ visu () {
 if [ -f ~/.bash_aliases ]; then
 	. ~/.bash_aliases
 fi
+
+# Go
+export GOPATH=~/Code/go
