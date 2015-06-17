@@ -47,6 +47,7 @@ export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
 
 alias rake='noglob rake'
+alias gup='git-up'
 
 # django run helper
 run () {

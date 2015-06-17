@@ -109,7 +109,7 @@ set sh=/bin/sh
 set fileformats=unix,dos,mac
 set backspace=indent,eol,start
 set showcmd
-set shell=zsh
+set shell=bash
 
 " Set spell pt-br
 " remove used: set nospell
