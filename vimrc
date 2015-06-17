@@ -20,8 +20,8 @@
  " Refer to |:NeoBundle-examples|.
  " Note : You don't set neobundle setting in .gvimrc!
 NeoBundle 'Shougo/neocomplete'
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'honza/vim-snippets'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'bling/vim-airline'
@@ -30,7 +30,6 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'sheerun/vim-polyglot'
-NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'gorodinskiy/vim-coloresque.git'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'ryanss/vim-hackernews'
@@ -127,6 +126,12 @@ let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 "}}}
 
@@ -356,11 +361,6 @@ set autoread
 "*****************************************************************************
 "{{{
 
-" Chrome OS remap <C-w> (command close tab)
-map <tab> <c-w>
-map <tab><tab> <c-w><c-w>
-map ,w <c-w>
-
 " Python Execution
 noremap <C-K> :!python<CR>
 noremap <C-L> :!python %<CR>
@@ -370,7 +370,7 @@ noremap <Leader>h :split<CR>
 noremap <Leader>v :vsplit<CR>
 
 " Set working directory
-nnoremap <leader>. :lcd %:p:h<CR>
+nnoremap <Leader>. :lcd %:p:h<CR>
 
 " Opens an edit command with the path of the currently edited file filled in
 " Normal mode: <Leader>e
@@ -383,15 +383,6 @@ nmap <Up> gk
 " Grep
 noremap <leader>g :Ack <C-R>=""<CR>
 noremap <leader>b :b <C-R>=""<CR>
-
-" Copy
-noremap YY "+y<CR>
-
-" Paste
-noremap P "+gP<CR>
-
-" Cut
-noremap XX "+x<CR>
 
 " Termnal nav
 nmap <S-p> :bp<CR>
@@ -414,29 +405,6 @@ vmap > >gv
 " ctags
 map <F8> :!/usr/local/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 map <leader>] g<c-]>
-
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: "\<TAB>"
-
-" CtrlP
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|tox)$'
-let g:ctrlp_user_command = "find %s -type f | grep -Ev '"+ g:ctrlp_custom_ignore +"'"
-let g:ctrlp_use_caching = 0
-cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-noremap <leader>b :CtrlPBuffer<CR>
-let g:ctrlp_map = ',e'
-let g:ctrlp_open_new_file = 'r'
-
 
 " For snippet_complete marker.
 if has('conceal')
