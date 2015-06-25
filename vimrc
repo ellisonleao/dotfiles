@@ -34,7 +34,6 @@ NeoBundle 'gorodinskiy/vim-coloresque.git'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'ryanss/vim-hackernews'
 NeoBundle 'rust-lang/rust.vim'
-NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
 
 
