@@ -34,6 +34,7 @@ export WORKON_HOME=~/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 ssh-add ~/.ssh/id_rsa
 export EDITOR=vim
+eval "$(hub alias -s)"
 
 # unset this because of nasty OS X bug with annoying message:
 # "dyld: DYLD_ environment variables being ignored because main executable (/usr/bin/sudo) is setuid or setgid"
@@ -61,7 +62,7 @@ run () {
 
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
-	. $(brew --prefix)/etc/bash_completion
+	source $(brew --prefix)/etc/bash_completion
 fi
 
 # setup color variables
