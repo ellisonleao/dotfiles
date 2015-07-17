@@ -161,6 +161,9 @@ elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
 
+# Pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
 # Visual studio code alias
 visu () {
     if [[ $# = 0 ]]
