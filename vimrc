@@ -35,6 +35,7 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'ryanss/vim-hackernews'
 NeoBundle 'rust-lang/rust.vim'
 NeoBundle 'pocke/neco-gh-issues'
+NeoBundle 'heavenshell/vim-jsdoc'
 NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
 
 
@@ -132,6 +133,9 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" JSDoc
+let g:jsdoc_enable_es6=1
 
 "}}}
 
@@ -405,6 +409,9 @@ vmap > >gv
 " ctags
 map <F8> :!/usr/local/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 map <leader>] g<c-]>
+
+" JSDoc
+nmap <leader>j :JsDoc<CR>
 
 " For snippet_complete marker.
 if has('conceal')
