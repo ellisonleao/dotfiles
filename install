@@ -227,13 +227,15 @@ main() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    # Setup the `dotfiles`
+    # Setup the `dotfiles` and install fonts
 
     if cmd_exists 'git'; then
 		print_info 'Cloning dotfiles'
         clone_dotfiles
 		# cloning the fonts we need for iterm2
 		git clone https://github.com/powerline/fonts "$dotfilesRepoDirectory"
+		bash $dotfilesRepoDirectory/fonts/install.sh
+		print_result $? 'Installing Powerline Fonts'
 	else
 		print_in_red "git is required in order to install dotfiles"
 		exit 1
