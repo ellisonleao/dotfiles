@@ -95,35 +95,6 @@ print_success() {
     print_in_green "  [✔] $1\n"
 }
 
-download() {
-
-    local url="$1"
-    local output="$2"
-
-    if command -v 'curl' &> /dev/null; then
-
-        curl -LsSo "$output" "$url" &> /dev/null
-        #     │││└─ write output to file
-        #     ││└─ show error messages
-        #     │└─ don't show the progress meter
-        #     └─ follow redirects
-
-        return $?
-
-    elif command -v 'wget' &> /dev/null; then
-
-        wget -qO "$output" "$url" &> /dev/null
-        #     │└─ write output to file
-        #     └─ don't show output
-
-        return $?
-    fi
-
-    return 1
-
-}
-
-
 brew_install() {
 
     declare -r CMD="$3"
@@ -322,6 +293,9 @@ main() {
 			"git"
 			"hub"
 			"Caskroom/cask/java"
+			"elasticsearch"
+			"mongodb"
+			"postgresql"
 		)
 
 		brew_tap "homebrew/services"
@@ -332,6 +306,8 @@ main() {
 			"iterm2"
 			"vlc"
 			"utorrent"
+			"spotify"
+			"slack"
 		)
 
 		for i in ${FORMULAS[@]}; do
@@ -370,7 +346,10 @@ main() {
         printf '\n'
 
         if answer_is_yes; then
-            ./os/install_vim_plugins.sh
+			# Installing NeoBundle
+			bash -c "$(curl -LsS https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh)"
+			# Installing plugins
+			printf "\n" | vim +NeoBundleInstall 2> /dev/null
         fi
 
     fi
@@ -383,7 +362,7 @@ main() {
     printf '\n'
 
     if answer_is_yes; then
-        ./os/restart.sh
+		sudo shutdown -r now &> /dev/null
     fi
 
 }
