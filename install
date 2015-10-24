@@ -323,11 +323,10 @@ main() {
 
 
     print_info 'Create symbolic links'
-	cp "$dotfilesRepoDirectory/vimrc" ~/.vimrc
-	cp "$dotfilesRepoDirectory/bashrc" ~/.bashrc
-	cp "$dotfilesRepoDirectory/gitconfig" ~/.gitconfig
-	echo "source .bashrc" > ~/.bash_profile
-
+	cp "$dotfilesRepoDirectory/vimrc" $HOME/.vimrc
+	cp "$dotfilesRepoDirectory/bashrc" $HOME/.bashrc
+	cp "$dotfilesRepoDirectory/gitconfig" $HOME/.gitconfig
+	echo "source .bashrc" > $HOME/.bash_profile
 
     print_info 'Set preferences'
 
