@@ -4,7 +4,16 @@ The vimrc was based on the nice [vim-bootstrap](http://vim-bootstrap.com) projec
 
 The bashrc file is suited for mac users.
 
-Screenshots:
+## Installing
+
+*WARNING! Don't run this command if you do not understand what it does!*
+
+P.S: Only working on OSX for now.
+
+	bash -c "$(curl -LsS https://raw.githubusercontent.com/ellisonleao/dotfiles/master/install)"
+
+
+## Screenshots
 
 VIM
 ---
