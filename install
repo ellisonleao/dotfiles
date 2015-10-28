@@ -298,6 +298,7 @@ main() {
 			"elasticsearch"
 			"mongodb"
 			"postgresql"
+			"httpie"
 		)
 
 		brew_tap "homebrew/services"
