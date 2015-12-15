@@ -174,6 +174,7 @@ visu () {
 # Bash aliases
 if [ -f ~/.bash_aliases ]; then
 	. ~/.bash_aliases
+	alias gup="git-up"
 fi
 
 # Go
