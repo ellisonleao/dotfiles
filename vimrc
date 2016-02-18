@@ -201,7 +201,7 @@ set backspace=indent,eol,start
 set modeline
 set modelines=10
 
-let g:airline_theme = 'luna'
+let g:airline_theme = 'molokai'
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline_powerline_fonts=1
@@ -251,6 +251,7 @@ let g:sparkupNextMapping='<c-l>'
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
+let g:loaded_syntastic_javascript_jshint_checker = 0
 
 "}}}
 
@@ -346,6 +347,13 @@ autocmd FileType vim setlocal foldenable foldmethod=marker
 "********** Javascript
 autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=79
 autocmd BufNewFile,BufRead *.json setlocal ft=javascript
+autocmd BufRead,BufNewFile *.js,*.jsx,*.json match BadWhitespace /^\t\+/
+autocmd BufRead,BufNewFile *.js,*.jsx,*.json match BadWhitespace /\s\+$/
+
+
+"********** Less
+autocmd FileType less setlocal shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=79
+
 
 "********** Cmake
 autocmd BufNewFile,BufRead CMakeLists.txt setlocal ft=cmake

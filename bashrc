@@ -49,16 +49,6 @@ export CPPFLAGS=-Qunused-arguments
 alias rake='noglob rake'
 alias gup='git-up'
 
-# django run helper
-run () {
-	if [ -e manage.py ]
-	then
-		python manage.py runserver 0.0.0.0:$1
-	else
-		python ../manage.py runserver 0.0.0.0:$1
-	fi
-}
-
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
 	source $(brew --prefix)/etc/bash_completion
@@ -180,3 +170,9 @@ fi
 # Go
 export GOPATH=~/Code/go
 export PATH="$PATH:$GOPATH/bin"
+
+# Docker
+VM_STATUS=$(docker-machine status default 2>&1)
+if [ "$VM_STATUS" == "Running" ]; then
+	eval $(docker-machine env default)
+fi
