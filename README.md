@@ -18,7 +18,7 @@ P.S: Only working on OSX for now.
 VIM
 ---
 
-![](http://i.imgur.com/KoMWtiX.png)
+![](http://i.imgur.com/9Jso7y0.png)
 
 BASH TERMINAL
 -------------
