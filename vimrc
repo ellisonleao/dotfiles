@@ -25,6 +25,7 @@ NeoBundle 'honza/vim-snippets'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'bling/vim-airline'
+NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'mileszs/ack.vim'
@@ -36,7 +37,6 @@ NeoBundle 'ryanss/vim-hackernews'
 NeoBundle 'rust-lang/rust.vim'
 NeoBundle 'pocke/neco-gh-issues'
 NeoBundle 'heavenshell/vim-jsdoc'
-NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
 
 
  call neobundle#end()
