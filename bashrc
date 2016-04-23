@@ -51,7 +51,7 @@ alias gup='git-up'
 
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
-	source $(brew --prefix)/etc/bash_completion
+	. $(brew --prefix)/etc/bash_completion
 fi
 
 # setup color variables
@@ -169,7 +169,7 @@ fi
 # osx configs
 if [ -f ~/.osx ]; then
 	. ~/.osx
-if
+fi
 
 # Go
 export GOPATH=~/Code/go
