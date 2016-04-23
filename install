@@ -321,26 +321,27 @@ main() {
             "ffmpeg"
             "postgresql"
             "mongodb"
+            "python"
         )
 
         brew_tap "homebrew/services"
 
         # Casks
         CASKS=(
-		"google-chrome"
-		"iterm2"
-		"vlc"
-		"utorrent"
-		"spotify"
-		"slack"
-		"remote-play"
+            "google-chrome"
+            "iterm2"
+            "vlc"
+            "utorrent"
+            "spotify"
+            "slack"
+            "remote-play"
         )
 
         for i in ${FORMULAS[@]}; do
             brew_install ${i}
         done
 
-	# special case with params
+        # special case with params
         brew_install "vim" "--with-lua --override-system-vi"
 
         for i in ${CASKS[@]}; do
@@ -372,9 +373,9 @@ main() {
 
     print_info "Installing pip"
     execute "sudo easy_install pip"
-	print_info "Installing virtualenvwrapper"
-	sudo pip install virtualenvwrapper
-	print_success "Virtualenvwrapper installed"
+    print_info "Installing virtualenvwrapper"
+    sudo pip install virtualenvwrapper
+    print_success "Virtualenvwrapper installed"
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
