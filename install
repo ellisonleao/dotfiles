@@ -319,21 +319,21 @@ main() {
             "hub"
             "httpie"
             "ffmpeg"
-			"postgresql"
-			"mongodb"
+            "postgresql"
+            "mongodb"
         )
 
         brew_tap "homebrew/services"
 
         # Casks
         CASKS=(
-            "google-chrome"
-            "iterm2
-            "vlc"
-            "utorrent"
-            "spotify"
-            "slack"
-			"remote-play"
+		"google-chrome"
+		"iterm2"
+		"vlc"
+		"utorrent"
+		"spotify"
+		"slack"
+		"remote-play"
         )
 
         for i in ${FORMULAS[@]}; do
@@ -387,7 +387,7 @@ main() {
         sudo shutdown -r now &> /dev/null
     fi
 
-	print_in_green "Success! Please restart the terminal to see the changes!"
+    print_in_green "Success! Please restart the terminal to see the changes!"
 }
 
 main
