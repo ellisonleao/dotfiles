@@ -9,6 +9,32 @@ declare dotfilesRepoDirectory="$dotfilesDirectory/dotfiles"
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
 
+is_supported_version() {
+
+    declare -a v1=(${1//./ })
+    declare -a v2=(${2//./ })
+    local i=""
+
+    # Fill empty positions in v1 with zeros
+    for (( i=${#v1[@]}; i<${#v2[@]}; i++ )); do
+        v1[i]=0
+    done
+
+    for (( i=0; i<${#v1[@]}; i++ )); do
+
+        # Fill empty positions in v2 with zeros
+        if [[ -z ${v2[i]} ]]; then
+            v2[i]=0
+        fi
+
+        if (( 10#${v1[i]} < 10#${v2[i]} )); then
+            return 1
+        fi
+
+    done
+
+}
+
 answer_is_yes() {
     [[ "$REPLY" =~ ^[Yy]$ ]] \
         && return 0 \
@@ -49,6 +75,16 @@ cmd_exists() {
 execute() {
     eval "$1" &> /dev/null
     print_result $? "${2:-$1}"
+}
+
+create_symbolic_links() {
+    cp "$dotfilesRepoDirectory/vimrc" $HOME/.vimrc
+    cp "$dotfilesRepoDirectory/bashrc" $HOME/.bashrc
+    cp "$dotfilesRepoDirectory/gitconfig" $HOME/.gitconfig
+    cp "$dotfilesRepoDirectory/osx" $HOME/.osx
+    cp "$dotfilesRepoDirectory/shellfun/bash_aliases" $HOME/.bash_aliases
+    echo "source .bashrc" > $HOME/.bash_profile
+    print_result $? 'Create symbolic links'
 }
 
 get_answer() {
@@ -96,17 +132,10 @@ print_success() {
 }
 
 brew_install() {
+    declare -r FORMULA="$1"
+    declare -r PARAMS="$2"
 
-    declare -r CMD="$3"
-    declare -r FORMULA="$2"
-    declare -r FORMULA_READABLE_NAME="$1"
-
-    if brew "$CMD" list "$FORMULA" &> /dev/null; then
-        print_success "$FORMULA_READABLE_NAME"
-    else
-        execute "brew $CMD install $FORMULA" "$FORMULA_READABLE_NAME"
-    fi
-
+    execute "brew install $FORMULA $PARAMS"
 }
 
 brew_tap() {
@@ -121,8 +150,8 @@ brew_tap() {
 }
 
 brew_cask() {
-	declare -r CASKNAME="$1"
-	brew cask install "$1" &> /dev/null
+    declare -r CASKNAME="$1"
+    brew cask install "$1"
     print_result $? "brew cask install $CASKNAME\n"
 }
 
@@ -159,18 +188,20 @@ clone_dotfiles() {
     mkdir -p "$dotfilesDirectory"
     print_result $? "Create '$dotfilesDirectory'" 'true'
 
-	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-	# Cloning dotfiles on directory
+    # Cloning dotfiles on directory
 
-	git clone --recursive "$DOTFILES_ORIGIN" "$dotfilesDirectory"
-	print_result $? 'Clone dotfiles' 'true'
+    git clone --recursive "$DOTFILES_ORIGIN" "$dotfilesRepoDirectory"
+    print_result $? 'Clone dotfiles' 'true'
     printf '\n'
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-	cd "$dotfilesRepoDirectory"
+    cd "$dotfilesRepoDirectory"
 
+    print_info "Installing powerline fonts"
+    bash fonts/install.sh
 }
 
 verify_os() {
@@ -230,26 +261,22 @@ main() {
     # Setup the `dotfiles` and install fonts
 
     if cmd_exists 'git'; then
-		print_info 'Cloning dotfiles'
+        print_info 'Cloning dotfiles'
         clone_dotfiles
-		# cloning the fonts we need for iterm2
-		git clone https://github.com/powerline/fonts "$dotfilesRepoDirectory"
-		bash $dotfilesRepoDirectory/fonts/install.sh
-		print_result $? 'Installing Powerline Fonts'
-	else
-		print_in_red "git is required in order to install dotfiles"
-		exit 1
+    else
+        print_in_red "git is required in order to install dotfiles"
+        exit 1
     fi
 
-	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     print_info 'Install applications'
     ask_for_confirmation 'Do you want to install the applications/command line tools?'
     printf '\n'
 
     if answer_is_yes; then
-		# XCode
-		xcode-select --install &> /dev/null
+        # XCode
+        xcode-select --install &> /dev/null
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         # Wait until the XCode Command Line Tools are installed
@@ -271,64 +298,61 @@ main() {
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         # Prompt user to agree to the terms of the Xcode license
-        # https://github.com/alrra/dotfiles/issues/10
-
         sudo xcodebuild -license
         print_result $? 'Agree with the XCode Command Line Tools licence'
         printf '\n'
-		print_result $? 'XCode Command Line Tools'
+        print_result $? 'XCode Command Line Tools'
 
-		# HOMEBREW
-		if ! cmd_exists 'brew'; then
-			printf "\n" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &> /dev/null
-		fi
-		print_result $? 'Homebrew'
+        # HOMEBREW
+        if ! cmd_exists 'brew'; then
+            printf "\n" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &> /dev/null
+        fi
+        print_result $? 'Install Homebrew'
 
-		# Formulas
-		FORMULAS=(
-			"imagemagick"
-			"nginx"
-			"vim --with-lua"
-			"wget"
-			"ack"
-			"git"
-			"hub"
-			"Caskroom/cask/java"
-			"elasticsearch"
-			"mongodb"
+        # Formulas
+        FORMULAS=(
+            "imagemagick"
+            "nginx"
+            "wget"
+            "ack"
+            "git"
+            "hub"
+            "httpie"
+            "ffmpeg"
 			"postgresql"
-			"httpie"
-		)
+			"mongodb"
+        )
 
-		brew_tap "homebrew/services"
+        brew_tap "homebrew/services"
 
-		# Casks
-		CASKS=(
-			"google-chrome"
-			"iterm2"
-			"vlc"
-			"utorrent"
-			"spotify"
-			"slack"
-		)
+        # Casks
+        CASKS=(
+            "google-chrome"
+            "iterm2
+            "vlc"
+            "utorrent"
+            "spotify"
+            "slack"
+			"remote-play"
+        )
 
-		for i in ${FORMULAS[@]}; do
-			brew_install ${i}
-		done
+        for i in ${FORMULAS[@]}; do
+            brew_install ${i}
+        done
 
-		for i in ${CASKS[@]}; do
-			brew_cask ${i}
-		done
-	fi
+	# special case with params
+        brew_install "vim" "--with-lua --override-system-vi"
+
+        for i in ${CASKS[@]}; do
+            brew_cask ${i}
+        done
+    fi
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
     print_info 'Create symbolic links'
-	cp "$dotfilesRepoDirectory/vimrc" $HOME/.vimrc
-	cp "$dotfilesRepoDirectory/bashrc" $HOME/.bashrc
-	cp "$dotfilesRepoDirectory/gitconfig" $HOME/.gitconfig
-	echo "source .bashrc" > $HOME/.bash_profile
+    create_symbolic_links
 
     if cmd_exists 'vim'; then
 
@@ -338,16 +362,19 @@ main() {
         printf '\n'
 
         if answer_is_yes; then
-			# Installing NeoBundle
-			bash -c "$(curl -LsS https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh)"
-			# Installing plugins
-			printf "\n" | vim +NeoBundleInstall 2> /dev/null
+        # Installing NeoBundle
+        bash -c "$(curl -LsS https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh)"
+        # Installing plugins
+        printf "\n" | vim +NeoBundleInstall 2> /dev/null
         fi
 
     fi
 
-	print_info 'Installing pip'
-	execute "sudo easy_install pip"
+    print_info "Installing pip"
+    execute "sudo easy_install pip"
+	print_info "Installing virtualenvwrapper"
+	sudo pip install virtualenvwrapper
+	print_success "Virtualenvwrapper installed"
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -357,9 +384,10 @@ main() {
     printf '\n'
 
     if answer_is_yes; then
-		sudo shutdown -r now &> /dev/null
+        sudo shutdown -r now &> /dev/null
     fi
 
+	print_in_green "Success! Please restart the terminal to see the changes!"
 }
 
 main
