@@ -335,6 +335,9 @@ main() {
             "spotify"
             "slack"
             "remote-play"
+            "firefox"
+            "the-unarchiver"
+            "skype"
         )
 
         for i in ${FORMULAS[@]}; do

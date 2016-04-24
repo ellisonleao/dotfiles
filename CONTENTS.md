@@ -23,3 +23,5 @@
 - Slack
 - PS4 Remote Play
 - Spotify
+- Skype
+- The Unarchiver
