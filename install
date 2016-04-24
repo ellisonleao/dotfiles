@@ -322,6 +322,7 @@ main() {
             "postgresql"
             "mongodb"
             "python"
+            "python3"
         )
 
         brew_tap "homebrew/services"

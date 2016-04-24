@@ -11,12 +11,14 @@
 - ffmpeg
 - postgresql
 - mongodb
+- Python 2 and 3
 - Homebrew Services
 
 
 # And the following applications
 
 - Google Chrome
+- Firefox
 - iTerm2
 - VLC
 - uTorrent
