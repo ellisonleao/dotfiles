@@ -13,6 +13,8 @@
 - mongodb
 - Python 2 and 3
 - Homebrew Services
+- Node.js
+- ssh-copy-id
 
 
 # And the following applications
@@ -27,3 +29,4 @@
 - Spotify
 - Skype
 - The Unarchiver
+- Telegram
