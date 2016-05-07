@@ -163,20 +163,14 @@ visu () {
 
 # Bash aliases
 if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
+	source ~/.bash_aliases
 fi
 
 # osx configs
 if [ -f ~/.osx ]; then
-	. ~/.osx
+	source ~/.osx
 fi
 
 # Go
 export GOPATH=~/Code/go
 export PATH="$PATH:$GOPATH/bin"
-
-# Docker
-VM_STATUS=$(docker-machine status default 2>&1)
-if [ "$VM_STATUS" == "Running" ]; then
-	eval $(docker-machine env default)
-fi
