@@ -15,6 +15,7 @@
 - Homebrew Services
 - Node.js
 - ssh-copy-id
+- speedtest cli
 
 
 # And the following applications

@@ -325,6 +325,7 @@ main() {
             "python3"
             "node"
             "ssh-copy-id"
+            "speedtest_cli"
         )
 
         brew_tap "homebrew/services"
