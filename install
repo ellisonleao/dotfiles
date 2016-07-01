@@ -83,7 +83,7 @@ create_symbolic_links() {
     cp "$dotfilesRepoDirectory/gitconfig" $HOME/.gitconfig
     cp "$dotfilesRepoDirectory/osx" $HOME/.osx
     cp "$dotfilesRepoDirectory/shellfun/bash_aliases" $HOME/.bash_aliases
-    echo "source .bashrc" > $HOME/.bash_profile
+    echo "source ~/.bashrc" > $HOME/.bash_profile
     print_result $? 'Create symbolic links'
 }
 
