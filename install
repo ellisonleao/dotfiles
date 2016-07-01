@@ -326,6 +326,8 @@ main() {
             "node"
             "ssh-copy-id"
             "speedtest_cli"
+            "you-get"
+            "howdoi"
         )
 
         brew_tap "homebrew/services"

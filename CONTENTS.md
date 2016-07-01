@@ -16,6 +16,8 @@
 - Node.js
 - ssh-copy-id
 - speedtest cli
+- you-get
+- howdoi
 
 
 # And the following applications
