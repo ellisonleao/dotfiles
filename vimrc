@@ -1,52 +1,29 @@
 "*****************************************************************************
-"" Neobundle Load
+"" Plug Load
 "*****************************************************************************
 "{{{
- if has('vim_starting')
-   set nocompatible               " Be iMproved
+call plug#begin('~/.vim/plugged')
 
-   " Required :
-   set runtimepath+=~/.vim/bundle/neobundle.vim/
- endif
+Plug 'Shougo/neocomplete'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-fugitive'
+Plug 'flazz/vim-colorschemes'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/syntastic'
+Plug 'airblade/vim-gitgutter'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-surround'
+Plug 'rust-lang/rust.vim'
+Plug 'pocke/neco-gh-issues'
+Plug 'heavenshell/vim-jsdoc'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tweekmonster/django-plus.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
- " Required :
- call neobundle#begin(expand('~/.vim/bundle/'))
-
- " Let NeoBundle manage NeoBundle
- " Required :
- NeoBundleFetch 'Shougo/neobundle.vim'
-
- " My Bundles here:
- " Refer to |:NeoBundle-examples|.
- " Note : You don't set neobundle setting in .gvimrc!
-NeoBundle 'Shougo/neocomplete'
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'flazz/vim-colorschemes'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'vim-airline/vim-airline-themes'
-NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'mileszs/ack.vim'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'sheerun/vim-polyglot'
-NeoBundle 'gorodinskiy/vim-coloresque.git'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'ryanss/vim-hackernews'
-NeoBundle 'rust-lang/rust.vim'
-NeoBundle 'pocke/neco-gh-issues'
-NeoBundle 'heavenshell/vim-jsdoc'
-
-
- call neobundle#end()
-
- " Required :
- filetype plugin indent on
-
- " If there are uninstalled bundles found on startup,
- " this will conveniently prompt you to install them.
- NeoBundleCheck
+call plug#end()
 
 "}}}
 
@@ -303,19 +280,18 @@ autocmd BufEnter * :syntax sync fromstart
 " Remember cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
-" Clean whitespace on save
+"" Clean whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
 " make use real tabs
 au FileType make set noexpandtab
 
-
 "********** Python
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79,99
-    \ formatoptions+=croq softtabstop=4 smartindent
-    \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+	\ formatoptions+=croq softtabstop=4 smartindent
+	\ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 autocmd FileType pyrex setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
-    \smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+	\smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 autocmd BufRead,BufNewFile *.py,*pyw set shiftwidth=4
 autocmd BufRead,BufNewFile *.py,*.pyw set expandtab
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
@@ -352,15 +328,16 @@ autocmd BufRead,BufNewFile *.js,*.jsx,*.json match BadWhitespace /\s\+$/
 
 
 "********** Less
-autocmd FileType less setlocal shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=79
-
-
-"********** Cmake
-autocmd BufNewFile,BufRead CMakeLists.txt setlocal ft=cmake
+autocmd FileType less setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
 
 "********** Ruby
 " Thorfile, Rakefile and Gemfile are Ruby
 au BufRead,BufNewFile {Gemfile,Rakefile,Thorfile,config.ru} set ft=ruby
+autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 colorcolumn=79,99
+
+"********** bash
+autocmd FileType sh setlocal shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
+
 
 " Set auto reload file
 set autoread
@@ -373,28 +350,16 @@ set autoread
 "*****************************************************************************
 "{{{
 
-" Python Execution
-noremap <C-K> :!python<CR>
-noremap <C-L> :!python %<CR>
+" Execute python code
+noremap <leader>p :!python %<CR>
 
 " Split Screen
 noremap <Leader>h :split<CR>
 noremap <Leader>v :vsplit<CR>
 
-" Set working directory
-nnoremap <Leader>. :lcd %:p:h<CR>
-
-" Opens an edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>e
-noremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-
 " try to make possible to navigate within lines of wrapped lines
 nmap <Down> gj
 nmap <Up> gk
-
-" Grep
-noremap <leader>g :Ack <C-R>=""<CR>
-noremap <leader>b :b <C-R>=""<CR>
 
 " Termnal nav
 nmap <S-p> :bp<CR>
@@ -414,12 +379,11 @@ noremap <leader>\ :noh<CR>
 vmap < <gv
 vmap > >gv
 
-" ctags
-map <F8> :!/usr/local/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
-map <leader>] g<c-]>
-
 " JSDoc
 nmap <leader>j :JsDoc<CR>
+
+" Fuzzy Finder
+noremap <leader>f :FZF<CR>
 
 " For snippet_complete marker.
 if has('conceal')

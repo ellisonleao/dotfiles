@@ -374,10 +374,10 @@ main() {
         printf '\n'
 
         if answer_is_yes; then
-        # Installing NeoBundle
-        bash -c "$(curl -LsS https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh)"
+        # Installing Plug
+        bash -c "$(curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim)"
         # Installing plugins
-        printf "\n" | vim +NeoBundleInstall 2> /dev/null
+        printf "\n" | vim +PlugInstall 2> /dev/null
         fi
 
     fi
