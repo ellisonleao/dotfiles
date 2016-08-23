@@ -17,6 +17,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
 Plug 'pocke/neco-gh-issues'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'editorconfig/editorconfig-vim'
@@ -214,11 +215,6 @@ cab Q q
 
 " python support
 " --------------
-"  don't highlight exceptions.
-let python_highlight_all=1
-let python_highlight_exceptions=1
-let python_highlight_builtins=1
-
 let html_no_rendering=1
 let javascript_enable_domhtmlcss=1
 let c_no_curly_error=1
@@ -229,6 +225,17 @@ let g:sparkupNextMapping='<c-l>'
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
 let g:loaded_syntastic_javascript_jshint_checker = 0
+
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 "}}}
 
@@ -270,7 +277,7 @@ set guitablabel=%{GuiTabLabel()}
 
 
 "*****************************************************************************
-"                               Autocmd Rules
+"                               Autocmd and Syntax Specific Rules
 "*****************************************************************************
 
 "{{{
@@ -302,14 +309,21 @@ autocmd BufRead *.py,*.pyw set smartindent cinwords=if,elif,else,for,while,try,e
 autocmd BufNewFile,BufRead *.py_tmpl,*.cover setlocal ft=python
 " Ignore line width for syntax checking
 let g:syntastic_python_flake8_post_args='--ignore=E501'
+let python_highlight_builtins=1
+let python_highlight_exceptions=1
+let python_highlight_doctests=0
 
 "********** Go
 autocmd BufNewFile,BufRead *.go setlocal ft=go
-autocmd FileType go setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
+autocmd FileType go setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
+let g:syntastic_go_checkers = ['go', 'gofmt', 'govet']
+let go_highlight_extra_types=1
+let go_highlight_format_strings=1
 
 "********** HTML
 autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
 autocmd FileType html,xhtml,xml,htmldjango,htmljinja setlocal colorcolumn=100 expandtab shiftwidth=4 tabstop=8 softtabstop=4
+let g:loaded_syntastic_html_tidy_checker = 0
 
 
 "********** C/C++
@@ -337,6 +351,10 @@ autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 colorcolumn=79,9
 
 "********** bash
 autocmd FileType sh setlocal shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
+
+"********** rust
+let g:racer_cmd = "/Users/ellison/.cargo/bin/racer"
+let $RUST_SRC_PATH="/Users/ellison/Code/rust/src"
 
 
 " Set auto reload file
