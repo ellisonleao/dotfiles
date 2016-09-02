@@ -23,6 +23,7 @@ Plug 'heavenshell/vim-jsdoc'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'fatih/vim-go'
 
 call plug#end()
 
@@ -293,6 +294,8 @@ autocmd BufWritePre * :%s/\s\+$//e
 " make use real tabs
 au FileType make set noexpandtab
 
+set autowrite
+
 "********** Python
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79,99
 	\ formatoptions+=croq softtabstop=4 smartindent
@@ -316,9 +319,19 @@ let python_highlight_doctests=0
 "********** Go
 autocmd BufNewFile,BufRead *.go setlocal ft=go
 autocmd FileType go setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
-let g:syntastic_go_checkers = ['go', 'gofmt', 'govet']
-let go_highlight_extra_types=1
-let go_highlight_format_strings=1
+
+" \n and \p for quickfix list navigation \c to close it
+autocmd FileType go map <leader>n :cnext<CR>
+autocmd FileType go map <leader>p :cprevious<CR>
+autocmd FileType go nnoremap <leader>c :cclose<CR>
+
+" \r run - \b build - \l lint - \t test
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+
+let g:go_metalinter_autosave = 1
+let g:go_list_type = "quickfix"
 
 "********** HTML
 autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
