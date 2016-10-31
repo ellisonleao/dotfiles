@@ -1,9 +1,6 @@
-[submodule "bash_aliases"]
-	path = bash_aliases
-	url = git@github.com:ellisonleao/shellfun
 [submodule "shellfun"]
 	path = shellfun
-	url = git@github.com:ellisonleao/shellfun
+	url = https://github.com/ellisonleao/shellfun.git
 [submodule "fonts"]
 	path = fonts
-	url = git@github.com:powerline/fonts.git
+	url = https://github.com/powerline/fonts.git
