@@ -27,12 +27,14 @@ complete -W "NSGlobalDomain" defaults;
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
 
 export PATH=/usr/local/share/npm/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/opt/go/libexec/bin
-export PATH="$HOME/.rbenv/bin:$PATH"
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+export EDITOR=vim
+
+# Virtualenvwrapper
 export WORKON_HOME=~/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
-ssh-add ~/.ssh/id_rsa
-export EDITOR=vim
+alias w=workon
+
 eval "$(hub alias -s)"
 
 # unset this because of nasty OS X bug with annoying message:
@@ -46,7 +48,6 @@ export LC_ALL=en_US.UTF-8
 export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
 
-alias rake='noglob rake'
 alias gup='git-up'
 
 
@@ -173,4 +174,12 @@ fi
 
 # Go
 export GOPATH=~/Code/go
-export PATH="$PATH:$GOPATH/bin"
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export PATH=$PATH:$GOPATH/bin
+
+# fuzzy finder
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# Rust
+export RUST_SRC_PATH="$HOME/Code/rust/src/"
+export PATH="$PATH:$HOME/.cargo/bin"
