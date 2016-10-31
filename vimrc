@@ -332,6 +332,7 @@ autocmd FileType go nmap <leader>t  <Plug>(go-test)
 
 let g:go_metalinter_autosave = 1
 let g:go_list_type = "quickfix"
+let g:go_fmt_command = "goimports"
 
 "********** HTML
 autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
