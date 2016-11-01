@@ -23,6 +23,7 @@
 # And the following applications
 
 - Google Chrome
+- Google Drive
 - Firefox
 - iTerm2
 - VLC
@@ -31,5 +32,5 @@
 - PS4 Remote Play
 - Spotify
 - Skype
-- The Unarchiver
 - Telegram
+- Whatsapp
