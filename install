@@ -1,7 +1,7 @@
 #!/bin/bash
 
 declare -r GITHUB_REPOSITORY='ellisonleao/dotfiles'
-declare -r DOTFILES_ORIGIN="git@github.com:$GITHUB_REPOSITORY.git"
+declare -r DOTFILES_ORIGIN="https://github.com/$GITHUB_REPOSITORY.git"
 declare dotfilesDirectory="$HOME/Code"
 declare dotfilesRepoDirectory="$dotfilesDirectory/dotfiles"
 
@@ -77,14 +77,14 @@ execute() {
     print_result $? "${2:-$1}"
 }
 
-create_symbolic_links() {
+copy_profile() {
     cp "$dotfilesRepoDirectory/vimrc" $HOME/.vimrc
     cp "$dotfilesRepoDirectory/bashrc" $HOME/.bashrc
     cp "$dotfilesRepoDirectory/gitconfig" $HOME/.gitconfig
     cp "$dotfilesRepoDirectory/osx" $HOME/.osx
     cp "$dotfilesRepoDirectory/shellfun/bash_aliases" $HOME/.bash_aliases
     echo "source ~/.bashrc" > $HOME/.bash_profile
-    print_result $? 'Create symbolic links'
+    print_result $? 'Copying profile files'
 }
 
 get_answer() {
@@ -324,6 +324,7 @@ main() {
             "python"
             "python3"
             "node"
+            "go"
             "ssh-copy-id"
             "speedtest_cli"
             "you-get"
@@ -335,6 +336,7 @@ main() {
         # Casks
         CASKS=(
             "google-chrome"
+            "google-drive"
             "iterm2"
             "vlc"
             "utorrent"
@@ -342,10 +344,9 @@ main() {
             "slack"
             "remote-play"
             "firefox"
-            "the-unarchiver"
             "skype"
             "telegram"
-            "stremio"
+            "whatsapp"
         )
 
         for i in ${FORMULAS[@]}; do
@@ -363,8 +364,8 @@ main() {
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-    print_info 'Create symbolic links'
-    create_symbolic_links
+    print_info 'Copying Profile'
+    copy_profile
 
     if cmd_exists 'vim'; then
 
