@@ -82,7 +82,7 @@ copy_profile() {
     cp "$dotfilesRepoDirectory/bashrc" $HOME/.bashrc
     cp "$dotfilesRepoDirectory/gitconfig" $HOME/.gitconfig
     cp "$dotfilesRepoDirectory/osx" $HOME/.osx
-    cp "$dotfilesRepoDirectory/shellfun/bash_aliases" $HOME/.bash_aliases
+    cat "$dotfilesRepoDirectory/shellfun/*.sh" > $HOME/.bash_aliases
     echo "source ~/.bashrc" > $HOME/.bash_profile
     print_result $? 'Copying profile files'
 }
