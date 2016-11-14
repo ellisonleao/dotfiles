@@ -20,6 +20,9 @@
 	# Clone a repository including all submodules
 	c = clone --recursive
 
+	# git-up
+	up = pull --rebase --autostash
+
 	# Commit all changes
 	ca = !git add -A && git commit -av
 
