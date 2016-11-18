@@ -2,8 +2,8 @@
 
 declare -r GITHUB_REPOSITORY='ellisonleao/dotfiles'
 declare -r DOTFILES_ORIGIN="https://github.com/$GITHUB_REPOSITORY.git"
-declare dotfilesDirectory="$HOME/Code"
-declare dotfilesRepoDirectory="$dotfilesDirectory/dotfiles"
+declare dotfilesDirectory=$HOME
+declare dotfilesRepoDirectory="$dotfilesDirectory/.dotfiles"
 
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
@@ -77,11 +77,12 @@ execute() {
     print_result $? "${2:-$1}"
 }
 
-copy_profile() {
-    cp "$dotfilesRepoDirectory/vimrc" $HOME/.vimrc
-    cp "$dotfilesRepoDirectory/bashrc" $HOME/.bashrc
-    cp "$dotfilesRepoDirectory/gitconfig" $HOME/.gitconfig
-    cp "$dotfilesRepoDirectory/osx" $HOME/.osx
+link_profile() {
+    ln -s "$dotfilesRepoDirectory/vim/vimrc" $HOME/.vimrc
+    ln -s "$dotfilesRepoDirectory/bash/bashrc" $HOME/.bashrc
+    ln -s "$dotfilesRepoDirectory/git/gitconfig" $HOME/.gitconfig
+    ln -s "$dotfilesRepoDirectory/osx/osx" $HOME/.osx
+    ln -s "$dotfilesRepoDirectory/tmux/tmux.conf" $HOME/.tmux.conf
     cat "$dotfilesRepoDirectory/shellfun/*.sh" > $HOME/.bash_aliases
     echo "source ~/.bashrc" > $HOME/.bash_profile
     print_result $? 'Copying profile files'
@@ -329,6 +330,7 @@ main() {
             "speedtest_cli"
             "you-get"
             "howdoi"
+			"ansiweather"
         )
 
         brew_tap "homebrew/services"

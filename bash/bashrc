@@ -48,7 +48,7 @@ export LC_ALL=en_US.UTF-8
 export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
 
-alias gup='git-up'
+alias gup='git up'
 
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
