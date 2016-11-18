@@ -85,6 +85,7 @@ link_profile() {
     ln -s "$dotfilesRepoDirectory/tmux/tmux.conf" $HOME/.tmux.conf
     cat "$dotfilesRepoDirectory/shellfun/*.sh" > $HOME/.bash_aliases
     echo "source ~/.bashrc" > $HOME/.bash_profile
+    ln -s "$dotfilesRepoDirectory/bin/tm" /usr/local/bin
     print_result $? 'Copying profile files'
 }
 
