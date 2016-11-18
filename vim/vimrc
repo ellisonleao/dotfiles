@@ -126,7 +126,7 @@ let g:jsdoc_enable_es6=1
 " colorscheme, fonts, menus and etc
 set background=dark
 syntax on
-set number
+" set number
 
 " Menus I like :-)
 " This must happen before the syntax system is enabled
@@ -367,7 +367,7 @@ au BufRead,BufNewFile {Gemfile,Rakefile,Thorfile,config.ru} set ft=ruby
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 colorcolumn=79,99
 
 "********** bash
-autocmd FileType sh setlocal shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
+autocmd FileType sh setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
 
 "********** rust
 let g:racer_cmd = "/Users/ellison/.cargo/bin/racer"
