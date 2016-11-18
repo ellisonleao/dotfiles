@@ -18,6 +18,8 @@
 - speedtest cli
 - you-get
 - howdoi
+- tmux
+- ansiweather
 
 
 # And the following applications

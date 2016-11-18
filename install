@@ -330,7 +330,8 @@ main() {
             "speedtest_cli"
             "you-get"
             "howdoi"
-			"ansiweather"
+            "ansiweather"
+            "tmux"
         )
 
         brew_tap "homebrew/services"
