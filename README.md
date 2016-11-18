@@ -25,3 +25,8 @@ BASH TERMINAL
 -------------
 
 ![](http://i.imgur.com/kiw4VTV.png)
+
+TMUX
+----
+
+![](http://i.imgur.com/5Z1JRlP.png)
