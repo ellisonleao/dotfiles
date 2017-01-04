@@ -78,14 +78,12 @@ execute() {
 }
 
 link_profile() {
-    ln -s "$dotfilesRepoDirectory/vim/vimrc" $HOME/.vimrc
+    ln -s "$dotfilesRepoDirectory/nvim/init.vim" ~/.config/nvim/
     ln -s "$dotfilesRepoDirectory/bash/bashrc" $HOME/.bashrc
     ln -s "$dotfilesRepoDirectory/git/gitconfig" $HOME/.gitconfig
     ln -s "$dotfilesRepoDirectory/osx/osx" $HOME/.osx
-    ln -s "$dotfilesRepoDirectory/tmux/tmux.conf" $HOME/.tmux.conf
     cat "$dotfilesRepoDirectory/shellfun/*.sh" > $HOME/.bash_aliases
     echo "source ~/.bashrc" > $HOME/.bash_profile
-    ln -s "$dotfilesRepoDirectory/bin/tm" /usr/local/bin
     print_result $? 'Copying profile files'
 }
 
@@ -332,7 +330,7 @@ main() {
             "you-get"
             "howdoi"
             "ansiweather"
-            "tmux"
+            "nvim"
         )
 
         brew_tap "homebrew/services"
@@ -358,12 +356,12 @@ main() {
             brew_install ${i}
         done
 
-        # special case with params
-        brew_install "vim" "--with-lua --override-system-vi"
-
         for i in ${CASKS[@]}; do
             brew_cask ${i}
         done
+
+        # install neovim package
+        pip3 install neovim
     fi
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -372,19 +370,15 @@ main() {
     print_info 'Copying Profile'
     copy_profile
 
-    if cmd_exists 'vim'; then
+    if cmd_exists 'nvim'; then
 
-        print_info 'Install/Update Vim plugins'
+        print_info 'Installing/Update NeoVim plugins'
 
-        ask_for_confirmation 'Do you want to install/update the Vim plugins?'
-        printf '\n'
-
-        if answer_is_yes; then
         # Installing Plug
-        bash -c "$(curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim)"
+        bash -c "$(curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim)"
         # Installing plugins
-        printf "\n" | vim +PlugInstall 2> /dev/null
-        fi
+        printf "\n" | nvim +PlugInstall 2> /dev/null
 
     fi
 
