@@ -34,7 +34,10 @@ alias v=nvim
 
 # Virtualenvwrapper
 export WORKON_HOME=~/.virtualenvs
-source /usr/local/bin/virtualenvwrapper.sh
+export PROJECT_HOME=~/Code
+eval "$(pyenv init -)"
+pyenv virtualenvwrapper_lazy
+
 alias w=workon
 
 eval "$(hub alias -s)"
@@ -178,6 +181,9 @@ fi
 export GOPATH=~/Code/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export PATH=$PATH:$GOPATH/bin
+
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # fuzzy finder
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
