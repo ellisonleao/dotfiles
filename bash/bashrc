@@ -32,7 +32,7 @@ export EDITOR=nvim
 alias vim=nvim
 alias v=nvim
 
-# Virtualenvwrapper
+export PATH=$HOME/.pyenv/bin:$PATH
 export WORKON_HOME=~/.virtualenvs
 export PROJECT_HOME=~/Code
 eval "$(pyenv init -)"

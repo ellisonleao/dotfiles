@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
+Plug 'zchee/deoplete-go', { 'do': 'make'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
@@ -13,15 +14,18 @@ Plug 'flazz/vim-colorschemes'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/syntastic'
 Plug 'airblade/vim-gitgutter'
-Plug 'ellisonleao/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-surround'
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 Plug 'heavenshell/vim-jsdoc'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'fatih/vim-go'
+Plug 'neomake/neomake'
+Plug 'myusuf3/numbers.vim'
 
 call plug#end()
 
@@ -66,15 +70,12 @@ if has("autocmd")
       \| exe "normal g'\"" | endif
 endif
 
-" GREP
-set grepprg=ack
-
-set encoding=utf-8
-set fileencoding=utf-8
-set fileencodings=utf-8
-set bomb
+"set encoding=utf-8
+"set fileencoding=utf-8
+"set fileencodings=utf-8
+"set bomb
 set ttyfast
-set binary
+"set binary
 
 "Directories for swp files
 set nobackup
@@ -84,15 +85,8 @@ set noswapfile
 set sh=/bin/sh
 
 set fileformats=unix,dos,mac
-set backspace=indent,eol,start
 set showcmd
 set shell=bash
-
-" Set spell pt-br
-" remove used: set nospell
-" set spell spelllang=pt
-highlight clear SpellBad
-highlight SpellBad term=reverse cterm=underline
 
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
@@ -106,14 +100,9 @@ let g:jsdoc_enable_es6=1
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 
-let g:tern_request_timeout = 1
-let g:tern_show_signature_in_pum = '0'  " This do disable full signature type on autocomplete
+let g:python_host_prog = '/Users/ellison/.pyenv/versions/2/bin/python'
+let g:python3_host_prog = '/Users/ellison/.pyenv/versions/3/bin/python'
 
-"Add extra filetypes
-let g:tern#filetypes = [
-                \ 'jsx',
-                \ 'javascript.jsx',
-                \ ]
 
 "}}}
 
@@ -125,42 +114,16 @@ let g:tern#filetypes = [
 " colorscheme, fonts, menus and etc
 set background=dark
 syntax on
-" set number
+set number
 
 " Menus I like :-)
 " This must happen before the syntax system is enabled
-let no_buffers_menu=1
-set mousemodel=popup
+set mouse-=a
 highlight BadWhitespace ctermbg=red guibg=red
 colorscheme molokai
 
-set t_Co=256
 set nocursorline
-set guioptions=egmrt
-
-if has("gui_running")
-  if has("gui_mac") || has("gui_macvim")
-    set guifont=Menlo:h12
-    set transparency=7
-  endif
-  else
-  let g:CSApprox_loaded = 1
-
-  if $COLORTERM == 'gnome-terminal'
-    set term=gnome-256color
-  else
-    if $TERM == 'xterm'
-      set term=xterm-256color
-    endif
-  endif
-endif
-
-if &term =~ '256color'
-  " disable Background Color Erase (BCE) so that color schemes
-  " render properly when inside 256-color tmux and GNU screen.
-  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
-  set t_ut=
-endif
+"set guioptions=egmrt
 
 " Disable the pydoc preview window for the omni completion
 set completeopt-=preview
@@ -181,11 +144,31 @@ set modelines=10
 
 let g:airline_theme = 'molokai'
 let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+
+" GUI Tab settings
+function! GuiTabLabel()
+  let label = ''
+  let buflist = tabpagebuflist(v:lnum)
+  if exists('t:title')
+      let label .= t:title . ' '
+  endif
+  let label .= '[' . bufname(buflist[tabpagewinnr(v:lnum) - 1]) . ']'
+  for bufnr in buflist
+      if getbufvar(bufnr, '&modified')
+          let label .= '+'
+          break
+      endif
+  endfor
+  return label
+endfunction
+set guitablabel=%{GuiTabLabel()}
+
+" paste, no paste with \o
+set pastetoggle=<leader>o
 
 "}}}
 
@@ -223,56 +206,8 @@ let g:sparkupNextMapping='<c-l>'
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
-let g:loaded_syntastic_javascript_jshint_checker = 0
-
-
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
 "}}}
 
-
-"*****************************************************************************
-"                                  Function
-"*****************************************************************************
-"{{{
-function s:setupWrapping()
-set wrap
-set wm=2
-set textwidth=79
-endfunction
-
-function s:setupMarkup()
-call s:setupWrapping()
-noremap <buffer> <Leader>p :Mm <CR>
-endfunction
-
-" GUI Tab settings
-function! GuiTabLabel()
-  let label = ''
-  let buflist = tabpagebuflist(v:lnum)
-  if exists('t:title')
-      let label .= t:title . ' '
-  endif
-  let label .= '[' . bufname(buflist[tabpagewinnr(v:lnum) - 1]) . ']'
-  for bufnr in buflist
-      if getbufvar(bufnr, '&modified')
-          let label .= '+'
-          break
-      endif
-  endfor
-  return label
-endfunction
-set guitablabel=%{GuiTabLabel()}
-
-"}}}
 
 
 "*****************************************************************************
@@ -285,6 +220,9 @@ set guitablabel=%{GuiTabLabel()}
 autocmd BufEnter * :syntax sync fromstart
 " Remember cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+" Validate
+autocmd! BufWritePost,BufEnter * Neomake
 
 "" Clean whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
@@ -309,7 +247,6 @@ autocmd BufNewFile *.py,*.pyw set fileformat=unix
 autocmd BufRead *.py,*.pyw set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd BufNewFile,BufRead *.py_tmpl,*.cover setlocal ft=python
 " Ignore line width for syntax checking
-let g:syntastic_python_flake8_post_args='--ignore=E501'
 let python_highlight_builtins=1
 let python_highlight_exceptions=1
 let python_highlight_doctests=0
@@ -333,10 +270,11 @@ let g:go_metalinter_autosave = 1
 let g:go_list_type = "quickfix"
 let g:go_fmt_command = "goimports"
 
+let g:deoplete#sources#go#pointer = 1
+
 "********** HTML
 autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
 autocmd FileType html,xhtml,xml,htmldjango,htmljinja setlocal colorcolumn=100 expandtab shiftwidth=4 tabstop=8 softtabstop=4
-let g:loaded_syntastic_html_tidy_checker = 0
 
 
 "********** C/C++
@@ -354,8 +292,9 @@ autocmd BufRead,BufNewFile *.js,*.jsx,*.json match BadWhitespace /^\t\+/
 autocmd BufRead,BufNewFile *.js,*.jsx,*.json match BadWhitespace /\s\+$/
 
 
-"********** Less
+"********** Less & Sass
 autocmd FileType less setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
+autocmd FileType sass setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
 
 "********** Ruby
 " Thorfile, Rakefile and Gemfile are Ruby
@@ -380,9 +319,6 @@ set autoread
 "                                  Mappings
 "*****************************************************************************
 "{{{
-
-" Execute python code
-noremap <leader>p :!python %<CR>
 
 " Split Screen
 noremap <Leader>h :split<CR>
@@ -415,11 +351,5 @@ nmap <leader>j :JsDoc<CR>
 
 " Fuzzy Finder
 noremap <leader>f :FZF<CR>
-
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-
 
 "}}}
