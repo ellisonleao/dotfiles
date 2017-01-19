@@ -78,6 +78,7 @@ execute() {
 }
 
 link_profile() {
+    if [ ! -d "~/.config/nvim" ]; then mkdir ~/.config/nvim/; fi
     ln -s "$dotfilesRepoDirectory/nvim/init.vim" ~/.config/nvim/
     ln -s "$dotfilesRepoDirectory/bash/bashrc" $HOME/.bashrc
     ln -s "$dotfilesRepoDirectory/git/gitconfig" $HOME/.gitconfig
@@ -156,52 +157,22 @@ brew_cask() {
 }
 
 clone_dotfiles() {
+    if [ -d "$dotfilesRepoDirectory" ]; then
+       print_info "Dotfiles folder already exists.. pulling latest"
+       cd "$dotfilesRepoDirectory"
+       git pull
+       print_result $? 'Update Cloned dotfiles' 'true'
+    else
+	# Cloning dotfiles on directory
+        print_info "Cloning dotfiles on $dotfilesRepoDirectory"
+        git clone --recursive "$DOTFILES_ORIGIN" "$dotfilesRepoDirectory"
+        print_result $? 'Clone dotfiles' 'true'
+        printf '\n'
 
-    ask_for_confirmation "Do you want to store the dotfiles in '$dotfilesDirectory'?"
-
-    if ! answer_is_yes; then
-        dotfilesDirectory=''
-        while [ -z "$dotfilesDirectory" ]; do
-            ask 'Please specify another location for the dotfiles (path): '
-            dotfilesDirectory="$(get_answer)"
-        done
+        cd "$dotfilesRepoDirectory"
+        print_info "Installing powerline fonts"
+        sh fonts/install.sh
     fi
-
-    # Ensure the `dotfiles` directory is available
-
-    while [ -e "$dotfilesDirectory" ]; do
-        ask_for_confirmation "'$dotfilesDirectory' already exists, do you want to overwrite it?"
-        if answer_is_yes; then
-            rm -rf "$dotfilesDirectory"
-            break
-        else
-            dotfilesDirectory=''
-            while [ -z "$dotfilesDirectory" ]; do
-                ask 'Please specify another location for the dotfiles (path): '
-                dotfilesDirectory="$(get_answer)"
-            done
-        fi
-    done
-
-    printf '\n'
-
-    mkdir -p "$dotfilesDirectory"
-    print_result $? "Create '$dotfilesDirectory'" 'true'
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    # Cloning dotfiles on directory
-
-    git clone --recursive "$DOTFILES_ORIGIN" "$dotfilesRepoDirectory"
-    print_result $? 'Clone dotfiles' 'true'
-    printf '\n'
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    cd "$dotfilesRepoDirectory"
-
-    print_info "Installing powerline fonts"
-    bash fonts/install.sh
 }
 
 verify_os() {
@@ -244,7 +215,11 @@ configure_pyenv() {
     pyenv virtualenv 2.7.13 2
 
     pyenv activate 3
-    pip install howdoi you-get httpie
+    pip install howdoi you-get httpie neovim
+    pyenv deactivate
+
+    pyenv activate 2
+    pip install neovim
     pyenv deactivate
 
     # set execution order
@@ -334,7 +309,6 @@ main() {
             "ack"
             "git"
             "hub"
-            "httpie"
             "ffmpeg"
             "postgresql"
             "mongodb"
@@ -346,16 +320,18 @@ main() {
             "pyenv"
             "pyenv-virtualenv"
             "pyenv-virtualenvwrapper"
-            "nvim"
+            "neovim/neovim/neovim"
+            "fzf"
         )
 
         brew_tap "homebrew/services"
+        brew_tap "caskroom/versions"
 
         # Casks
         CASKS=(
             "google-chrome"
             "google-drive"
-            "iterm2"
+            "iterm2-nigthly"
             "vlc"
             "utorrent"
             "spotify"
@@ -381,11 +357,10 @@ main() {
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-    print_info 'Copying Profile'
-    copy_profile
+    print_info 'Copying Profile files'
+    link_profile
 
     if cmd_exists 'nvim'; then
-
         print_info 'Installing/Update NeoVim plugins'
 
         # Installing Plug

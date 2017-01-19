@@ -18,7 +18,6 @@
 - speedtest cli
 - you-get
 - howdoi
-- tmux
 - ansiweather
 
 
@@ -27,7 +26,7 @@
 - Google Chrome
 - Google Drive
 - Firefox
-- iTerm2
+- iTerm2 Nighly
 - VLC
 - uTorrent
 - Slack

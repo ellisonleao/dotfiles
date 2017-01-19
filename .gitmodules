@@ -1,6 +1,3 @@
-[submodule "shellfun"]
-	path = shellfun
-	url = https://github.com/ellisonleao/shellfun.git
 [submodule "fonts"]
 	path = fonts
 	url = https://github.com/powerline/fonts.git
