@@ -27,7 +27,7 @@
 - Google Drive
 - Firefox
 - iTerm2 Nighly
-- VLC
+- VLC Nightly
 - uTorrent
 - Slack
 - PS4 Remote Play
@@ -35,3 +35,4 @@
 - Skype
 - Telegram
 - Whatsapp
+- OBM

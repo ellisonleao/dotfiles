@@ -332,7 +332,7 @@ main() {
             "google-chrome"
             "google-drive"
             "iterm2-nigthly"
-            "vlc"
+            "vlc-nighly"
             "utorrent"
             "spotify"
             "slack"
@@ -342,6 +342,7 @@ main() {
             "telegram"
             "whatsapp"
             "java"
+            "obm"
         )
 
         for i in ${FORMULAS[@]}; do
