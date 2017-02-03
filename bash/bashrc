@@ -182,6 +182,19 @@ export GOPATH=~/Code/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export PATH=$PATH:$GOPATH/bin
 
+gop () {
+    if [  "$#" -ne 1 ]; then
+        echo "project missing"
+    else
+        project=$(find $GOPATH/src -name $1 | head -n 1)
+        if [ -z "$project" ]; then
+            echo "project $project doesn't exist"
+        else
+            cd $project
+        fi
+    fi
+}
+
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
