@@ -322,6 +322,7 @@ main() {
             "pyenv-virtualenvwrapper"
             "neovim/neovim/neovim"
             "fzf"
+            "irssi"
         )
 
         brew_tap "homebrew/services"
