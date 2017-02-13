@@ -19,6 +19,7 @@
 - you-get
 - howdoi
 - ansiweather
+- weechat
 
 
 # And the following applications
