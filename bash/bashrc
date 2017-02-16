@@ -56,9 +56,8 @@ export CPPFLAGS=-Qunused-arguments
 alias gup='git up'
 
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-	. $(brew --prefix)/etc/bash_completion
-fi
+# bash completion
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
 # setup color variables
 color_is_on=

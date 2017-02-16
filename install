@@ -323,6 +323,7 @@ main() {
             "neovim/neovim/neovim"
             "fzf"
             "weechat"
+            "bash-completion"
         )
 
         brew_tap "homebrew/services"
