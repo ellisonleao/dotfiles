@@ -324,6 +324,7 @@ main() {
             "fzf"
             "weechat"
             "bash-completion"
+            "gpg"
         )
 
         brew_tap "homebrew/services"
@@ -345,6 +346,7 @@ main() {
             "whatsapp"
             "java"
             "obm"
+            "keybase"
         )
 
         for i in ${FORMULAS[@]}; do

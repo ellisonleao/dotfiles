@@ -7,6 +7,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'fatih/vim-go'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
@@ -16,14 +17,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdcommenter'
 Plug 'airblade/vim-gitgutter'
 Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-surround'
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'fatih/vim-go'
 Plug 'neomake/neomake'
 Plug 'myusuf3/numbers.vim'
 
@@ -62,7 +59,8 @@ set smartcase
 
 " Tab completion
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,.pyc,__pycache__
+set wildignore+=*.o,*.obj,.git,*.rbc,.pyc,__pycache__,*.beam
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
 "" Remember last location in file
 if has("autocmd")
@@ -70,23 +68,10 @@ if has("autocmd")
       \| exe "normal g'\"" | endif
 endif
 
-"set encoding=utf-8
-"set fileencoding=utf-8
-"set fileencodings=utf-8
-"set bomb
-set ttyfast
-"set binary
-
 "Directories for swp files
 set nobackup
 set nowritebackup
 set noswapfile
-
-set sh=/bin/sh
-
-set fileformats=unix,dos,mac
-set showcmd
-set shell=bash
 
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
@@ -113,34 +98,20 @@ let g:python3_host_prog = '/Users/ellison/.pyenv/versions/3/bin/python'
 "{{{
 " colorscheme, fonts, menus and etc
 set background=dark
-syntax on
 set number
+set t_Co=256
+let g:reshash256=1
 
-" Menus I like :-)
 " This must happen before the syntax system is enabled
 set mouse-=a
-highlight BadWhitespace ctermbg=red guibg=red
 colorscheme molokai
+let g:molokai_original=1
 
-set nocursorline
-"set guioptions=egmrt
-
-" Disable the pydoc preview window for the omni completion
-set completeopt-=preview
-
-" Disable the blinking cursor.
-set gcr=a:blinkon0
-set scrolloff=3
-
-" Status bar
-set laststatus=2
+" let the colors begin
+syntax on
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
-
-" Use modeline overrides
-set modeline
-set modelines=10
 
 let g:airline_theme = 'molokai'
 let g:airline#extensions#branch#enabled = 1
@@ -174,60 +145,24 @@ set pastetoggle=<leader>o
 
 
 "*****************************************************************************
-"                               Abbreviations
-"*****************************************************************************
-"{{{
-" no one is really happy until you have this shortcuts
-cab W! w!
-cab Q! q!
-cab Wq wq
-cab Wa wa
-cab wQ wq
-cab WQ wq
-cab W w
-cab Q q
-
-"}}}
-
-
-"*****************************************************************************
-"                                 Variables
-"*****************************************************************************
-"{{{
-
-" python support
-" --------------
-let html_no_rendering=1
-let javascript_enable_domhtmlcss=1
-let c_no_curly_error=1
-
-let g:closetag_default_xml=1
-let g:sparkupNextMapping='<c-l>'
-
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-
-"}}}
-
-
-
-"*****************************************************************************
-"                               Autocmd and Syntax Specific Rules
+"                      Autocmd and Syntax Specific Rules
 "*****************************************************************************
 
 "{{{
 " Some minor or more generic autocmd rules
 " The PC is fast enough, do syntax highlight syncing from start
 autocmd BufEnter * :syntax sync fromstart
+
 " Remember cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 " Validate
-autocmd! BufWritePost,BufEnter * Neomake
+autocmd! BufWritePost,BufWritePre * Neomake
 
 "" Clean whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
-" make use real tabs
+"********** Makefile
 au FileType make set noexpandtab
 
 set autowrite
@@ -241,15 +176,15 @@ autocmd FileType pyrex setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 autocmd BufRead,BufNewFile *.py,*pyw set shiftwidth=4
 autocmd BufRead,BufNewFile *.py,*.pyw set expandtab
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /\s\+$/
 autocmd BufNewFile *.py,*.pyw set fileformat=unix
 autocmd BufRead *.py,*.pyw set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd BufNewFile,BufRead *.py_tmpl,*.cover setlocal ft=python
+
 " Ignore line width for syntax checking
 let python_highlight_builtins=1
 let python_highlight_exceptions=1
 let python_highlight_doctests=0
+let g:neomake_python_flake8_args = ['--ignore', 'E402,E501']
 
 "********** Go
 autocmd BufNewFile,BufRead *.go setlocal ft=go
@@ -267,10 +202,10 @@ autocmd FileType go nmap <leader>t  <Plug>(go-test)
 autocmd FileType go nmap <leader>c  <Plug>(go-coverage-toggle)
 
 let g:go_metalinter_autosave = 1
-let g:go_list_type = "quickfix"
-let g:go_fmt_command = "goimports"
-
 let g:deoplete#sources#go#pointer = 1
+let g:go_fmt_command = "goimports"
+let g:go_autodetect_gopath = 1
+let g:go_list_type = "quickfix"
 
 "********** HTML
 autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
@@ -288,9 +223,6 @@ autocmd FileType vim setlocal foldenable foldmethod=marker
 "********** Javascript
 autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=79
 autocmd BufNewFile,BufRead *.json setlocal ft=javascript
-autocmd BufRead,BufNewFile *.js,*.jsx,*.json match BadWhitespace /^\t\+/
-autocmd BufRead,BufNewFile *.js,*.jsx,*.json match BadWhitespace /\s\+$/
-
 
 "********** Less & Sass
 autocmd FileType less setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
@@ -303,11 +235,6 @@ autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 colorcolumn=79,9
 
 "********** bash
 autocmd FileType sh setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
-
-"********** rust
-let g:racer_cmd = "/Users/ellison/.cargo/bin/racer"
-let $RUST_SRC_PATH="/Users/ellison/Code/rust/src"
-
 
 " Set auto reload file
 set autoread
@@ -324,13 +251,7 @@ set autoread
 noremap <Leader>h :split<CR>
 noremap <Leader>v :vsplit<CR>
 
-" try to make possible to navigate within lines of wrapped lines
-nmap <Down> gj
-nmap <Up> gk
-
 " Termnal nav
-nmap <S-p> :bp<CR>
-nmap <S-o> :bn<CR>
 noremap ,z :bp<CR>
 noremap ,q :bp<CR>
 noremap ,x :bn<CR>
@@ -345,9 +266,6 @@ noremap <leader>\ :noh<CR>
 " Vmap for maintain Visual Mode after shifting > and <
 vmap < <gv
 vmap > >gv
-
-" JSDoc
-nmap <leader>j :JsDoc<CR>
 
 " Fuzzy Finder
 noremap <leader>f :FZF<CR>
