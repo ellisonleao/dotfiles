@@ -16,8 +16,6 @@
 - Node.js
 - ssh-copy-id
 - speedtest cli
-- you-get
-- howdoi
 - ansiweather
 - weechat
 

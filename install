@@ -88,6 +88,10 @@ link_profile() {
     print_result $? 'Copying profile files'
 }
 
+configure_bash() {
+    git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+}
+
 get_answer() {
     printf "$REPLY"
 }
@@ -205,25 +209,9 @@ verify_os() {
 
 }
 
-configure_pyenv() {
-    source ~/.bashrc
-    pyenv install 3.6.0
-    pyenv install 2.7.13
-
-    # creating different global environments for 2 and 3 versions
-    pyenv virtualenv 3.6.0 3
-    pyenv virtualenv 2.7.13 2
-
-    pyenv activate 3
-    pip install howdoi you-get httpie neovim
-    pyenv deactivate
-
-    pyenv activate 2
-    pip install neovim
-    pyenv deactivate
-
-    # set execution order
-    pyenv global 3.6.0 2.7.13 3 2
+configure_python() {
+    pip install neovim virtualenvwrapper
+    pip3 install neovim
 }
 
 # ----------------------------------------------------------------------
@@ -317,14 +305,13 @@ main() {
             "ssh-copy-id"
             "speedtest_cli"
             "ansiweather"
-            "pyenv"
-            "pyenv-virtualenv"
-            "pyenv-virtualenvwrapper"
             "neovim/neovim/neovim"
             "fzf"
             "weechat"
             "bash-completion"
             "gpg"
+            "python"
+            "python3"
         )
 
         brew_tap "homebrew/services"
@@ -364,6 +351,7 @@ main() {
 
     print_info 'Copying Profile files'
     link_profile
+    configure_bash
 
     if cmd_exists 'nvim'; then
         print_info 'Installing/Update NeoVim plugins'
@@ -376,9 +364,9 @@ main() {
 
     fi
 
-    print_info "Configuring pyenv"
-    configure_pyenv
-    print_success "pyenv installed"
+    print_info "Configuring python"
+    configure_python
+    print_success "python configured"
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     print_info 'Restart'

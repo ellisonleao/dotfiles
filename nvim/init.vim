@@ -11,14 +11,14 @@ Plug 'fatih/vim-go'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
-Plug 'flazz/vim-colorschemes'
+Plug 'chriskempson/base16-vim'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'sheerun/vim-polyglot'
 Plug 'heavenshell/vim-jsdoc'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'neomake/neomake'
@@ -58,7 +58,6 @@ set ignorecase
 set smartcase
 
 " Tab completion
-set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,.pyc,__pycache__,*.beam
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
@@ -79,15 +78,12 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
-" JSDoc
-let g:jsdoc_enable_es6=1
-
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 
-let g:python_host_prog = '/Users/ellison/.pyenv/versions/2/bin/python'
-let g:python3_host_prog = '/Users/ellison/.pyenv/versions/3/bin/python'
-
+" some writing concerns
+set autoindent smartindent
+set completeopt=menuone,preview
 
 "}}}
 
@@ -97,15 +93,15 @@ let g:python3_host_prog = '/Users/ellison/.pyenv/versions/3/bin/python'
 "*****************************************************************************
 "{{{
 " colorscheme, fonts, menus and etc
-set background=dark
-set number
-set t_Co=256
-let g:reshash256=1
+" set background=dark
+" set number
+" set t_Co=256
+" let g:reshash256=1
+let base16colorspace=256
 
 " This must happen before the syntax system is enabled
 set mouse-=a
-colorscheme molokai
-let g:molokai_original=1
+colorscheme base16-default-dark
 
 " let the colors begin
 syntax on
@@ -140,6 +136,8 @@ set guitablabel=%{GuiTabLabel()}
 
 " paste, no paste with \o
 set pastetoggle=<leader>o
+
+set lazyredraw
 
 "}}}
 

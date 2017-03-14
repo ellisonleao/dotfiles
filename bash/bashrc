@@ -29,16 +29,10 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 export PATH=/usr/local/share/npm/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/opt/go/libexec/bin
 
 export EDITOR=nvim
-alias vim=nvim
-alias v=nvim
-
-export PATH=$HOME/.pyenv/bin:$PATH
 export WORKON_HOME=~/.virtualenvs
 export PROJECT_HOME=~/Code
-eval "$(pyenv init -)"
-pyenv virtualenvwrapper_lazy
 
-alias w=workon
+[ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
 
 eval "$(hub alias -s)"
 
@@ -53,7 +47,6 @@ export LC_ALL=en_US.UTF-8
 export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
 
-alias gup='git up'
 
 
 # bash completion
@@ -155,31 +148,15 @@ elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
 
-# Visual studio code alias
-visu () {
-    if [[ $# = 0 ]]
-    then
-        open -a "Visual Studio Code"
-    else
-        [[ $1 = /* ]] && F="$1" || F="$PWD/${1#./}"
-        open -a "Visual Studio Code" --args "$F"
-    fi
-}
-
-# Bash aliases
-if [ -f ~/.bash_aliases ]; then
-	source ~/.bash_aliases
-fi
-
 # osx configs
 if [ -f ~/.osx ]; then
 	source ~/.osx
 fi
 
 # Go
+export GOROOT=/usr/local/Cellar/go/1.8/libexec
 export GOPATH=~/Code/go
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 
 gop () {
     if [  "$#" -ne 1 ]; then
@@ -199,3 +176,28 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # fuzzy finder
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# added by travis gem
+[ -f /Users/ellison/.travis/travis.sh ] && source /Users/ellison/.travis/travis.sh
+
+# Aliases
+alias vim=nvim
+alias v=nvim
+alias w=workon
+alias gup='git up'
+
+
+# Visual studio code alias
+visu () {
+    if [[ $# = 0 ]]
+    then
+        open -a "Visual Studio Code"
+    else
+        [[ $1 = /* ]] && F="$1" || F="$PWD/${1#./}"
+        open -a "Visual Studio Code" --args "$F"
+    fi
+}
+
+# base16 shell
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
