@@ -22,7 +22,6 @@ Plug 'heavenshell/vim-jsdoc'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'neomake/neomake'
-Plug 'myusuf3/numbers.vim'
 
 call plug#end()
 
@@ -93,10 +92,7 @@ set completeopt=menuone,preview
 "*****************************************************************************
 "{{{
 " colorscheme, fonts, menus and etc
-" set background=dark
-" set number
-" set t_Co=256
-" let g:reshash256=1
+set number
 let base16colorspace=256
 
 " This must happen before the syntax system is enabled
