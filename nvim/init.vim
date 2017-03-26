@@ -1,4 +1,3 @@
-"*****************************************************************************
 "" Plug Load
 "*****************************************************************************
 "{{{
@@ -60,6 +59,7 @@ set smartcase
 " Tab completion
 set wildignore+=*.o,*.obj,.git,*.rbc,.pyc,__pycache__,*.beam
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
+set completeopt=menuone,preview,noinsert
 
 "" Remember last location in file
 if has("autocmd")
@@ -83,7 +83,6 @@ let g:deoplete#enable_at_startup = 1
 
 " some writing concerns
 set autoindent smartindent
-set completeopt=menuone,preview
 
 "}}}
 
@@ -136,6 +135,9 @@ set pastetoggle=<leader>o
 
 set lazyredraw
 
+" color column 100 by default
+set cc=100
+
 "}}}
 
 
@@ -157,38 +159,30 @@ autocmd! BufWritePost,BufWritePre * Neomake
 "" Clean whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
+" file format always unix
+set fileformat=unix
+
 "********** Makefile
 au FileType make set noexpandtab
 
 set autowrite
 
 "********** Python
-autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79,99
+autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=80
 	\ formatoptions+=croq softtabstop=4 smartindent
-	\ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-autocmd FileType pyrex setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
-	\smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-autocmd BufRead,BufNewFile *.py,*pyw set shiftwidth=4
-autocmd BufRead,BufNewFile *.py,*.pyw set expandtab
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-autocmd BufNewFile *.py,*.pyw set fileformat=unix
-autocmd BufRead *.py,*.pyw set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
-autocmd BufNewFile,BufRead *.py_tmpl,*.cover setlocal ft=python
 
-" Ignore line width for syntax checking
-let python_highlight_builtins=1
-let python_highlight_exceptions=1
-let python_highlight_doctests=0
+" ignore some flak8 rules
 let g:neomake_python_flake8_args = ['--ignore', 'E402,E501']
 
 "********** Go
-autocmd BufNewFile,BufRead *.go setlocal ft=go
+"autocmd BufNewFile,BufRead *.go setlocal ft=go
 autocmd FileType go setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 
-" \n and \p for quickfix list navigation \c to close it
+" \n and \p for quickfix list navigation \q to close it
 autocmd FileType go map <leader>n :cnext<CR>
 autocmd FileType go map <leader>p :cprevious<CR>
-autocmd FileType go nnoremap <leader>c :cclose<CR>
+autocmd FileType go nnoremap <leader>q :cclose<CR>
 
 " \r run - \b build - \l lint - \t test
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
@@ -201,6 +195,9 @@ let g:deoplete#sources#go#pointer = 1
 let g:go_fmt_command = "goimports"
 let g:go_autodetect_gopath = 1
 let g:go_list_type = "quickfix"
+
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
 
 "********** HTML
 autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
@@ -216,7 +213,7 @@ autocmd FileType vim setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
 autocmd FileType vim setlocal foldenable foldmethod=marker
 
 "********** Javascript
-autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=79
+autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 autocmd BufNewFile,BufRead *.json setlocal ft=javascript
 
 "********** Less & Sass
