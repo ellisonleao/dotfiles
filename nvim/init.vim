@@ -10,14 +10,13 @@ Plug 'fatih/vim-go'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
-Plug 'chriskempson/base16-vim'
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
+Plug 'chriskempson/base16-vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'sheerun/vim-polyglot'
-Plug 'heavenshell/vim-jsdoc'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -105,30 +104,18 @@ syntax on
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-let g:airline_theme = 'molokai'
-let g:airline#extensions#branch#enabled = 1
+" airline
+let g:airline_theme = 'base16'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#show_splits = 1
+let g:airline#extensions#neomake#enabled = 1
 
-" GUI Tab settings
-function! GuiTabLabel()
-  let label = ''
-  let buflist = tabpagebuflist(v:lnum)
-  if exists('t:title')
-      let label .= t:title . ' '
-  endif
-  let label .= '[' . bufname(buflist[tabpagewinnr(v:lnum) - 1]) . ']'
-  for bufnr in buflist
-      if getbufvar(bufnr, '&modified')
-          let label .= '+'
-          break
-      endif
-  endfor
-  return label
-endfunction
-set guitablabel=%{GuiTabLabel()}
+let g:airline_section_a = airline#section#create_left(['mode'])
+let g:airline_section_y = airline#section#create_right(['linenr', '%3v'])
+let g:airline_section_z = '%{strftime("%d/%m/%Y %H:%M")}'
+"let g:airline_section_warning = airline#section#create(['neomake_warning_count'])
+"let g:airline_section_error = airline#section#create(['neomake_error_count'])
 
 " paste, no paste with \o
 set pastetoggle=<leader>o
@@ -164,19 +151,15 @@ set fileformat=unix
 
 "********** Makefile
 au FileType make set noexpandtab
-
 set autowrite
 
 "********** Python
-autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=80
-	\ formatoptions+=croq softtabstop=4 smartindent
-autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+autocmd FileType python setlocal colorcolumn=80
 
 " ignore some flak8 rules
 let g:neomake_python_flake8_args = ['--ignore', 'E402,E501']
 
 "********** Go
-"autocmd BufNewFile,BufRead *.go setlocal ft=go
 autocmd FileType go setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 
 " \n and \p for quickfix list navigation \q to close it
