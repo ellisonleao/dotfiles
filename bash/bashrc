@@ -175,6 +175,7 @@ gop () {
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # fuzzy finder
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # added by travis gem

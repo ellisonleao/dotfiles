@@ -312,6 +312,7 @@ main() {
             "gpg"
             "python"
             "python3"
+            "ripgrep"
         )
 
         brew_tap "homebrew/services"
