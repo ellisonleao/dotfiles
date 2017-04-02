@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'zchee/deoplete-go', { 'do': 'make'}
+"Plug 'roxma/nvim-completion-manager'
 Plug 'fatih/vim-go'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -31,9 +32,6 @@ call plug#end()
 "                                Basic Setup
 "*****************************************************************************
 "{{{
-" Unleash all VIM power
-set nocompatible
-
 " Fix backspace indent
 set backspace=indent,eol,start
 
@@ -52,13 +50,17 @@ set hidden
 " Searching
 set hlsearch
 set incsearch
-set ignorecase
 set smartcase
+set autochdir
 
 " Tab completion
 set wildignore+=*.o,*.obj,.git,*.rbc,.pyc,__pycache__,*.beam
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-set completeopt=menuone,preview,noinsert
+set wildignore+=node_modules/*,bower_components/*,
+set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png,*.ico
+set wildignore+=*.pdf,*.psd
+set completeopt=menuone,noinsert
+
 
 "" Remember last location in file
 if has("autocmd")
@@ -71,17 +73,15 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-" Trigger configuration. Do not use <tab> if you use
-" https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 
 " some writing concerns
 set autoindent smartindent
+
+" neovim python modules
+let g:python3_host_prog='/Users/ellison/.virtualenvs/3/bin/python'
+let g:python_host_prog='/Users/ellison/.virtualenvs/2/bin/python'
 
 "}}}
 
@@ -125,6 +125,10 @@ set lazyredraw
 " color column 100 by default
 set cc=100
 
+" don't give |ins-completion-menu| messages.  For example,
+" '-- XXX completion (YYY)', 'match 1 of 2', 'The only match',
+set shortmess+=c
+
 "}}}
 
 
@@ -155,6 +159,7 @@ set autowrite
 
 "********** Python
 autocmd FileType python setlocal colorcolumn=80
+let g:python_highlight_all = 1
 
 " ignore some flak8 rules
 let g:neomake_python_flake8_args = ['--ignore', 'E402,E501']
@@ -167,20 +172,36 @@ autocmd FileType go map <leader>n :cnext<CR>
 autocmd FileType go map <leader>p :cprevious<CR>
 autocmd FileType go nnoremap <leader>q :cclose<CR>
 
-" \r run - \b build - \l lint - \t test
+" \r run
+" \b build
+" \l lint
+" \t test
+" \c coverage
+" \i info
+" \e rename
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 autocmd FileType go nmap <leader>b  <Plug>(go-build)
 autocmd FileType go nmap <leader>t  <Plug>(go-test)
 autocmd FileType go nmap <leader>c  <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <leader>i <Plug>(go-info)
+autocmd FileType go nmap <leader>e <Plug>(go-rename)
+
+let g:deoplete#sources#go#gocode_binary = '$GOPATH/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#use_cache = 1
+let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
 
 let g:go_metalinter_autosave = 1
-let g:deoplete#sources#go#pointer = 1
+"let g:deoplete#sources#go#pointer = 1
 let g:go_fmt_command = "goimports"
 let g:go_autodetect_gopath = 1
 let g:go_list_type = "quickfix"
-
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_auto_type_info = 0
+let g:go_snippet_case_type = "camelcase"
 
 "********** HTML
 autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
@@ -253,6 +274,6 @@ vmap > >gv
 " --follow: Follow symlinks
 " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 noremap <silent> <leader>f :Find <CR>
 "}}}

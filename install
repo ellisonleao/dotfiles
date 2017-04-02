@@ -211,7 +211,13 @@ verify_os() {
 
 configure_python() {
     pip install neovim virtualenvwrapper
-    pip3 install neovim
+    source "$HOME/.bashrc"
+    mkvirtualenv 2
+    pip install neovim
+    deactivate
+    mkvirtualenv 3
+    pip install neovim
+    deactivate
 }
 
 # ----------------------------------------------------------------------
