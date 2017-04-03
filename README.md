@@ -1,8 +1,7 @@
-The only required repo for a coder.
+dotfiles
+========
 
-The vimrc was based on the nice [vim-bootstrap](http://vim-bootstrap.com) project with some special changes for my taste and it uses the nice [Plug](https://github.com/junegunn/vim-plug) project.
-
-The bashrc file is suited for mac users.
+Personal configuration files for some programs.
 
 ## Installing
 
@@ -16,17 +15,16 @@ P.S: Only working on OSX for now.
 
 ## Screenshots
 
-VIM
----
+### NVIM
 
-![](http://i.imgur.com/rcZOtrO.png)
+![](http://i.imgur.com/7YxzsnB.png)
 
-BASH TERMINAL
--------------
+### BASH TERMINAL
 
 ![](http://i.imgur.com/kiw4VTV.png)
 
-TMUX
-----
+### TMUX 
+
+_currently not using it_
 
 ![](http://i.imgur.com/5Z1JRlP.png)
