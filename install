@@ -215,7 +215,7 @@ configure_python() {
     mkvirtualenv 2
     pip install neovim
     deactivate
-    mkvirtualenv 3
+    mkvirtualenv --python python3 3
     pip install neovim
     deactivate
 }
@@ -267,7 +267,7 @@ main() {
 
         # Wait until the XCode Command Line Tools are installed
         until xcode-select --print-path &> /dev/null; do
-            sleep 5
+            sleep 10
         done
 
         print_result $? 'Install XCode Command Line Tools'
@@ -329,8 +329,8 @@ main() {
             "google-chrome"
             "google-drive"
             "iterm2-nigthly"
-            "vlc-nighly"
-            "utorrent"
+            "vlc-nightly"
+            "qbittorrent"
             "spotify"
             "slack"
             "remote-play"
@@ -339,7 +339,7 @@ main() {
             "telegram"
             "whatsapp"
             "java"
-            "obm"
+            "obs"
             "keybase"
         )
 

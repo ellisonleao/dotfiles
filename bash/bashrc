@@ -154,7 +154,7 @@ if [ -f ~/.osx ]; then
 fi
 
 # Go
-export GOROOT=/usr/local/Cellar/go/1.8/libexec
+export GOROOT=/usr/local/Cellar/go/1.8.1/libexec
 export GOPATH=~/Code/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 
