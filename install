@@ -83,7 +83,6 @@ link_profile() {
     ln -s "$dotfilesRepoDirectory/bash/bashrc" $HOME/.bashrc
     ln -s "$dotfilesRepoDirectory/git/gitconfig" $HOME/.gitconfig
     ln -s "$dotfilesRepoDirectory/osx/osx" $HOME/.osx
-    cat "$dotfilesRepoDirectory/shellfun/*.sh" > $HOME/.bash_aliases
     echo "source ~/.bashrc" > $HOME/.bash_profile
     print_result $? 'Copying profile files'
 }
@@ -220,6 +219,75 @@ configure_python() {
     deactivate
 }
 
+agree_with_xcode_licence() {
+
+    # Automatically agree to the terms of the `Xcode` license.
+    # https://github.com/alrra/dotfiles/issues/10
+
+    sudo xcodebuild -license accept &> /dev/null
+    print_result $? "Agree to the terms of the Xcode licence"
+
+}
+
+are_xcode_command_line_tools_installed() {
+    xcode-select --print-path &> /dev/null
+}
+
+install_xcode() {
+
+    # If necessary, prompt user to install `Xcode`.
+
+    if ! is_xcode_installed; then
+        open "macappstores://itunes.apple.com/en/app/xcode/id497799835"
+    fi
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # Wait until `Xcode` is installed.
+
+    execute \
+        "until is_xcode_installed; do \
+            sleep 5; \
+         done" \
+        "Xcode.app"
+
+}
+
+install_xcode_command_line_tools() {
+
+    # If necessary, prompt user to install
+    # the `Xcode Command Line Tools`.
+
+    xcode-select --install &> /dev/null
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # Wait until the `Xcode Command Line Tools` are installed.
+
+    execute \
+        "until are_xcode_command_line_tools_installed; do \
+            sleep 5; \
+         done" \
+        "Xcode Command Line Tools"
+
+}
+
+is_xcode_installed() {
+    [ -d "/Applications/Xcode.app" ]
+}
+
+set_xcode_developer_directory() {
+
+    # Point the `xcode-select` developer directory to
+    # the appropriate directory from within `Xcode.app`.
+    #
+    # https://github.com/alrra/dotfiles/issues/13
+
+    sudo xcode-select -switch "/Applications/Xcode.app/Contents/Developer" &> /dev/null
+    print_result $? "Make 'xcode-select' developer directory point to the appropriate directory from within Xcode.app"
+
+}
+
 # ----------------------------------------------------------------------
 # | Main                                                               |
 # ----------------------------------------------------------------------
@@ -261,33 +329,12 @@ main() {
     printf '\n'
 
     if answer_is_yes; then
-        # XCode
-        xcode-select --install &> /dev/null
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        print_in_purple "   Xcode\n\n"
 
-        # Wait until the XCode Command Line Tools are installed
-        until xcode-select --print-path &> /dev/null; do
-            sleep 10
-        done
-
-        print_result $? 'Install XCode Command Line Tools'
-
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        # Point the `xcode-select` developer directory to
-        # the appropriate directory from within `Xcode.app`
-        # https://github.com/alrra/dotfiles/issues/13
-
-        sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
-        print_result $? 'Make "xcode-select" developer directory point to Xcode'
-
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        # Prompt user to agree to the terms of the Xcode license
-        sudo xcodebuild -license
-        print_result $? 'Agree with the XCode Command Line Tools licence'
-        printf '\n'
-        print_result $? 'XCode Command Line Tools'
+        install_xcode_command_line_tools
+        install_xcode
+        set_xcode_developer_directory
+        agree_with_xcode_licence
 
         # HOMEBREW
         if ! cmd_exists 'brew'; then
@@ -375,15 +422,6 @@ main() {
     configure_python
     print_success "python configured"
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    print_info 'Restart'
-
-    ask_for_confirmation 'Do you want to restart?'
-    printf '\n'
-
-    if answer_is_yes; then
-        sudo shutdown -r now &> /dev/null
-    fi
 
     print_in_green "Success! Please restart the terminal to see the changes!"
 }

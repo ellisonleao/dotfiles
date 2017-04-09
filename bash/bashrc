@@ -149,9 +149,7 @@ elif [ -f /etc/bash_completion ]; then
 fi;
 
 # osx configs
-if [ -f ~/.osx ]; then
-	source ~/.osx
-fi
+[ -f ~/.osx ] && source ~/.osx
 
 # Go
 export GOROOT=/usr/local/Cellar/go/1.8.1/libexec
