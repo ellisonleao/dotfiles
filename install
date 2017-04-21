@@ -81,6 +81,7 @@ link_profile() {
     if [ ! -d "~/.config/nvim" ]; then mkdir ~/.config/nvim/; fi
     ln -s "$dotfilesRepoDirectory/nvim/init.vim" ~/.config/nvim/
     ln -s "$dotfilesRepoDirectory/bash/bashrc" $HOME/.bashrc
+    ln -s "$dotfilesRepoDirectory/bash/bash_aliases" $HOME/.bash_aliases
     ln -s "$dotfilesRepoDirectory/git/gitconfig" $HOME/.gitconfig
     ln -s "$dotfilesRepoDirectory/osx/osx" $HOME/.osx
     echo "source ~/.bashrc" > $HOME/.bash_profile
@@ -360,7 +361,7 @@ main() {
             "ansiweather"
             "neovim/neovim/neovim"
             "fzf"
-            "weechat"
+            "weechat --with-perl --with-python --with-lua --with-ruby"
             "bash-completion"
             "gpg"
             "python"

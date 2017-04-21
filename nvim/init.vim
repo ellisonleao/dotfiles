@@ -50,6 +50,7 @@ set hidden
 " Searching
 set hlsearch
 set incsearch
+set ignorecase
 set smartcase
 set autochdir
 
@@ -165,7 +166,7 @@ let g:python_highlight_all = 1
 let g:neomake_python_flake8_args = ['--ignore', 'E402,E501']
 
 "********** Go
-autocmd FileType go setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
+autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " \n and \p for quickfix list navigation \q to close it
 autocmd FileType go map <leader>n :cnext<CR>

@@ -1,0 +1,172 @@
+# password protect
+/secure passphrase <pass>
+
+# mouse
+/mouse enable
+
+# colors
+/color alias 16 orange
+/color alias 17 brown
+/color alias 18 linehighlightdark
+/color alias 19 selectiondark
+/color alias 20 commentslight
+/color alias 21 linehighlightlight
+
+/set weechat.bar.status.color_bg linehighlightdark
+/set weechat.bar.title.color_bg linehighlightdark
+
+# load plugins
+/set weechat.plugin.autoload "*,!lua,!tcl,!ruby,!fifo,!xfer"
+
+# scripts
+/script install buffers.pl highmon.pl buffer_autoset.py iset.pl perlexec.pl autosort.py text_item.py vimode.py
+
+
+# highmon
+/set plugins.var.perl.highmon.alignment "nchannel"
+
+# iset
+/set iset.color.bg_selected 31
+/set iset.color.option_selected *white
+/set iset.color.type_selected *229
+/set iset.color.value_selected *121
+/set iset.color.type 229
+/set iset.color.value 121
+
+
+# autosort
+/autosort replacements add ## #
+/autosort rules add irc.server.*.&* = 0
+/autosort rules add irc.server.*.#* = 1
+/autosort rules add irc.server.*.\*status = 2
+
+# vimode
+/bar set vi_line_numbers conditions ${active} && ${weechat.bar.vi_cmd.hidden} == 0
+
+# unmerge servers buffers from core and indent
+
+/set irc.look.server_buffer independent
+/set buffers.look.indenting on
+
+# main color scheme
+
+/set buffers.color.current_fg 31
+/set buffers.color.current_bg white
+/set buffers.color.hotlist_message_fg 229
+/set buffers.color.hotlist_private_fg 121
+/set buffers.color.hotlist_highlight_fg 163
+
+# whitelist color scheme
+
+/set buffers.color.whitelist_default_bg 31
+/set buffers.color.whitelist_highlight_bg 31
+/set buffers.color.whitelist_low_bg 31
+/set buffers.color.whitelist_message_bg 31
+/set buffers.color.whitelist_private_bg 31
+/set buffers.color.whitelist_highlight_fg *white
+/set buffers.color.whitelist_message_fg *white
+/set buffers.color.whitelist_private_fg *white
+
+# bar sizes
+
+/set weechat.bar.buffers.size_max 14
+/set buffers.color.number 239
+/set buffers.color.number_char 245
+
+# bar active title
+
+/bar add activetitle window top 1 0 buffer_title
+/set weechat.bar.activetitle.priority 500
+/set weechat.bar.activetitle.conditions "${active}"
+/set weechat.bar.activetitle.color_fg white
+/set weechat.bar.activetitle.color_bg 31
+/set weechat.bar.activetitle.separator on
+
+# bar title
+
+/set weechat.bar.title.conditions "${inactive}"
+/set weechat.bar.title.color_fg black
+/set weechat.bar.title.color_bg 31
+
+# bar status
+
+/bar add rootstatus root bottom 1 0 [time],[buffer_count],[buffer_plugin],buffer_number+:+buffer_name+(buffer_modes)+{buffer_nicklist_count}+buffer_filter,[bitlbee_typing_notice],[lag],[aspell_dict],[aspell_suggest],[hotlist],completion,scroll
+/set weechat.bar.rootstatus.color_fg 31
+/set weechat.bar.rootstatus.color_bg 234
+/set weechat.bar.rootstatus.separator on
+/set weechat.bar.rootstatus.priority 500
+/bar del status
+/bar set rootstatus name status
+
+# bar input
+
+/bar add rootinput root bottom 1 0 [mode_indicator]+[buffer_name]+[input_prompt]+(away),[input_search],[input_paste],input_text,[vi_buffer]"
+/set weechat.bar.rootinput.color_bg black
+/set weechat.bar.rootinput.priority 1000
+/bar del input
+/bar set rootinput name input
+
+# bar nicklist
+
+/set weechat.bar.nicklist.color_fg 229
+/set weechat.bar.nicklist.separator on
+/set weechat.bar.nicklist.conditions "${nicklist} && ${window.number} == 1"
+/set weechat.bar.nicklist.size_max 14
+/set weechat.bar.nicklist.size 14
+
+# layout highlight
+
+/perlexec my $total = weechat::hdata_integer(weechat::hdata_get("window"), weechat::current_window(), "win_height"); weechat::command($buffer, "/window splith " . int(8 / $total * 100));
+/buffer perl.highmon
+/window 1
+/layout store highlight
+
+# highlight
+
+/set weechat.look.highlight *ellison*
+
+
+# remaining
+/set weechat.look.bar_more_down "▼"
+/set weechat.look.bar_more_left "◀"
+/set weechat.look.bar_more_right "▶"
+/set weechat.look.bar_more_up "▲"
+/set weechat.look.buffer_time_format "${253}%H${245}%M"
+/set weechat.look.color_inactive_message off
+/set weechat.look.color_inactive_prefix off
+/set weechat.look.color_inactive_prefix_buffer off
+/set weechat.look.color_inactive_window off
+/set weechat.look.day_change_message_1date ▬▬▶ %a, %d %b %Y ◀▬▬
+/set weechat.look.day_change_message_2dates ▬▬▶ %%a, %%d %%b %%Y (%a, %d %b %Y) ◀▬▬
+/set weechat.look.hotlist_count_max 0
+/set weechat.look.hotlist_names_count 10
+/set weechat.look.item_buffer_filter "•"
+/set weechat.look.prefix_align_min 0
+/set weechat.look.prefix_align_max 10
+/set weechat.look.prefix_join "▬▬▶"
+/set weechat.look.prefix_quit "◀▬▬"
+/set weechat.look.prefix_suffix "│"
+/set weechat.look.read_marker_string "─"
+/set weechat.look.separator_horizontal "="
+/set weechat.look.prefix_same_nick "⤷"
+
+/set weechat.color.bar_more 229
+/set weechat.color.chat_highlight lightred
+/set weechat.color.chat_highlight_bg default
+/set weechat.color.chat_nick_colors 25,31,37,43,49,61,67,73,79,85,97,103,109,115,121,133,139,145,151,157,163,169,175,181,187,193,199,205,211,217,223,229
+/set weechat.color.chat_prefix_more 229
+/set weechat.color.chat_prefix_suffix 31
+/set weechat.color.chat_read_marker 31
+/set weechat.color.chat_time 239
+/set weechat.color.chat_delimiters 31
+/set weechat.color.separator 31
+/set weechat.color.status_data_highlight 163
+/set weechat.color.status_data_msg 229
+/set weechat.color.status_data_private 121
+/set weechat.color.status_more 229
+/set weechat.color.status_name 121
+/set weechat.color.status_name_ssl 121
+
+# slack
+/secure set slack_token [YOUR_SLACK_TOKEN]
+/set plugins.var.python.slack.slack_api_token ${sec.data.slack_token}

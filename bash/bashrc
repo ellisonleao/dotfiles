@@ -28,6 +28,7 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 
 export PATH=/usr/local/share/npm/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/opt/go/libexec/bin
 
+# Virtualenv settings
 export EDITOR=nvim
 export WORKON_HOME=~/.virtualenvs
 export PROJECT_HOME=~/Code
@@ -152,22 +153,8 @@ fi;
 [ -f ~/.osx ] && source ~/.osx
 
 # Go
-export GOROOT=/usr/local/Cellar/go/1.8.1/libexec
 export GOPATH=~/Code/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
-
-gop () {
-    if [  "$#" -ne 1 ]; then
-        echo "project missing"
-    else
-        project=$(find $GOPATH/src -name $1 | head -n 1)
-        if [ -z "$project" ]; then
-            echo "project $project doesn't exist"
-        else
-            cd $project
-        fi
-    fi
-}
 
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -179,24 +166,14 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 # added by travis gem
 [ -f /Users/ellison/.travis/travis.sh ] && source /Users/ellison/.travis/travis.sh
 
-# Aliases
-alias vim=nvim
-alias v=nvim
-alias w=workon
-alias gup='git up'
-
-
-# Visual studio code alias
-visu () {
-    if [[ $# = 0 ]]
-    then
-        open -a "Visual Studio Code"
-    else
-        [[ $1 = /* ]] && F="$1" || F="$PWD/${1#./}"
-        open -a "Visual Studio Code" --args "$F"
-    fi
-}
-
 # base16 shell
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+# yarn
+if which yarn >/dev/null; then
+    export PATH=$PATH:$(yarn global bin)
+fi
+
+# load aliases
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
