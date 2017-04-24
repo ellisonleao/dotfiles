@@ -1,19 +1,5 @@
-# password protect
-/secure passphrase <pass>
-
 # mouse
 /mouse enable
-
-# colors
-/color alias 16 orange
-/color alias 17 brown
-/color alias 18 linehighlightdark
-/color alias 19 selectiondark
-/color alias 20 commentslight
-/color alias 21 linehighlightlight
-
-/set weechat.bar.status.color_bg linehighlightdark
-/set weechat.bar.title.color_bg linehighlightdark
 
 # load plugins
 /set weechat.plugin.autoload "*,!lua,!tcl,!ruby,!fifo,!xfer"
@@ -43,11 +29,6 @@
 # vimode
 /bar set vi_line_numbers conditions ${active} && ${weechat.bar.vi_cmd.hidden} == 0
 
-# unmerge servers buffers from core and indent
-
-/set irc.look.server_buffer independent
-/set buffers.look.indenting on
-
 # main color scheme
 
 /set buffers.color.current_fg 31
@@ -67,9 +48,13 @@
 /set buffers.color.whitelist_message_fg *white
 /set buffers.color.whitelist_private_fg *white
 
+# BARS
+/set irc.look.server_buffer independent
+/set buffers.look.indenting on
+
 # bar sizes
 
-/set weechat.bar.buffers.size_max 14
+/set weechat.bar.buffers.size_max 30
 /set buffers.color.number 239
 /set buffers.color.number_char 245
 
@@ -111,8 +96,8 @@
 /set weechat.bar.nicklist.color_fg 229
 /set weechat.bar.nicklist.separator on
 /set weechat.bar.nicklist.conditions "${nicklist} && ${window.number} == 1"
-/set weechat.bar.nicklist.size_max 14
-/set weechat.bar.nicklist.size 14
+/set weechat.bar.nicklist.size_max 30
+/set weechat.bar.nicklist.size 30
 
 # layout highlight
 
@@ -122,7 +107,6 @@
 /layout store highlight
 
 # highlight
-
 /set weechat.look.highlight *ellison*
 
 
@@ -167,6 +151,20 @@
 /set weechat.color.status_name 121
 /set weechat.color.status_name_ssl 121
 
+# my nicks
+/set irc.server_default.nicks ellisonleao
+/set irc.server_default.ssl_verify off
+/set irc.server_default.capabilities "account-notify,away-notify,cap-notify,multi-prefix,server-time"
+
+# servers
+/server add freenode chat.freenode.net/7000 -ssl -autoconnect
+/set irc.server.freenode.password ellisonleao:${sec.data.ircpass}
+/set irc.server.freenode.command /msg nickserv identify ${sec.data.ircpass}
+/set irc.server.freenode.autojoin "#go-nuts,#django,#rust"
+
 # slack
-/secure set slack_token [YOUR_SLACK_TOKEN]
 /set plugins.var.python.slack.slack_api_token ${sec.data.slack_token}
+/set plugins.var.python.slack.show_reaction_nicks on
+/set weechat.bar.status.items [buffer_count],[buffer_plugin],buffer_number+:+buffer_name+{buffer_nicklist_count}+buffer_filter,[hotlist],completion,scroll,slack_typing_notice
+/set weechat.look.hotlist_names_level 14
+/set plugins.var.python.slack.colorize_nicks 1

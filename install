@@ -220,6 +220,11 @@ configure_python() {
     deactivate
 }
 
+configure_weechat() {
+    mkdir ~/.weechat
+    cp -a ~/.dotfiles/weechat/* ~/.weechat
+}
+
 agree_with_xcode_licence() {
 
     # Automatically agree to the terms of the `Xcode` license.
@@ -422,6 +427,11 @@ main() {
     print_info "Configuring python"
     configure_python
     print_success "python configured"
+
+    print_info "Configuring weechat"
+    configure_weechat
+    print_success "weechat configured"
+
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     print_in_green "Success! Please restart the terminal to see the changes!"
