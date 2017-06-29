@@ -366,7 +366,6 @@ main() {
             "ansiweather"
             "neovim/neovim/neovim"
             "fzf"
-            "weechat --with-perl --with-python --with-lua --with-ruby"
             "bash-completion"
             "gpg"
             "python"
@@ -381,7 +380,7 @@ main() {
         CASKS=(
             "google-chrome"
             "google-drive"
-            "iterm2-nigthly"
+            "iterm2-nightly"
             "vlc-nightly"
             "qbittorrent"
             "spotify"
@@ -403,6 +402,9 @@ main() {
         for i in ${CASKS[@]}; do
             brew_cask ${i}
         done
+
+        # special ones
+        brew_cask "weechat --with-perl --with-python --with-ruby"
 
     fi
 
