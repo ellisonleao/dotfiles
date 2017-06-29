@@ -393,6 +393,7 @@ main() {
             "java"
             "obs"
             "keybase"
+            "the-unarchiver"
         )
 
         for i in ${FORMULAS[@]}; do
