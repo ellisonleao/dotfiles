@@ -364,13 +364,14 @@ main() {
             "ssh-copy-id"
             "speedtest_cli"
             "ansiweather"
-            "neovim/neovim/neovim"
+            "neovim"
             "fzf"
             "bash-completion"
             "gpg"
             "python"
             "python3"
             "ripgrep"
+            "httpie"
         )
 
         brew_tap "homebrew/services"
