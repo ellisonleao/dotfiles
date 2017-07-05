@@ -52,7 +52,6 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
-set autochdir
 
 " Tab completion
 set wildignore+=*.o,*.obj,.git,*.rbc,.pyc,__pycache__,*.beam
@@ -60,8 +59,6 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 set wildignore+=node_modules/*,bower_components/*,
 set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png,*.ico
 set wildignore+=*.pdf,*.psd
-set completeopt=menuone,noinsert
-
 
 "" Remember last location in file
 if has("autocmd")

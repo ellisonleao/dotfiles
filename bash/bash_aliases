@@ -40,3 +40,5 @@ omo() {
 	find . -name '__pycache__' -exec rm -fr {} +
     echo "Omo lava mais branco!"
 }
+
+[ -f ~/Code/sg/sg_helpers.sh ] && source ~/Code/sg/sg_helpers.sh
