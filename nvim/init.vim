@@ -59,6 +59,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 set wildignore+=node_modules/*,bower_components/*,
 set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png,*.ico
 set wildignore+=*.pdf,*.psd
+set completeopt=menuone,noinsert,noselect
 
 "" Remember last location in file
 if has("autocmd")
