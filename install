@@ -210,14 +210,29 @@ verify_os() {
 }
 
 configure_python() {
-    pip install neovim virtualenvwrapper
-    source "$HOME/.bashrc"
-    mkvirtualenv 2
-    pip install neovim
-    deactivate
-    mkvirtualenv --python python3 3
-    pip install neovim
-    deactivate
+    brew_install 'pyenv'
+    brew_install 'pyenv-virtualenv'
+    brew_install 'pyenv-virtualenvwrapper'
+
+    eval "$(pyenv init -)"
+
+    # installing python versions
+    pyenv install 3.6.2
+    pyenv install 2.7.13
+
+    # creating global virtualenvs
+    pyenv virtualenv 3.6.2 3
+    pyenv virtualenv 2.7.13 2
+
+    # installing python specific tools on global virtualenvs
+    pyenv activate 3
+    pip install neovim howdoi httpie ipython flake8 youtube-dl
+    pyenv deactivate
+    pyenv activate 2
+    pip install flake8 neovim
+    pyenv deactivate
+
+    pyenv global 3.6.2 3 2.7.13 2
 }
 
 configure_weechat() {
@@ -380,7 +395,7 @@ main() {
         # Casks
         CASKS=(
             "google-chrome"
-            "google-drive"
+	    "google-backup-and-sync"
             "iterm2-nightly"
             "vlc-nightly"
             "qbittorrent"
@@ -388,7 +403,6 @@ main() {
             "slack"
             "remote-play"
             "firefox"
-            "skype"
             "telegram"
             "whatsapp"
             "java"
@@ -412,17 +426,12 @@ main() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
-    print_info 'Copying Profile files'
-    link_profile
-    configure_bash
-
     if cmd_exists 'nvim'; then
         print_info 'Installing/Update NeoVim plugins'
 
         # Installing Plug
-        bash -c "$(curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim)"
+        curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         # Installing plugins
         printf "\n" | nvim +PlugInstall 2> /dev/null
 
@@ -435,6 +444,10 @@ main() {
     print_info "Configuring weechat"
     configure_weechat
     print_success "weechat configured"
+
+    print_info 'Copying Profile files'
+    link_profile
+    configure_bash
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

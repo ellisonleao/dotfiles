@@ -6,7 +6,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'zchee/deoplete-go', { 'do': 'make'}
-"Plug 'roxma/nvim-completion-manager'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -21,7 +20,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'neomake/neomake'
+Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -108,13 +107,10 @@ let g:airline_theme = 'base16'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_splits = 1
-let g:airline#extensions#neomake#enabled = 1
 
 let g:airline_section_a = airline#section#create_left(['mode'])
 let g:airline_section_y = airline#section#create_right(['linenr', '%3v'])
 let g:airline_section_z = '%{strftime("%d/%m/%Y %H:%M")}'
-"let g:airline_section_warning = airline#section#create(['neomake_warning_count'])
-"let g:airline_section_error = airline#section#create(['neomake_error_count'])
 
 " paste, no paste with \o
 set pastetoggle=<leader>o
@@ -143,9 +139,6 @@ autocmd BufEnter * :syntax sync fromstart
 " Remember cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
-" Validate
-autocmd! BufWritePost,BufWritePre * Neomake
-
 "" Clean whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
@@ -161,7 +154,7 @@ autocmd FileType python setlocal colorcolumn=80
 let g:python_highlight_all = 1
 
 " ignore some flak8 rules
-let g:neomake_python_flake8_args = ['--ignore', 'E402,E501']
+let g:ale_python_flake8_args = ['--ignore E402,E501']
 
 "********** Go
 autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4

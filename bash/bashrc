@@ -28,14 +28,13 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 
 export PATH=/usr/local/share/npm/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/opt/go/libexec/bin
 
-# Virtualenv settings
+# pyenv and virtualenv settings
 export EDITOR=nvim
 export WORKON_HOME=~/.virtualenvs
 export PROJECT_HOME=~/Code
+eval "$(pyenv init -)"
+pyenv virtualenvwrapper_lazy
 
-[ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
-
-eval "$(hub alias -s)"
 
 # unset this because of nasty OS X bug with annoying message:
 # "dyld: DYLD_ environment variables being ignored because main executable (/usr/bin/sudo) is setuid or setgid"
