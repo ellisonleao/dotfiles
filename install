@@ -395,7 +395,7 @@ main() {
         # Casks
         CASKS=(
             "google-chrome"
-	    "google-backup-and-sync"
+            "google-backup-and-sync"
             "iterm2-nightly"
             "vlc-nightly"
             "qbittorrent"
@@ -420,7 +420,7 @@ main() {
         done
 
         # special ones
-        brew_cask "weechat --with-perl --with-python --with-ruby"
+        brew install weechat --with-perl --with-python --with-ruby
 
     fi
 
@@ -434,7 +434,6 @@ main() {
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         # Installing plugins
         printf "\n" | nvim +PlugInstall 2> /dev/null
-
     fi
 
     print_info "Configuring python"
