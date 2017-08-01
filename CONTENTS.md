@@ -1,29 +1,29 @@
 # On installing this project you will get
 
 - Homebrew
-- Vim (with Lua support)
+- NeoVim
 - imagemagick
 - nginx
 - wget
-- ack
 - hub
 - httpie
 - ffmpeg
 - postgresql
 - mongodb
-- Python 2 and 3
+- Python 2 and 3 (using pyenv)
 - Homebrew Services
 - Node.js
 - ssh-copy-id
-- speedtest cli
+- speedtest-cli
 - ansiweather
 - weechat
+- youtube-dl
 
 
 # And the following applications
 
 - Google Chrome
-- Google Drive
+- Google Backup and Sync
 - Firefox
 - iTerm2 Nighly
 - VLC Nightly
@@ -31,7 +31,7 @@
 - Slack
 - PS4 Remote Play
 - Spotify
-- Skype
 - Telegram
 - Whatsapp
 - OBM
+- Openoffice

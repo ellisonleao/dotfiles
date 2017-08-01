@@ -78,8 +78,8 @@ let g:deoplete#enable_at_startup = 1
 set autoindent smartindent
 
 " neovim python modules
-let g:python3_host_prog='/Users/ellison/.virtualenvs/3/bin/python'
-let g:python_host_prog='/Users/ellison/.virtualenvs/2/bin/python'
+let g:python3_host_prog='/Users/ellison/.pyenv/versions/3/bin/python'
+let g:python_host_prog='/Users/ellison/.pyenv/versions/2/bin/python'
 
 "}}}
 
@@ -154,7 +154,7 @@ autocmd FileType python setlocal colorcolumn=80
 let g:python_highlight_all = 1
 
 " ignore some flak8 rules
-let g:ale_python_flake8_args = ['--ignore E402,E501']
+let g:ale_python_flake8_args = '--ignore E402,E501'
 
 "********** Go
 autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4

@@ -409,6 +409,7 @@ main() {
             "obs"
             "keybase"
             "the-unarchiver"
+            "openoffice"
         )
 
         for i in ${FORMULAS[@]}; do

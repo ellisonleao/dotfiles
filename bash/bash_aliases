@@ -6,6 +6,7 @@ alias vi=nvim
 alias v=nvim
 alias w=workon
 alias gup='git up'
+alias git=hub
 
 # cd into go projects easily
 gop () {
