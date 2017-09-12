@@ -16,7 +16,6 @@
 - ssh-copy-id
 - speedtest-cli
 - ansiweather
-- weechat
 - youtube-dl
 
 
@@ -24,7 +23,7 @@
 
 - Google Chrome
 - Google Backup and Sync
-- Firefox
+- Firefox Nightly
 - iTerm2 Nighly
 - VLC Nightly
 - uTorrent

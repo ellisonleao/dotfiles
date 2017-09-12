@@ -36,21 +36,8 @@ eval "$(pyenv init -)"
 pyenv virtualenvwrapper_lazy
 
 
-# unset this because of nasty OS X bug with annoying message:
-# "dyld: DYLD_ environment variables being ignored because main executable (/usr/bin/sudo) is setuid or setgid"
-# this is not correct, but Apple is too lazy to fix this
-unset DYLD_LIBRARY_PATH
-
-
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export CFLAGS=-Qunused-arguments
-export CPPFLAGS=-Qunused-arguments
-
-
-
 # bash completion
-[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+[ -f /usr/local/share/bash_completion/bash_completion ] && . /usr/local/share/bash-completion/bash_completion
 
 # setup color variables
 color_is_on=
@@ -176,3 +163,7 @@ fi
 
 # load aliases
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
+
+# sg
+[ -f ~/Code/sg/.envs ] && source ~/Code/sg/.envs
+[ -f ~/Code/sg/sg_helpers.sh ] && source ~/Code/sg/sg_helpers.sh

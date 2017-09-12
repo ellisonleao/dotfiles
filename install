@@ -89,7 +89,14 @@ link_profile() {
 }
 
 configure_bash() {
+    if [ ! -d "~/.config" ]; then mkdir ~/.config; fi
     git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+
+    # Switch to using brew-installed bash as default shell
+    if ! fgrep -q '/usr/local/bin/bash' /etc/shells; then
+      echo '/usr/local/bin/bash' | sudo tee -a /etc/shells;
+      chsh -s /usr/local/bin/bash;
+    fi;
 }
 
 get_answer() {
@@ -161,22 +168,22 @@ brew_cask() {
 }
 
 clone_dotfiles() {
-    if [ -d "$dotfilesRepoDirectory" ]; then
-       print_info "Dotfiles folder already exists.. pulling latest"
-       cd "$dotfilesRepoDirectory"
-       git pull
-       print_result $? 'Update Cloned dotfiles' 'true'
-    else
-	# Cloning dotfiles on directory
-        print_info "Cloning dotfiles on $dotfilesRepoDirectory"
-        git clone --recursive "$DOTFILES_ORIGIN" "$dotfilesRepoDirectory"
-        print_result $? 'Clone dotfiles' 'true'
-        printf '\n'
+    print_info "Cloning dotfiles.."
 
-        cd "$dotfilesRepoDirectory"
-        print_info "Installing powerline fonts"
-        sh fonts/install.sh
+    if [ -d "$dotfilesRepoDirectory" ]; then
+       print_info "Dotfiles folder already exists.. skipping"
+       return
     fi
+
+	# Cloning dotfiles on directory
+    print_info "Cloning dotfiles on $dotfilesRepoDirectory"
+    git clone --recursive "$DOTFILES_ORIGIN" "$dotfilesRepoDirectory"
+    print_result $? 'Clone dotfiles' 'true'
+    printf '\n'
+
+    cd "$dotfilesRepoDirectory"
+    print_info "Installing powerline fonts"
+    sh fonts/install.sh
 }
 
 verify_os() {
@@ -210,6 +217,8 @@ verify_os() {
 }
 
 configure_python() {
+    print_info "Configuring python environment.."
+
     brew_install 'pyenv'
     brew_install 'pyenv-virtualenv'
     brew_install 'pyenv-virtualenvwrapper'
@@ -233,11 +242,6 @@ configure_python() {
     pyenv deactivate
 
     pyenv global 3.6.2 3 2.7.13 2
-}
-
-configure_weechat() {
-    mkdir ~/.weechat
-    cp -a ~/.dotfiles/weechat/* ~/.weechat
 }
 
 agree_with_xcode_licence() {
@@ -309,6 +313,97 @@ set_xcode_developer_directory() {
 
 }
 
+install_homebrew() {
+    print_info 'Install Homebrew'
+    if ! cmd_exists 'brew'; then
+        printf "\n" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &> /dev/null
+    fi
+    print_result $? 'Install Homebrew'
+}
+
+install_brew_formulas() {
+    print_info "Installing Homebrew formulas"
+
+    # Formulas
+    FORMULAS=(
+        coreutils
+        moreutils
+        findutils
+        tree
+        bash
+        bash-completion2
+        nginx
+        wget
+        ack
+        git
+        hub
+        ffmpeg
+        postgresql
+        mongodb
+        node
+        go
+        ssh-copy-id
+        speedtest_cli
+        ansiweather
+        neovim
+        fzf
+        gpg
+        python
+        python3
+        ripgrep
+        httpie
+    )
+
+    for i in ${FORMULAS[@]}; do
+        brew_install ${i}
+    done
+
+    # installing howebrew services
+    brew_tap "homebrew/services"
+
+    # installing homebrew special cases that need more flags
+    brew_install gnu-sed --with-default-names
+    brew_install imagemagick --with-webp
+}
+
+install_brew_casks() {
+    print_info "Installing homebrew casks"
+    brew_tap "caskroom/versions"
+
+    CASKS=(
+        google-chrome
+        google-backup-and-sync
+        iterm2-nightly
+        vlc-nightly
+        qbittorrent
+        spotify
+        remote-play
+        whatsapp
+        java
+        obs
+        keybase
+        the-unarchiver
+        openoffice
+        rambox
+    )
+
+    for i in ${CASKS[@]}; do
+        brew_cask ${i}
+    done
+
+}
+
+configure_neovim() {
+    print_info "Installing/Update NeoVim plugins"
+
+    # Installing Plug
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    # Installing plugins
+    printf "\n" | nvim +PlugInstall 2> /dev/null
+
+    print_result $? "Installing/Update NeoVim plugins"
+}
 # ----------------------------------------------------------------------
 # | Main                                                               |
 # ----------------------------------------------------------------------
@@ -333,120 +428,36 @@ main() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    # Setup the `dotfiles` and install fonts
-
-    if cmd_exists 'git'; then
-        print_info 'Cloning dotfiles'
-        clone_dotfiles
-    else
-        print_in_red "git is required in order to install dotfiles"
-        exit 1
-    fi
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    print_info 'Install applications'
-    ask_for_confirmation 'Do you want to install the applications/command line tools?'
-    printf '\n'
-
-    if answer_is_yes; then
-        print_in_purple "   Xcode\n\n"
-
+    # Install Xcode and developer tools
+    if ! is_xcode_installed; then
         install_xcode_command_line_tools
         install_xcode
         set_xcode_developer_directory
         agree_with_xcode_licence
+    fi;
 
-        # HOMEBREW
-        if ! cmd_exists 'brew'; then
-            printf "\n" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &> /dev/null
-        fi
-        print_result $? 'Install Homebrew'
+    install_homebrew
 
-        # Formulas
-        FORMULAS=(
-            "imagemagick"
-            "nginx"
-            "wget"
-            "ack"
-            "git"
-            "hub"
-            "ffmpeg"
-            "postgresql"
-            "mongodb"
-            "node"
-            "go"
-            "ssh-copy-id"
-            "speedtest_cli"
-            "ansiweather"
-            "neovim"
-            "fzf"
-            "bash-completion"
-            "gpg"
-            "python"
-            "python3"
-            "ripgrep"
-            "httpie"
-        )
-
-        brew_tap "homebrew/services"
-        brew_tap "caskroom/versions"
-
-        # Casks
-        CASKS=(
-            "google-chrome"
-            "google-backup-and-sync"
-            "iterm2-nightly"
-            "vlc-nightly"
-            "qbittorrent"
-            "spotify"
-            "slack"
-            "remote-play"
-            "firefox"
-            "telegram"
-            "whatsapp"
-            "java"
-            "obs"
-            "keybase"
-            "the-unarchiver"
-            "openoffice"
-        )
-
-        for i in ${FORMULAS[@]}; do
-            brew_install ${i}
-        done
-
-        for i in ${CASKS[@]}; do
-            brew_cask ${i}
-        done
-
-        # special ones
-        brew install weechat --with-perl --with-python --with-ruby
-
-    fi
+    clone_dotfiles
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    if cmd_exists 'nvim'; then
-        print_info 'Installing/Update NeoVim plugins'
+    print_info 'Installing applications'
 
-        # Installing Plug
-        curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        # Installing plugins
-        printf "\n" | nvim +PlugInstall 2> /dev/null
-    fi
+    install_brew_formulas
+    install_brew_casks
 
-    print_info "Configuring python"
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # configuring neovim and plugins
+    configure_neovim
+
+    # creating environment for python
     configure_python
-    print_success "python configured"
 
-    print_info "Configuring weechat"
-    configure_weechat
-    print_success "weechat configured"
-
-    print_info 'Copying Profile files'
+    # configuring bashrc with aliases and etc
     link_profile
+
+    # change bash to use new version and colors
     configure_bash
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
