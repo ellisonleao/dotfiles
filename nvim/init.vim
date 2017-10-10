@@ -53,6 +53,7 @@ set ignorecase
 set smartcase
 
 " Tab completion
+set wildmode=list:longest
 set wildignore+=*.o,*.obj,.git,*.rbc,.pyc,__pycache__,*.beam
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 set wildignore+=node_modules/*,bower_components/*,
