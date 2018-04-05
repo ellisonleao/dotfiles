@@ -35,9 +35,14 @@ export PROJECT_HOME=~/Code
 eval "$(pyenv init -)"
 pyenv virtualenvwrapper_lazy
 
+# node
+export PATH="/usr/local/opt/node@6/bin:$PATH"
+
 
 # bash completion
-[ -f /usr/local/share/bash_completion/bash_completion ] && . /usr/local/share/bash-completion/bash_completion
+if [ -f /usr/local/share/bash-completion/bash_completion ]; then
+    . /usr/local/share/bash-completion/bash_completion
+fi
 
 # setup color variables
 color_is_on=
@@ -167,3 +172,5 @@ fi
 # sg
 [ -f ~/Code/sg/.envs ] && source ~/Code/sg/.envs
 [ -f ~/Code/sg/sg_helpers.sh ] && source ~/Code/sg/sg_helpers.sh
+
+export SLACK_TOKEN=xoxb-249856573303-jqZ2Sa2bfWwcuMge6pLqdrFq
