@@ -107,6 +107,7 @@ set backspace=indent,eol,start
 let g:airline_theme = 'base16'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#show_splits = 1
 
 let g:airline_section_a = airline#section#create_left(['mode'])
@@ -270,4 +271,13 @@ vmap > >gv
 " --color: Search color options
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 noremap <silent> <leader>f :Find <CR>
+
+
+" Load all plugins now.
+" Plugins need to be added to runtimepath before helptags can be generated.
+packloadall
+" Load all of the helptags now, after plugins have been loaded.
+" All messages and errors will be ignored.
+silent! helptags ALL
+
 "}}}

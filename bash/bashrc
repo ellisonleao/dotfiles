@@ -172,5 +172,3 @@ fi
 # sg
 [ -f ~/Code/sg/.envs ] && source ~/Code/sg/.envs
 [ -f ~/Code/sg/sg_helpers.sh ] && source ~/Code/sg/sg_helpers.sh
-
-export SLACK_TOKEN=xoxb-249856573303-jqZ2Sa2bfWwcuMge6pLqdrFq
