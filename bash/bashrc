@@ -172,3 +172,9 @@ fi
 # sg
 [ -f ~/Code/sg/.envs ] && source ~/Code/sg/.envs
 [ -f ~/Code/sg/sg_helpers.sh ] && source ~/Code/sg/sg_helpers.sh
+
+# Instalacao das Funcoes ZZ (www.funcoeszz.net)
+export ZZOFF=""  # desligue funcoes indesejadas
+export ZZPATH="~/.dotfiles/funcoeszz/funcoeszz"  # script
+export ZZDIR="~/.dotfiles/funcoeszz/zz"    # pasta zz/
+source "$ZZPATH"
