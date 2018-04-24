@@ -175,6 +175,6 @@ fi
 
 # Instalacao das Funcoes ZZ (www.funcoeszz.net)
 export ZZOFF=""  # desligue funcoes indesejadas
-export ZZPATH="~/.dotfiles/funcoeszz/funcoeszz"  # script
-export ZZDIR="~/.dotfiles/funcoeszz/zz"    # pasta zz/
+export ZZPATH="$HOME/.dotfiles/funcoeszz/funcoeszz"  # script
+export ZZDIR="$HOME/.dotfiles/funcoeszz/zz"    # pasta zz/
 source "$ZZPATH"
