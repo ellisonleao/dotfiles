@@ -43,3 +43,6 @@ omo() {
 }
 
 [ -f ~/Code/sg/sg_helpers.sh ] && source ~/Code/sg/sg_helpers.sh
+
+# termbin
+alias tb="nc termbin.com 9999"
