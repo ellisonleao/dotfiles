@@ -3,9 +3,7 @@
 "{{{
 call plug#begin('~/.vim/plugged')
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'maralla/completor.vim'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -81,6 +79,12 @@ set autoindent smartindent
 " neovim python modules
 let g:python3_host_prog='/Users/ellison/.pyenv/versions/3/bin/python'
 let g:python_host_prog='/Users/ellison/.pyenv/versions/2/bin/python'
+
+" complete opts
+let g:completor_python_binary = '/Users/ellison/.pyenv/versions/3/bin/python'
+let g:completor_gocode_binary = $GOPATH.'/bin/gocode'
+let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
+let g:completor_node_binary = '/usr/local/bin/node'
 
 "}}}
 
