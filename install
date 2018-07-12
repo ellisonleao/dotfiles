@@ -226,11 +226,11 @@ configure_python() {
     eval "$(pyenv init -)"
 
     # installing python versions
-    pyenv install 3.6.2
+    pyenv install 3.7.0
     pyenv install 2.7.13
 
     # creating global virtualenvs
-    pyenv virtualenv 3.6.2 3
+    pyenv virtualenv 3.7.0 3
     pyenv virtualenv 2.7.13 2
 
     # installing python specific tools on global virtualenvs
@@ -241,7 +241,7 @@ configure_python() {
     pip install flake8 neovim
     pyenv deactivate
 
-    pyenv global 3.6.2 3 2.7.13 2
+    pyenv global 3.7.0 3 2.7.13 2
 }
 
 agree_with_xcode_licence() {
@@ -352,6 +352,7 @@ install_brew_formulas() {
         python3
         ripgrep
         httpie
+        pass
     )
 
     for i in ${FORMULAS[@]}; do
@@ -373,18 +374,15 @@ install_brew_casks() {
     CASKS=(
         google-chrome
         google-backup-and-sync
+        firefox
         iterm2-nightly
         vlc-nightly
         qbittorrent
         spotify
-        remote-play
         whatsapp
-        java
+        java8
         obs
-        keybase
-        the-unarchiver
         openoffice
-        rambox
     )
 
     for i in ${CASKS[@]}; do
