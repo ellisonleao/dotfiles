@@ -173,11 +173,11 @@ fi
 [ -f ~/Code/sg/.envs ] && . ~/Code/sg/.envs
 [ -f ~/Code/sg/sg_helpers.sh ] && . ~/Code/sg/sg_helpers.sh
 
+# Adding autocomplete for 'we'
+[ -f ~/.we_autocomplete ] && source ~/.we_autocomplete
+
 # Instalacao das Funcoes ZZ (www.funcoeszz.net)
 export ZZOFF=""  # desligue funcoes indesejadas
 export ZZPATH="$HOME/.dotfiles/funcoeszz/funcoeszz"  # script
 export ZZDIR="$HOME/.dotfiles/funcoeszz/zz"    # pasta zz/
 source "$ZZPATH"
-
-# Adding autocomplete for 'we'
-[ -f ~/.we_autocomplete ] && source ~/.we_autocomplete
