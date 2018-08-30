@@ -1,3 +1,7 @@
+# locale
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth:erasedups
 # set history length
