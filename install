@@ -353,6 +353,7 @@ install_brew_formulas() {
         ripgrep
         httpie
         pass
+        bat
     )
 
     for i in ${FORMULAS[@]}; do
