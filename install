@@ -354,6 +354,7 @@ install_brew_formulas() {
         httpie
         pass
         bat
+        fd
     )
 
     for i in ${FORMULAS[@]}; do
