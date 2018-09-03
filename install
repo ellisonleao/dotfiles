@@ -99,6 +99,12 @@ configure_bash() {
     fi;
 }
 
+install_funcoeszz() {
+    http://funcoeszz.net/download/funcoeszz-18.3.sh
+    curl -fLo /usr/local/bin/funcoeszz http://funcoeszz.net/download/funcoeszz-18.3.sh
+    chmod +x /usr/local/bin/funcoeszz
+}
+
 get_answer() {
     printf "$REPLY"
 }
@@ -459,6 +465,9 @@ main() {
 
     # change bash to use new version and colors
     configure_bash
+
+    # install funcoeszz
+    install_funcoeszz
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
