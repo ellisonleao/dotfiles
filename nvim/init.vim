@@ -154,7 +154,6 @@ au FileType make set noexpandtab
 set autowrite
 
 "********** Python
-autocmd FileType python setlocal colorcolumn=80
 let g:python_highlight_all = 1
 
 " ignore some flak8 rules
@@ -203,11 +202,6 @@ let g:go_snippet_case_type = "camelcase"
 autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
 autocmd FileType html,xhtml,xml,htmldjango,htmljinja setlocal colorcolumn=100 expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
-
-"********** C/C++
-autocmd FileType c setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab colorcolumn=79
-autocmd FileType cpp setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab colorcolumn=79
-
 "********** vim
 autocmd FileType vim setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
 autocmd FileType vim setlocal foldenable foldmethod=marker
@@ -220,11 +214,6 @@ let b:ale_fixers = ['prettier', 'eslint']
 "********** Less & Sass
 autocmd FileType less setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
 autocmd FileType sass setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
-
-"********** Ruby
-" Thorfile, Rakefile and Gemfile are Ruby
-au BufRead,BufNewFile {Gemfile,Rakefile,Thorfile,config.ru} set ft=ruby
-autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 colorcolumn=79,99
 
 "********** bash
 autocmd FileType sh setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
