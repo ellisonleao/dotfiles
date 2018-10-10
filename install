@@ -233,11 +233,11 @@ configure_python() {
 
     # installing python versions
     pyenv install 3.7.0
-    pyenv install 2.7.13
+    pyenv install 2.7.15
 
     # creating global virtualenvs
     pyenv virtualenv 3.7.0 3
-    pyenv virtualenv 2.7.13 2
+    pyenv virtualenv 2.7.15 2
 
     # installing python specific tools on global virtualenvs
     pyenv activate 3
@@ -247,7 +247,7 @@ configure_python() {
     pip install flake8 neovim
     pyenv deactivate
 
-    pyenv global 3.7.0 3 2.7.13 2
+    pyenv global 3.7.0 3 2.7.15 2
 }
 
 agree_with_xcode_licence() {
