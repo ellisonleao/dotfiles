@@ -1,6 +1,14 @@
 "" Plug Load
 "*****************************************************************************
 "{{{
+
+" auto install plug if not installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
@@ -34,9 +42,6 @@ call plug#end()
 "{{{
 " Fix backspace indent
 set backspace=indent,eol,start
-
-" Better modes.  Remeber where we are, support yankring
-set viminfo=!,'100,\"100,:20,<50,s10,h,n~/.viminfo
 
 " Tabs. May be overriten by autocmd rules
 set tabstop=4
@@ -128,6 +133,11 @@ set cc=100
 " '-- XXX completion (YYY)', 'match 1 of 2', 'The only match',
 set shortmess+=c
 
+" Ale
+let g:ale_fix_on_save = 1
+let b:ale_linters = {'javascript': ['prettier'], 'python': ['flake8']}
+let b:ale_fixers = {'javascript': ['prettier']}
+
 "}}}
 
 
@@ -209,7 +219,6 @@ autocmd FileType vim setlocal foldenable foldmethod=marker
 "********** Javascript
 autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 autocmd BufNewFile,BufRead *.json setlocal ft=javascript
-let b:ale_fixers = ['prettier', 'eslint']
 
 "********** Less & Sass
 autocmd FileType less setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
