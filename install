@@ -387,7 +387,6 @@ install_brew_casks() {
         vlc-nightly
         qbittorrent
         spotify
-        whatsapp
         java8
         obs
         openoffice
