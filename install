@@ -398,17 +398,6 @@ install_brew_casks() {
 
 }
 
-configure_neovim() {
-    print_info "Installing/Update NeoVim plugins"
-
-    # Installing Plug
-    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    # Installing plugins
-    printf "\n" | nvim +PlugInstall 2> /dev/null
-
-    print_result $? "Installing/Update NeoVim plugins"
-}
 # ----------------------------------------------------------------------
 # | Main                                                               |
 # ----------------------------------------------------------------------
@@ -453,9 +442,6 @@ main() {
     install_brew_casks
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    # configuring neovim and plugins
-    configure_neovim
-
     # creating environment for python
     configure_python
 
