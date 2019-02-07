@@ -167,7 +167,7 @@ set autowrite
 let g:python_highlight_all = 1
 
 " ignore some flak8 rules
-let g:ale_python_flake8_args = '--ignore E402,E501'
+let g:ale_python_flake8_options = ' --ignore=E402,E501'
 
 "********** Go
 autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
