@@ -39,14 +39,9 @@ export PROJECT_HOME=~/Code
 eval "$(pyenv init -)"
 pyenv virtualenvwrapper_lazy
 
-# node
-export PATH="/usr/local/opt/node@6/bin:$PATH"
-
-
 # bash completion
-if [ -f /usr/local/share/bash-completion/bash_completion ]; then
-    . /usr/local/share/bash-completion/bash_completion
-fi
+export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
 
 # setup color variables
 color_is_on=
@@ -137,13 +132,6 @@ function prompt_command() {
 # Show awesome prompt only if Git is istalled
 command -v git >/dev/null 2>&1 && PROMPT_COMMAND=prompt_command
 
-# Add tab completion for many Bash commands
-if which brew > /dev/null && [ -f "$(brew --prefix)/etc/bash_completion" ]; then
-	source "$(brew --prefix)/etc/bash_completion";
-elif [ -f /etc/bash_completion ]; then
-	source /etc/bash_completion;
-fi;
-
 # osx configs
 [ -f ~/.osx ] && source ~/.osx
 
@@ -158,30 +146,12 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# added by travis gem
-[ -f /Users/ellison/.travis/travis.sh ] && source /Users/ellison/.travis/travis.sh
-
 # base16 shell
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
-# yarn
-if which yarn >/dev/null; then
-    export PATH=$PATH:$(yarn global bin)
-fi
 
 # load aliases
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
 # sg
-[ -f ~/Code/sg/.envs ] && . ~/Code/sg/.envs
 [ -f ~/Code/sg/sg_helpers.sh ] && . ~/Code/sg/sg_helpers.sh
-
-# Adding autocomplete for 'we'
-[ -f ~/.we_autocomplete ] && source ~/.we_autocomplete
-
-# Instalacao das Funcoes ZZ (www.funcoeszz.net)
-export ZZOFF=""  # desligue funcoes indesejadas
-export ZZPATH="/usr/local/bin/funcoeszz"  # script
-export ZZDIR=""    # pasta zz/
-source "$ZZPATH"
