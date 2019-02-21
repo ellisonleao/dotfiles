@@ -12,23 +12,17 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'zchee/deoplete-jedi'
-Plug 'fszymanski/deoplete-emoji'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'w0rp/ale'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'chriskempson/base16-vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'w0rp/ale'
 Plug 'junegunn/goyo.vim'
 
 call plug#end()
@@ -58,7 +52,7 @@ set incsearch
 set ignorecase
 set smartcase
 
-" Tab completion
+" " Tab completion
 set wildmode=list:longest
 set wildignore+=*.o,*.obj,.git,*.rbc,.pyc,__pycache__,*.beam
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
@@ -84,11 +78,6 @@ set autoindent smartindent
 " neovim python modules
 let g:python3_host_prog=$HOME.'/.pyenv/versions/3/bin/python'
 let g:python_host_prog=$HOME.'/.pyenv/versions/2/bin/python'
-
-
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-
 "}}}
 
 
@@ -110,6 +99,21 @@ syntax on
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
+" color column 100 by default
+set cc=100
+
+" if hidden not set, TextEdit might fail.
+set hidden
+
+" Better display for messages
+set cmdheight=2
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
 " airline
 let g:airline_theme = 'base16'
 let g:airline_powerline_fonts=1
@@ -121,22 +125,24 @@ let g:airline_section_a = airline#section#create_left(['mode'])
 let g:airline_section_y = airline#section#create_right(['linenr', '%3v'])
 let g:airline_section_z = '%{strftime("%d/%m/%Y %H:%M")}'
 
-" paste, no paste with \o
-set pastetoggle=<leader>o
-
-set lazyredraw
-
-" color column 100 by default
-set cc=100
-
-" don't give |ins-completion-menu| messages.  For example,
-" '-- XXX completion (YYY)', 'match 1 of 2', 'The only match',
-set shortmess+=c
-
-" Ale
+" Configure ALE.
+let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
-let b:ale_linters = {'javascript': ['prettier'], 'python': ['flake8']}
-let b:ale_fixers = {'javascript': ['prettier']}
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_fixers = {
+    \'*': ['remove_trailing_lines', 'trim_whitespace'],
+    \'javascript': ['prettier']
+    \}
+let g:ale_linters = {
+	\ 'javascript': ['eslint'],
+	\ 'python': ['pyls'],
+	\ 'bash': ['bash-language-server']
+	\}
+
+nnoremap <silent> K :ALEHover<CR>
+nnoremap <silent> gd :ALEGoToDefinition<CR>
 
 "}}}
 
@@ -153,25 +159,10 @@ autocmd BufEnter * :syntax sync fromstart
 " Remember cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
-"" Clean whitespace on save
-autocmd BufWritePre * :%s/\s\+$//e
-
 " file format always unix
 set fileformat=unix
 
-"********** Makefile
-au FileType make set noexpandtab
-set autowrite
-
-"********** Python
-let g:python_highlight_all = 1
-
-" ignore some flak8 rules
-let g:ale_python_flake8_options = ' --ignore=E402,E501'
-
-"********** Go
-autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
-
+" ************* Go specific settings
 " \n and \p for quickfix list navigation \q to close it
 autocmd FileType go map <leader>n :cnext<CR>
 autocmd FileType go map <leader>p :cprevious<CR>
@@ -192,11 +183,6 @@ autocmd FileType go nmap <leader>i <Plug>(go-info)
 autocmd FileType go nmap <leader>e <Plug>(go-rename)
 
 let g:go_addtags_transform = 'camelcase'
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#use_cache = 1
-let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
-let g:deoplete#sources#go#pointer = 1
 let g:go_metalinter_autosave = 1
 let g:go_fmt_command = "goimports"
 let g:go_autodetect_gopath = 1
@@ -207,25 +193,6 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
 let g:go_auto_type_info = 0
 let g:go_snippet_case_type = "camelcase"
-
-"********** HTML
-autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 setlocal ft=html
-autocmd FileType html,xhtml,xml,htmldjango,htmljinja setlocal colorcolumn=100 expandtab shiftwidth=4 tabstop=8 softtabstop=4
-
-"********** vim
-autocmd FileType vim setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
-autocmd FileType vim setlocal foldenable foldmethod=marker
-
-"********** Javascript
-autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-autocmd BufNewFile,BufRead *.json setlocal ft=javascript
-
-"********** Less & Sass
-autocmd FileType less setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
-autocmd FileType sass setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
-
-"********** bash
-autocmd FileType sh setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80
 
 " Set auto reload file
 set autoread
