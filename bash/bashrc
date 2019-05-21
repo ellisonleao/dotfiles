@@ -29,17 +29,20 @@ export PATH=$PATH:$GOPATH/bin
 
 # fuzzy finder
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+# shellcheck source=/dev/null
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # base16 shell
 BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 # load aliases
+# shellcheck source=/dev/null
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
 # load prompt
-[ -f ~/.bash_prompt ] && . ~/.bash_prompt
+# shellcheck source=/dev/null
+[ -f ~/.bash_prompt ] && source ~/.bash_prompt
 
 # pyenv
 export EDITOR=nvim
@@ -54,9 +57,12 @@ if type "pyenv" &> /dev/null; then
 fi
 
 # sg
+# shellcheck source=/dev/null
 [ -f ~/.ssh/startgrid/aliases ] && . ~/.ssh/startgrid/aliases
 
 # node
 export NVM_DIR="$HOME/.nvm"
+# shellcheck source=/dev/null
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# shellcheck source=/dev/null
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
