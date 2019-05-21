@@ -9,35 +9,37 @@ declare dotfilesRepoDirectory="$dotfilesDirectory/.dotfiles"
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
 print_error() {
-    print_in_red "  [✖] $1 $2\n"
+    print_in_red "  [✖] $1 $2 \\n"
 }
 
 print_in_green() {
-    printf "\e[0;32m$1\e[0m"
+    printf "\\e[0;32m%s\\e[0m" "$1"
 }
 
 print_in_purple() {
-    printf "\e[0;35m$1\e[0m"
+    printf "\\e[0;35m%s\\e[0m" "$1"
 }
 
 print_in_red() {
-    printf "\e[0;31m$1\e[0m"
+    printf "\\e[0;31m%s\\e[0m" "$1"
 }
 
 print_info() {
-    print_in_purple "\n $1\n\n"
+    print_in_purple "\\n $1\\n\\n"
 }
 
 print_result() {
-    [ $1 -eq 0 ] \
-        && print_success "$2" \
-        || print_error "$2"
+    if [ "$1" -eq 0 ]; then
+        print_success "$2"
+    else
+        print_error "$2"
+    fi
 
-    return $1
+    return "$1"
 }
 
 print_success() {
-    print_in_green "  [✔] $1\n"
+    print_in_green "  [✔] $1\\n"
 }
 
 ask_for_sudo() {
@@ -60,13 +62,9 @@ cmd_exists() {
     return $?
 }
 
-execute() {
-    eval "$1" &> /dev/null
-    print_result $? "${2:-$1}"
-}
-
 verify_os() {
-    declare -r OS_NAME="$(uname -s)"
+    declare -r OS_NAME
+    OS_NAME="$(uname -s)"
 
     if [ ! "$OS_NAME" == "Linux" ]; then
         printf 'Sorry, this script is intended only for Ubuntu based distros!'
@@ -100,7 +98,7 @@ show_spinner() {
         sleep 0.2
 
         # Clear frame text.
-        printf "\r"
+        printf "\\r"
 
     done
 
@@ -110,7 +108,7 @@ set_trap() {
     trap -p "$1" | grep "$2" &> /dev/null \
         || trap '$2' "$1"
 
-}
+    }
 
 execute() {
 
@@ -183,119 +181,130 @@ print_error_stream() {
 # ----------------------------------------------------------------------
 
 configure_terminal() {
+    execute "mkdir -p ~/.config/nvim" "Creating .config folder"
     # base16
-    git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-    mkdir -p ~/.config/nvim
+    execute "git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell" \
+        "Cloning base-16"
 
-    ln -s "$dotfilesRepoDirectory/nvim/init.vim" ~/.config/nvim/
-    ln -s "$dotfilesRepoDirectory/bash/bashrc" $HOME/.bashrc
-    ln -s "$dotfilesRepoDirectory/bash/bash_aliases" $HOME/.bash_aliases
-    ln -s "$dotfilesRepoDirectory/bash/bash_prompt" $HOME/.bash_prompt
-    ln -s "$dotfilesRepoDirectory/git/gitconfig" $HOME/.gitconfig
-    echo "source ~/.bashrc" > $HOME/.bash_profile
-    print_result $? 'Copying profile files'
+    print_info "Creating symlinks for nvim and bash"
+    execute "ln -s \"$dotfilesRepoDirectory/nvim/init.vim\" ~/.config/nvim/" "Creating init.vim symlink"
+    execute "ln -s \"$dotfilesRepoDirectory/bash/bashrc\"  \"$HOME/.bashrc\"" "Creating .bashrc symlink"
+    execute "ln -s \"$dotfilesRepoDirectory/bash/bash_profile\"  \"$HOME/.bash_profile\"" "Creating .bash_profile symlink"
+    execute "ln -s \"$dotfilesRepoDirectory/bash/bash_aliases\"  \"$HOME/.bash_aliases\"" "Creating .bash_aliases symlink"
+    execute "ln -s \"$dotfilesRepoDirectory/bash/bash_prompt\"  \"$HOME/.bash_prompt\"" "Creating .bash_prompt symlink"
+    execute "ln -s \"$dotfilesRepoDirectory/git/gitconfig\"  \"$HOME/.gitconfig\"" "Creating .gitconfig symlink"
+    print_result $? "Terminal configuration"
 }
 
 clone_dotfiles() {
-    print_info "Cloning dotfiles.."
-
     if [ -d "$dotfilesRepoDirectory" ]; then
-       print_info "Dotfiles folder already exists.. skipping"
-       return
+        print_info "Dotfiles folder already exists.. skipping"
+        return
     fi
-
-	# Cloning dotfiles on directory
-    print_info "Cloning dotfiles on $dotfilesRepoDirectory"
-    git clone --recursive "$DOTFILES_ORIGIN" "$dotfilesRepoDirectory"
-    print_result $? 'Clone dotfiles' 'true'
-    printf '\n'
-
-    cd "$dotfilesRepoDirectory"
-    print_info "Installing powerline fonts"
-    sh fonts/install.sh
+    # Cloning dotfiles on directory
+    execute "git clone \"$DOTFILES_ORIGIN\" \"$dotfilesRepoDirectory\"" "Cloning dotfiles on $dotfilesRepoDirectory"
 }
 
 configure_python() {
     print_info "Configuring python environment.."
 
-    curl https://pyenv.run | bash
+    execute "curl https://pyenv.run | bash" "Installing pyenv"
 
-    eval "$(pyenv init -)"
+    execute \"eval "$(pyenv init -)"\" "pyenv init"
 
-    # install pyenv-virtualenv
-    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+    execute "git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv"\
+        "Installing pyenv-virtualenv"
 
+    execute "pyenv install 3.7.0" "Installing Python 3.7.0"
+    execute "pyenv install 2.7.15" "Installing Python 2.7.15"
 
-    # installing python versions
-    pyenv install 3.7.0
-    pyenv install 2.7.15
-
-    # creating global virtualenvs
-    pyenv virtualenv 3.7.0 3
-    pyenv virtualenv 2.7.15 2
+    execute "pyenv virtualenv 3.7.0 3" "Creating global python 3 virtualenv"
+    execute "pyenv virtualenv 2.7.15 2" "Creating global python 2 virtualenv"
 
     # installing python specific tools on global virtualenvs
     pyenv activate 3
-    pip install neovim howdoi httpie ipython flake8 youtube-dl
+    execute "pip install neovim howdoi httpie ipython flake8 youtube-dl" "Installing python 3 packages"
     pyenv deactivate
     pyenv activate 2
-    pip install flake8 neovim
+    execute "pip install flake8 neovim" "Installing python 2 packages"
     pyenv deactivate
 
-    pyenv global 3.7.0 3 2.7.15 2
+    execute "pyenv global 3.7.0 3 2.7.15 2" \
+        "Set python versions global order"
 
-    # install pyenv-virtualenvwrapper
-    git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
-
-}
+    execute "git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper"\
+        "Install pyenv-virtualenvwrapper"
+    }
 
 
 configure_node() {
-    # install nvm
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-    nvm install 8.16.0
+    execute "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash" "Installing NVM"
+    execute "nvm install 8.16.0" "Installing node 8.16"
 }
 
-apt_install() {
+install() {
     declare -r PACKAGE="$1"
     declare -r PACKAGE_READABLE_NAME="$2"
+    declare -r SERVICE="${3:apt}"
 
-    if ! package_is_installed "$PACKAGE"; then
-        execute "sudo apt-get install --allow-unauthenticated -qqy $PACKAGE" "$PACKAGE_READABLE_NAME"
+    local COMMAND=""
+
+    if [ "${3}" == "apt" ];then
+        COMMAND="apt-get install --allow-unauthenticated -qqy"
+    else
+        COMMAND="snap install"
+    fi
+
+    if ! package_is_installed "$PACKAGE" "$SERVICE"; then
+        execute "sudo $COMMAND $PACKAGE" "$PACKAGE_READABLE_NAME"
     else
         print_success "$PACKAGE_READABLE_NAME"
     fi
+}
 
+install_docker() {
+    execute "curl -fsSL https://get.docker.com -o /tmp/get-docker.sh && sudo sh /tmp/get-docker.sh" "Installing Docker-CE"
+    execute "sudo usermod -aG docker ellison" "Adding user to docker group for non-root execution"
+
+    # TODO: add docker-compose install
 }
 
 package_is_installed() {
-    dpkg -s "$1" &> /dev/null
-}
-
-update() {
-    # Resynchronize the package index files from their sources.
-    execute \
-        "sudo apt-get update -qqy" \
-        "APT (update)"
-
+    declare -r SERVICE="$2"
+    if [ "${2}" == "apt" ]; then
+        dpkg -s "$1" &> /dev/null
+    else
+        snap list | grep "$1" &> /dev/null
+    fi
 }
 
 install_apps() {
-    print_info "Installing APT apps"
-    update
+    print_info "Installing APT/Snap apps"
+    execute "sudo apt-get update -qqy" "APT (update)"
 
-    apt_install hub "Github Hub"
-    apt_install speedtest-cli "Speedtest CLI"
-    apt_install neovim "NeoVim"
-    apt_install ripgrep "ripgrep"
-    apt_install httpie "HTTPie"
-    apt_install pass "pass"
-    apt_install bat "bat"
-    apt_install fd "fd"
-    apt_install google-chrome-stable "Chrome"
-    apt_install firefox "Firefox"
-    apt_install qbittorrent "QBitTorrent"
-    apt_install vlc "VLC"
+    install snapd "Snapd"
+    install hub "Github Hub"
+    install speedtest-cli "Speedtest CLI"
+    install neovim "NeoVim"
+    install ripgrep "ripgrep"
+    install httpie "HTTPie"
+    install pass "pass"
+    install bat "bat"
+    install fd "fd"
+    install google-chrome-stable "Chrome"
+    install firefox "Firefox"
+    install tor "TOR"
+    install qbittorrent "QBitTorrent"
+    install vlc "VLC"
+    install terminator "Terminator"
+    install gnome-tweaks "GNOME Tweakspt"
+    install  "GNOME Tweaks"
+    install fonts-powerline "Powerline Fonts"
+    install fonts-firacode "FiraCode font"
+
+    install spotify "Spotify" "snap"
+
+    install_docker
 }
 
 # ----------------------------------------------------------------------
@@ -309,7 +318,7 @@ main() {
 
     verify_os || exit 1
 
-    cd "$(dirname "$BASH_SOURCE")"
+    cd "$(dirname "${BASH_SOURCE[0]}")" || exit
 
     ask_for_sudo
 
