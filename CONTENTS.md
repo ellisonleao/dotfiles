@@ -1,36 +1,21 @@
 # On installing this project you will get
 
-- Homebrew
 - NeoVim
-- imagemagick
-- nginx
-- wget
 - hub
 - httpie
-- ffmpeg
-- postgresql
-- mongodb
 - Python 2 and 3 (using pyenv)
-- Homebrew Services
-- Node.js
-- ssh-copy-id
+- Node.js (using nvm)
 - speedtest-cli
 - ansiweather
 - youtube-dl
+- docker-ce
 
 
 # And the following applications
 
 - Google Chrome
-- Google Backup and Sync
-- Firefox Nightly
-- iTerm2 Nighly
-- VLC Nightly
-- uTorrent
+- Firefox
+- VLC
+- QBitTorrent
 - Slack
-- PS4 Remote Play
 - Spotify
-- Telegram
-- Whatsapp
-- OBM
-- Openoffice

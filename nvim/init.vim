@@ -3,10 +3,10 @@
 "{{{
 
 " auto install plug if not installed
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  autocmd VimEnter * PlugInstall --sync | source ~/.config/nvim/init.vim
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -91,7 +91,7 @@ let base16colorspace=256
 
 " This must happen before the syntax system is enabled
 set mouse-=a
-colorscheme base16-default-dark
+colorscheme base16-material-darker
 
 " let the colors begin
 syntax on
@@ -133,7 +133,9 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_fixers = {
     \'*': ['remove_trailing_lines', 'trim_whitespace'],
-    \'javascript': ['prettier']
+    \'javascript': ['prettier'],
+    \'bash': ['shfmt'],
+    \'python': ['black']
     \}
 let g:ale_linters = {
 	\ 'javascript': ['eslint'],
@@ -160,7 +162,7 @@ autocmd BufEnter * :syntax sync fromstart
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 " file format always unix
-set fileformat=unix
+" set fileformat=unix
 
 " ************* Go specific settings
 " \n and \p for quickfix list navigation \q to close it

@@ -8,48 +8,36 @@ declare dotfilesRepoDirectory="$dotfilesDirectory/.dotfiles"
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
-
-is_supported_version() {
-
-    declare -a v1=(${1//./ })
-    declare -a v2=(${2//./ })
-    local i=""
-
-    # Fill empty positions in v1 with zeros
-    for (( i=${#v1[@]}; i<${#v2[@]}; i++ )); do
-        v1[i]=0
-    done
-
-    for (( i=0; i<${#v1[@]}; i++ )); do
-
-        # Fill empty positions in v2 with zeros
-        if [[ -z ${v2[i]} ]]; then
-            v2[i]=0
-        fi
-
-        if (( 10#${v1[i]} < 10#${v2[i]} )); then
-            return 1
-        fi
-
-    done
-
+print_error() {
+    print_in_red "  [✖] $1 $2\n"
 }
 
-answer_is_yes() {
-    [[ "$REPLY" =~ ^[Yy]$ ]] \
-        && return 0 \
-        || return 1
+print_in_green() {
+    printf "\e[0;32m$1\e[0m"
 }
 
-ask() {
-    print_question "$1"
-    read
+print_in_purple() {
+    printf "\e[0;35m$1\e[0m"
 }
 
-ask_for_confirmation() {
-    print_question "$1 (y/n) "
-    read -n 1
-    printf "\n"
+print_in_red() {
+    printf "\e[0;31m$1\e[0m"
+}
+
+print_info() {
+    print_in_purple "\n $1\n\n"
+}
+
+print_result() {
+    [ $1 -eq 0 ] \
+        && print_success "$2" \
+        || print_error "$2"
+
+    return $1
+}
+
+print_success() {
+    print_in_green "  [✔] $1\n"
 }
 
 ask_for_sudo() {
@@ -77,100 +65,135 @@ execute() {
     print_result $? "${2:-$1}"
 }
 
-link_profile() {
-    if [ ! -d "~/.config/nvim" ]; then mkdir ~/.config/nvim/; fi
+verify_os() {
+    declare -r OS_NAME="$(uname -s)"
+
+    if [ ! "$OS_NAME" == "Linux" ]; then
+        printf 'Sorry, this script is intended only for Ubuntu based distros!'
+    fi
+
+    return 1
+}
+
+
+show_spinner() {
+
+    local -r FRAMES='/-\|'
+
+    # shellcheck disable=SC2034
+    local -r NUMBER_OR_FRAMES=${#FRAMES}
+
+    local -r CMDS="$2"
+    local -r MSG="$3"
+    local -r PID="$1"
+
+    local i=0
+    local frameText=""
+
+    # Display spinner while the commands are being executed.
+
+    while kill -0 "$PID" &>/dev/null; do
+
+        frameText="   [${FRAMES:i++%NUMBER_OR_FRAMES:1}] $MSG"
+        # Print frame text.
+        printf "%s" "$frameText"
+        sleep 0.2
+
+        # Clear frame text.
+        printf "\r"
+
+    done
+
+}
+
+set_trap() {
+    trap -p "$1" | grep "$2" &> /dev/null \
+        || trap '$2' "$1"
+
+}
+
+execute() {
+
+    local -r CMDS="$1"
+    local -r MSG="${2:-$1}"
+    local -r TMP_FILE="$(mktemp /tmp/XXXXX)"
+
+    local exitCode=0
+    local cmdsPID=""
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # If the current process is ended,
+    # also end all its subprocesses.
+
+    set_trap "EXIT" "kill_all_subprocesses"
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # Execute commands in background
+
+    eval "$CMDS" \
+        &> /dev/null \
+        2> "$TMP_FILE" &
+
+    cmdsPID=$!
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # Show a spinner if the commands
+    # require more time to complete.
+
+    show_spinner "$cmdsPID" "$CMDS" "$MSG"
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # Wait for the commands to no longer be executing
+    # in the background, and then get their exit code.
+
+    wait "$cmdsPID" &> /dev/null
+    exitCode=$?
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # Print output based on what happened.
+
+    print_result $exitCode "$MSG"
+
+    if [ $exitCode -ne 0 ]; then
+        print_error_stream < "$TMP_FILE"
+    fi
+
+    rm -rf "$TMP_FILE"
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    return $exitCode
+
+}
+
+print_error_stream() {
+    while read -r line; do
+        print_error "↳ ERROR: $line"
+    done
+}
+
+
+# ----------------------------------------------------------------------
+# | Main Functions                                                   |
+# ----------------------------------------------------------------------
+
+configure_terminal() {
+    # base16
+    git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+    mkdir -p ~/.config/nvim
+
     ln -s "$dotfilesRepoDirectory/nvim/init.vim" ~/.config/nvim/
     ln -s "$dotfilesRepoDirectory/bash/bashrc" $HOME/.bashrc
     ln -s "$dotfilesRepoDirectory/bash/bash_aliases" $HOME/.bash_aliases
+    ln -s "$dotfilesRepoDirectory/bash/bash_prompt" $HOME/.bash_prompt
     ln -s "$dotfilesRepoDirectory/git/gitconfig" $HOME/.gitconfig
-    ln -s "$dotfilesRepoDirectory/osx/osx" $HOME/.osx
     echo "source ~/.bashrc" > $HOME/.bash_profile
     print_result $? 'Copying profile files'
-}
-
-configure_bash() {
-    if [ ! -d "~/.config" ]; then mkdir ~/.config; fi
-    git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-
-    # Switch to using brew-installed bash as default shell
-    if ! fgrep -q '/usr/local/bin/bash' /etc/shells; then
-      echo '/usr/local/bin/bash' | sudo tee -a /etc/shells;
-      chsh -s /usr/local/bin/bash;
-    fi;
-}
-
-install_funcoeszz() {
-    http://funcoeszz.net/download/funcoeszz-18.3.sh
-    curl -fLo /usr/local/bin/funcoeszz http://funcoeszz.net/download/funcoeszz-18.3.sh
-    chmod +x /usr/local/bin/funcoeszz
-}
-
-get_answer() {
-    printf "$REPLY"
-}
-
-print_error() {
-    print_in_red "  [✖] $1 $2\n"
-}
-
-print_in_green() {
-    printf "\e[0;32m$1\e[0m"
-}
-
-print_in_purple() {
-    printf "\e[0;35m$1\e[0m"
-}
-
-print_in_red() {
-    printf "\e[0;31m$1\e[0m"
-}
-
-print_in_yellow() {
-    printf "\e[0;33m$1\e[0m"
-}
-
-print_info() {
-    print_in_purple "\n $1\n\n"
-}
-
-print_question() {
-    print_in_yellow "  [?] $1"
-}
-
-print_result() {
-    [ $1 -eq 0 ] \
-        && print_success "$2" \
-        || print_error "$2"
-
-    return $1
-}
-
-print_success() {
-    print_in_green "  [✔] $1\n"
-}
-
-brew_install() {
-    declare -r FORMULA="$1"
-    declare -r PARAMS="$2"
-
-    execute "brew install $FORMULA $PARAMS"
-}
-
-brew_tap() {
-
-    declare -r REPOSITORY="$1"
-
-    brew tap "$REPOSITORY" &> /dev/null
-    print_result $? "brew tap $REPOSITORY\n"
-
-    return $?
-
-}
-
-brew_cask() {
-    declare -r CASKNAME="$1"
-    brew cask install "$1"
-    print_result $? "brew cask install $CASKNAME\n"
 }
 
 clone_dotfiles() {
@@ -192,44 +215,16 @@ clone_dotfiles() {
     sh fonts/install.sh
 }
 
-verify_os() {
-
-    declare -r MINIMUM_OS_X_VERSION='10.10'
-    declare -r OS_NAME="$(uname -s)"
-
-    declare OS_VERSION=''
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    # Check if the OS is `OS X` and
-    # it's above the required version
-
-    if [ "$OS_NAME" == "Darwin" ]; then
-
-        OS_VERSION="$(sw_vers -productVersion)"
-
-        is_supported_version "$OS_VERSION" "$MINIMUM_OS_X_VERSION" \
-            && return 0 \
-            || printf "Sorry, this script is intended only for OS X $MINIMUM_OS_X_VERSION+"
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    else
-        printf 'Sorry, this script is intended only for OS X and Ubuntu!'
-    fi
-
-    return 1
-
-}
-
 configure_python() {
     print_info "Configuring python environment.."
 
-    brew_install 'pyenv'
-    brew_install 'pyenv-virtualenv'
-    brew_install 'pyenv-virtualenvwrapper'
+    curl https://pyenv.run | bash
 
     eval "$(pyenv init -)"
+
+    # install pyenv-virtualenv
+    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+
 
     # installing python versions
     pyenv install 3.7.0
@@ -248,154 +243,59 @@ configure_python() {
     pyenv deactivate
 
     pyenv global 3.7.0 3 2.7.15 2
-}
 
-agree_with_xcode_licence() {
-
-    # Automatically agree to the terms of the `Xcode` license.
-    # https://github.com/alrra/dotfiles/issues/10
-
-    sudo xcodebuild -license accept &> /dev/null
-    print_result $? "Agree to the terms of the Xcode licence"
+    # install pyenv-virtualenvwrapper
+    git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
 
 }
 
-are_xcode_command_line_tools_installed() {
-    xcode-select --print-path &> /dev/null
+
+configure_node() {
+    # install nvm
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+    nvm install 8.16.0
 }
 
-install_xcode() {
+apt_install() {
+    declare -r PACKAGE="$1"
+    declare -r PACKAGE_READABLE_NAME="$2"
 
-    # If necessary, prompt user to install `Xcode`.
-
-    if ! is_xcode_installed; then
-        open "macappstores://itunes.apple.com/en/app/xcode/id497799835"
+    if ! package_is_installed "$PACKAGE"; then
+        execute "sudo apt-get install --allow-unauthenticated -qqy $PACKAGE" "$PACKAGE_READABLE_NAME"
+    else
+        print_success "$PACKAGE_READABLE_NAME"
     fi
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+}
 
-    # Wait until `Xcode` is installed.
+package_is_installed() {
+    dpkg -s "$1" &> /dev/null
+}
 
+update() {
+    # Resynchronize the package index files from their sources.
     execute \
-        "until is_xcode_installed; do \
-            sleep 5; \
-         done" \
-        "Xcode.app"
+        "sudo apt-get update -qqy" \
+        "APT (update)"
 
 }
 
-install_xcode_command_line_tools() {
+install_apps() {
+    print_info "Installing APT apps"
+    update
 
-    # If necessary, prompt user to install
-    # the `Xcode Command Line Tools`.
-
-    xcode-select --install &> /dev/null
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    # Wait until the `Xcode Command Line Tools` are installed.
-
-    execute \
-        "until are_xcode_command_line_tools_installed; do \
-            sleep 5; \
-         done" \
-        "Xcode Command Line Tools"
-
-}
-
-is_xcode_installed() {
-    [ -d "/Applications/Xcode.app" ]
-}
-
-set_xcode_developer_directory() {
-
-    # Point the `xcode-select` developer directory to
-    # the appropriate directory from within `Xcode.app`.
-    #
-    # https://github.com/alrra/dotfiles/issues/13
-
-    sudo xcode-select -switch "/Applications/Xcode.app/Contents/Developer" &> /dev/null
-    print_result $? "Make 'xcode-select' developer directory point to the appropriate directory from within Xcode.app"
-
-}
-
-install_homebrew() {
-    print_info 'Install Homebrew'
-    if ! cmd_exists 'brew'; then
-        printf "\n" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &> /dev/null
-    fi
-    print_result $? 'Install Homebrew'
-}
-
-install_brew_formulas() {
-    print_info "Installing Homebrew formulas"
-
-    # Formulas
-    FORMULAS=(
-        coreutils
-        moreutils
-        findutils
-        tree
-        bash
-        bash-completion2
-        nginx
-        wget
-        ack
-        git
-        hub
-        ffmpeg
-        postgresql
-        mongodb
-        node
-        go
-        ssh-copy-id
-        speedtest_cli
-        ansiweather
-        neovim
-        fzf
-        gpg
-        python
-        python3
-        ripgrep
-        httpie
-        pass
-        bat
-        fd
-    )
-
-    for i in ${FORMULAS[@]}; do
-        brew_install ${i}
-    done
-
-    # installing howebrew services
-    brew_tap "homebrew/services"
-
-    # installing homebrew special cases that need more flags
-    brew_install gnu-sed --with-default-names
-    brew_install imagemagick --with-webp
-}
-
-install_brew_casks() {
-    print_info "Installing homebrew casks"
-    brew_tap "caskroom/versions"
-
-    CASKS=(
-        google-chrome
-        google-backup-and-sync
-        firefox
-        iterm2-nightly
-        vlc-nightly
-        qbittorrent
-        spotify
-        java8
-        obs
-        openoffice
-    )
-
-    for i in ${CASKS[@]}; do
-        brew_cask ${i}
-    done
-
+    apt_install hub "Github Hub"
+    apt_install speedtest-cli "Speedtest CLI"
+    apt_install neovim "NeoVim"
+    apt_install ripgrep "ripgrep"
+    apt_install httpie "HTTPie"
+    apt_install pass "pass"
+    apt_install bat "bat"
+    apt_install fd "fd"
+    apt_install google-chrome-stable "Chrome"
+    apt_install firefox "Firefox"
+    apt_install qbittorrent "QBitTorrent"
+    apt_install vlc "VLC"
 }
 
 # ----------------------------------------------------------------------
@@ -409,52 +309,21 @@ main() {
 
     verify_os || exit 1
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    # Ensure that the following actions
-    # are made relative to this file's path
-    #
-    # http://mywiki.wooledge.org/BashFAQ/028
-
     cd "$(dirname "$BASH_SOURCE")"
 
     ask_for_sudo
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    # Install Xcode and developer tools
-    if ! is_xcode_installed; then
-        install_xcode_command_line_tools
-        install_xcode
-        set_xcode_developer_directory
-        agree_with_xcode_licence
-    fi;
-
-    install_homebrew
-
     clone_dotfiles
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     print_info 'Installing applications'
 
-    install_brew_formulas
-    install_brew_casks
+    install_apps
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    # creating environment for python
+    configure_terminal
+
     configure_python
 
-    # configuring bashrc with aliases and etc
-    link_profile
-
-    # change bash to use new version and colors
-    configure_bash
-
-    # install funcoeszz
-    install_funcoeszz
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    configure_node
 
     print_in_green "Success! Please restart the terminal to see the changes!"
 }

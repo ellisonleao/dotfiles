@@ -17,14 +17,5 @@ P.S: Only working on OSX for now.
 
 ### NVIM
 
-![](http://i.imgur.com/7YxzsnB.png)
 
 ### BASH TERMINAL
-
-![](http://i.imgur.com/kiw4VTV.png)
-
-### TMUX 
-
-_currently not using it_
-
-![](http://i.imgur.com/5Z1JRlP.png)
