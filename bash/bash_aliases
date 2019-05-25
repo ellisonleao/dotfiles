@@ -15,23 +15,12 @@ gop () {
     if [  "$#" -ne 1 ]; then
         echo "project missing"
     else
-        project=$(find $GOPATH/src -name $1 | head -n 1)
+        project=$(find "$GOPATH/src" -name "$1" | head -n 1)
         if [ -z "$project" ]; then
             echo "project $project doesn't exist"
         else
-            cd $project
+            cd "$project" || exit
         fi
-    fi
-}
-
-# Visual studio code alias
-visu () {
-    if [[ $# = 0 ]]
-    then
-        open -a "Visual Studio Code"
-    else
-        [[ $1 = /* ]] && F="$1" || F="$PWD/${1#./}"
-        open -a "Visual Studio Code" --args "$F"
     fi
 }
 
@@ -44,6 +33,7 @@ omo() {
     echo "Omo lava mais branco!"
 }
 
+# shellcheck source=/dev/null
 [ -f ~/Code/sg/sg_helpers.sh ] && source ~/Code/sg/sg_helpers.sh
 
 # termbin
@@ -53,5 +43,9 @@ alias tb="nc termbin.com 9999"
 alias cat="bat"
 
 # docker
-alias docker-clean-unused="docker system prune --all --force --volumes"
-alias docker-clean-all="docker stop $(docker container ls -a -q) && docker system prune -a -f --volumes"
+if command -v "docker" &> /dev/null; then
+    # shellcheck disable=SC2139
+    alias docker-clean-unused="$DOCKER system prune --all --force --volumes"
+    # shellcheck disable=SC2139
+    alias docker-clean-all="docker stop $(docker container ls -a -q) && docker system prune -a -f --volumes"
+fi
