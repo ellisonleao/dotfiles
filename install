@@ -205,6 +205,14 @@ clone_dotfiles() {
     execute "git clone \"$DOTFILES_ORIGIN\" \"$dotfilesRepoDirectory\"" "Cloning dotfiles on $dotfilesRepoDirectory"
 }
 
+configure_golang() {
+    print_info "Installing and configuring golang.."
+
+    execute "wget -P /tmp/ https://dl.google.com/go/go1.12.6.linux-amd64.tar.gz" "Downloading golang 1.12.6"
+    execute "sudo tar -C /usr/local -xvf /tmp/go1.12.6.linux-amd64.tar.gz"
+	execute "sudo rm /tmp/go1.12.6.linux-amd64.tar.gz"
+}
+
 configure_python() {
     print_info "Configuring python environment.."
 
@@ -223,7 +231,7 @@ configure_python() {
 
     # installing python specific tools on global virtualenvs
     pyenv activate 3
-    execute "pip install neovim howdoi httpie ipython flake8 youtube-dl" "Installing python 3 packages"
+    execute "pip install neovim howdoi httpie ipython flake8 youtube-dl docker-compose" "Installing python 3 packages"
     pyenv deactivate
     pyenv activate 2
     execute "pip install flake8 neovim" "Installing python 2 packages"
@@ -265,8 +273,6 @@ install() {
 install_docker() {
     execute "curl -fsSL https://get.docker.com -o /tmp/get-docker.sh && sudo sh /tmp/get-docker.sh" "Installing Docker-CE"
     execute "sudo usermod -aG docker ellison" "Adding user to docker group for non-root execution"
-
-    # TODO: add docker-compose install
 }
 
 package_is_installed() {
@@ -327,6 +333,8 @@ main() {
     print_info 'Installing applications'
 
     install_apps
+
+    configure_golang
 
     configure_terminal
 
