@@ -24,6 +24,8 @@ Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'janko-m/vim-test'
+Plug 'kristijanhusak/vim-carbon-now-sh', {'on': 'CarbonNowSh'}
 
 call plug#end()
 
