@@ -65,7 +65,7 @@ cmd_exists() {
 verify_os() {
     if [ ! "$(uname -s)" == "Linux" ]; then
         echo "Sorry, this script is intended only for Ubuntu based distros!"
-	exit 1
+        exit 1
     fi
 }
 
@@ -251,10 +251,10 @@ install() {
         COMMAND="snap install"
     else
         print_info "Wrong package command"
-	echo "PACKAGE=$1"
-	echo "READABLE_NAME=$2"
-	echo "SERVICE=$SERVICE"
-	exit 1
+        echo "PACKAGE=$1"
+        echo "READABLE_NAME=$2"
+        echo "SERVICE=$SERVICE"
+        exit 1
     fi
 
     if ! package_is_installed "$PACKAGE" "$SERVICE"; then
