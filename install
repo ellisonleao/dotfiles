@@ -8,24 +8,24 @@ declare dotfilesRepoDirectory="$dotfilesDirectory/.dotfiles"
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
-print_error() {
-    print_in_red "  [✖] $1 $2 \\n"
-}
-
 print_in_green() {
-    printf "\\e[0;32m%s\\e[0m" "$1"
+    printf "\\e[0;32m%s\\e[0m\n" "$1"
 }
 
 print_in_purple() {
-    printf "\\e[0;35m%s\\e[0m" "$1"
+    printf "\\e[0;35m%s\\e[0m\n" "$1"
 }
 
 print_in_red() {
-    printf "\\e[0;31m%s\\e[0m" "$1"
+    printf "\\e[0;31m%s\\e[0m\n" "$1"
+}
+
+print_error() {
+    print_in_red "  [✖] $1 $2"
 }
 
 print_info() {
-    print_in_purple "\\n $1\\n\\n"
+    print_in_purple "$1"
 }
 
 print_result() {
@@ -39,7 +39,7 @@ print_result() {
 }
 
 print_success() {
-    print_in_green "  [✔] $1\\n"
+    print_in_green "  [✔] $1"
 }
 
 ask_for_sudo() {
@@ -63,14 +63,10 @@ cmd_exists() {
 }
 
 verify_os() {
-    declare -r OS_NAME
-    OS_NAME="$(uname -s)"
-
-    if [ ! "$OS_NAME" == "Linux" ]; then
-        printf 'Sorry, this script is intended only for Ubuntu based distros!'
+    if [ ! "$(uname -s)" == "Linux" ]; then
+        echo "Sorry, this script is intended only for Ubuntu based distros!"
+	exit 1
     fi
-
-    return 1
 }
 
 
@@ -183,8 +179,7 @@ print_error_stream() {
 configure_terminal() {
     execute "mkdir -p ~/.config/nvim" "Creating .config folder"
     # base16
-    execute "git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell" \
-        "Cloning base-16"
+    execute "git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell" "Cloning base-16"
 
     print_info "Creating symlinks for nvim and bash"
     execute "ln -s \"$dotfilesRepoDirectory/nvim/init.vim\" ~/.config/nvim/" "Creating init.vim symlink"
@@ -205,13 +200,7 @@ clone_dotfiles() {
     execute "git clone \"$DOTFILES_ORIGIN\" \"$dotfilesRepoDirectory\"" "Cloning dotfiles on $dotfilesRepoDirectory"
 }
 
-configure_golang() {
-    print_info "Installing and configuring golang.."
 
-    execute "wget -P /tmp/ https://dl.google.com/go/go1.12.6.linux-amd64.tar.gz" "Downloading golang 1.12.6"
-    execute "sudo tar -C /usr/local -xvf /tmp/go1.12.6.linux-amd64.tar.gz"
-	execute "sudo rm /tmp/go1.12.6.linux-amd64.tar.gz"
-}
 
 configure_python() {
     print_info "Configuring python environment.."
@@ -223,21 +212,21 @@ configure_python() {
     execute "git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv"\
         "Installing pyenv-virtualenv"
 
-    execute "pyenv install 3.7.0" "Installing Python 3.7.0"
+    execute "pyenv install 3.7.3" "Installing Python 3.7.3"
     execute "pyenv install 2.7.15" "Installing Python 2.7.15"
 
-    execute "pyenv virtualenv 3.7.0 3" "Creating global python 3 virtualenv"
+    execute "pyenv virtualenv 3.7.3 3" "Creating global python 3 virtualenv"
     execute "pyenv virtualenv 2.7.15 2" "Creating global python 2 virtualenv"
 
     # installing python specific tools on global virtualenvs
     pyenv activate 3
-    execute "pip install neovim howdoi httpie ipython flake8 youtube-dl docker-compose" "Installing python 3 packages"
+    execute "pip install neovim howdoi httpie ipython flake8 youtube-dl" "Installing python 3 packages"
     pyenv deactivate
     pyenv activate 2
     execute "pip install flake8 neovim" "Installing python 2 packages"
     pyenv deactivate
 
-    execute "pyenv global 3.7.0 3 2.7.15 2" \
+    execute "pyenv global 3.7.3 3 2.7.15 2" \
         "Set python versions global order"
 
     execute "git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper"\
@@ -251,16 +240,21 @@ configure_node() {
 }
 
 install() {
-    declare -r PACKAGE="$1"
-    declare -r PACKAGE_READABLE_NAME="$2"
-    declare -r SERVICE="${3:apt}"
+    PACKAGE="$1"
+    PACKAGE_READABLE_NAME="$2"
+    SERVICE="${3:-apt}"
+    COMMAND=""
 
-    local COMMAND=""
-
-    if [ "${3}" == "apt" ];then
-        COMMAND="apt-get install --allow-unauthenticated -qqy"
-    else
+    if [ "$SERVICE" == "apt" ]; then
+        COMMAND="apt-get install"
+    elif [ "$SERVICE" == "snap" ]; then
         COMMAND="snap install"
+    else
+        print_info "Wrong package command"
+	echo "PACKAGE=$1"
+	echo "READABLE_NAME=$2"
+	echo "SERVICE=$SERVICE"
+	exit 1
     fi
 
     if ! package_is_installed "$PACKAGE" "$SERVICE"; then
@@ -270,24 +264,32 @@ install() {
     fi
 }
 
-install_docker() {
-    execute "curl -fsSL https://get.docker.com -o /tmp/get-docker.sh && sudo sh /tmp/get-docker.sh" "Installing Docker-CE"
-    execute "sudo usermod -aG docker ellison" "Adding user to docker group for non-root execution"
-}
 
 package_is_installed() {
-    declare -r SERVICE="$2"
-    if [ "${2}" == "apt" ]; then
+    PROGRAM=${2:-"apt"}
+    if [ "$2" == "apt" ]; then
         dpkg -s "$1" &> /dev/null
     else
         snap list | grep "$1" &> /dev/null
     fi
 }
 
+add_ppts_and_update() {
+    yes | sudo add-apt-repository ppa:longsleep/golang-backports
+
+    # docker
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+    execute "sudo apt-get update -qqy" "APT (update)"
+}
+
 install_apps() {
     print_info "Installing APT/Snap apps"
-    execute "sudo apt-get update -qqy" "APT (update)"
+    add_ppts_and_update
 
+    # apt
+    install golang-go "Golang"
     install snapd "Snapd"
     install hub "Github Hub"
     install speedtest-cli "Speedtest CLI"
@@ -297,20 +299,19 @@ install_apps() {
     install pass "pass"
     install bat "bat"
     install fd "fd"
+    install docker "docker-ce"
+    install docker-compose "docker compose"
     install google-chrome-stable "Chrome"
     install firefox "Firefox"
     install tor "TOR"
     install qbittorrent "QBitTorrent"
     install vlc "VLC"
     install terminator "Terminator"
-    install gnome-tweaks "GNOME Tweakspt"
-    install  "GNOME Tweaks"
-    install fonts-powerline "Powerline Fonts"
+    install gnome-tweaks "GNOME Tweaks"
     install fonts-firacode "FiraCode font"
 
+    # snaps
     install spotify "Spotify" "snap"
-
-    install_docker
 }
 
 # ----------------------------------------------------------------------
@@ -319,22 +320,13 @@ install_apps() {
 
 main() {
 
-    # Ensure the OS is supported and
-    # it's above the required version
-
-    verify_os || exit 1
-
-    cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+    verify_os
 
     ask_for_sudo
 
     clone_dotfiles
 
-    print_info 'Installing applications'
-
     install_apps
-
-    configure_golang
 
     configure_terminal
 

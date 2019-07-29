@@ -1,31 +1,46 @@
-"" Plug Load
 "*****************************************************************************
 "{{{
 
 " auto install plug if not installed
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source ~/.config/nvim/init.vim
+  autocmd VimEnter * PlugInstall --sync | source "$HOME/.config/nvim/init.vim"
 endif
 
 call plug#begin('~/.vim/plugged')
 
+" Code languages
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
-Plug 'w0rp/ale'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
-Plug 'chriskempson/base16-vim'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'airblade/vim-gitgutter'
 Plug 'sheerun/vim-polyglot'
+
+" git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" snippets, keyboard helpers
+Plug 'SirVer/ultisnips'
+Plug 'tpope/vim-commentary'
+Plug 'AndrewRadev/splitjoin.vim'
+
+" fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-Plug 'janko-m/vim-test'
+
+" testing
+Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestLast', 'TestSuite']}
+
+" linter , lsp completion
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'w0rp/ale'
+
+" visual plugins
+Plug 'chriskempson/base16-vim'
+Plug 'itchyny/lightline.vim'
+Plug 'critiqjo/vim-bufferline'
+Plug 'mengelbrecht/lightline-bufferline'
 Plug 'kristijanhusak/vim-carbon-now-sh', {'on': 'CarbonNowSh'}
+Plug 'junegunn/goyo.vim', {'for': 'markdown'}
 
 call plug#end()
 
@@ -36,8 +51,6 @@ call plug#end()
 "                                Basic Setup
 "*****************************************************************************
 "{{{
-" Fix backspace indent
-set backspace=indent,eol,start
 
 " Tabs. May be overriten by autocmd rules
 set tabstop=4
@@ -88,12 +101,11 @@ let g:python_host_prog=$HOME.'/.pyenv/versions/2/bin/python'
 "*****************************************************************************
 "{{{
 " colorscheme, fonts, menus and etc
-set number
 let base16colorspace=256
 
 " This must happen before the syntax system is enabled
 set mouse-=a
-colorscheme base16-material-darker
+colorscheme base16-default-dark
 
 " let the colors begin
 syntax on
@@ -116,37 +128,105 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
-" airline
-let g:airline_theme = 'base16'
-let g:airline_powerline_fonts=1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#tabline#show_splits = 1
+" lower updatetime refresh
+set updatetime=100
 
-let g:airline_section_a = airline#section#create_left(['mode'])
-let g:airline_section_y = airline#section#create_right(['linenr', '%3v'])
-let g:airline_section_z = '%{strftime("%d/%m/%Y %H:%M")}'
+" always show tabline
+set showtabline=2
 
-" Configure ALE.
-let g:ale_completion_enabled = 1
+" Lighline
+let g:lightline = {
+  \ 'active': {
+  \   'left': [
+  \     [ 'mode', 'paste' ],
+  \     [ 'gitbranch', 'readonly', 'modified' ]
+  \   ],
+  \   'right': [['lineinfo'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']],
+  \ },
+  \ 'tabline': {'left': [['buffers']]},
+  \ 'component_expand': {
+  \   'buffers': 'lightline#bufferline#buffers',
+  \   'linter_warnings': 'LightlineLinterWarnings',
+  \   'linter_errors': 'LightlineLinterErrors',
+  \   'linter_ok': 'LightlineLinterOK',
+  \ },
+  \ 'component_type': {
+  \   'buffers': 'tabsel',
+  \   'readonly': 'error',
+  \   'linter_warnings': 'warning',
+  \   'linter_errors': 'error',
+  \   'linter_ok': 'left',
+  \ },
+  \ 'component_function': {
+  \   'gitbranch': 'fugitive#head'
+  \ }
+\ }
+
+augroup LightLineOnALE
+  autocmd!
+  autocmd User ALEFixPre   call lightline#update()
+  autocmd User ALEFixPost  call lightline#update()
+  autocmd User ALELintPre  call lightline#update()
+  autocmd User ALELintPost call lightline#update()
+augroup end
+
+function! LightlineLinterWarnings() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
+endfunction
+
+function! LightlineLinterErrors() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
+endfunction
+
+function! LightlineLinterOK() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '✓ ' : ''
+endfunction
+
+" Deoplete
+let g:deoplete#enable_at_startup = 1
+
+" ALE configs
+highlight ALEWarning ctermbg=LightBlue
+"let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_lint_delay = 1000
 let g:ale_fixers = {
     \'*': ['remove_trailing_lines', 'trim_whitespace'],
     \'javascript': ['prettier'],
-    \'bash': ['shfmt'],
-    \'python': ['black']
+    \'python': ['black'],
+    \'sh': ['shfmt']
     \}
+
 let g:ale_linters = {
-	\ 'javascript': ['eslint'],
-	\ 'python': ['pyls'],
-	\ 'bash': ['bash-language-server']
-	\}
+    \ 'javascript': ['eslint'],
+    \ 'python': ['pyls'],
+    \ 'sh': ['shellcheck']
+    \}
 
 nnoremap <silent> K :ALEHover<CR>
 nnoremap <silent> gd :ALEGoToDefinition<CR>
+let g:ale_set_quickfix = 1
+
+" close quickfix buffer when we close last buffer tab
+au BufEnter * call MyLastWindow()
+function! MyLastWindow()
+  " if the window is quickfix go on
+  if &buftype=="quickfix"
+    " if this window is last on screen quit without warning
+    if winbufnr(2) == -1
+      quit!
+    endif
+  endif
+endfunction
 
 "}}}
 
@@ -164,7 +244,7 @@ autocmd BufEnter * :syntax sync fromstart
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 " file format always unix
-" set fileformat=unix
+set fileformat=unix
 
 " ************* Go specific settings
 " \n and \p for quickfix list navigation \q to close it
@@ -197,9 +277,28 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
 let g:go_auto_type_info = 0
 let g:go_snippet_case_type = "camelcase"
+let g:go_term_mode = "vsplit"
 
 " Set auto reload file
 set autoread
+
+" ************* Python specific settings
+
+"" Mappings for vim-test in just python files for now
+autocmd FileType python nmap <silent> <leader>t :TestNearest<CR>
+autocmd FileType python nmap <silent> <leader>T :TestFile<CR>
+autocmd FileType python nmap <silent> <leader>a :TestSuite<CR>
+autocmd FileType python nmap <silent> <leader>l :TestLast<CR>
+autocmd FileType python nmap <silent> <leader>g :TestVisit<CR>
+
+"" Test strategies
+let test#strategy = {
+    \ 'nearest': 'neovim',
+    \ 'file': 'neovim',
+    \ 'suite': 'neovim',
+    \}
+let test#python#runner = 'pytest'
+let test#python#pytest#options = '-W ignore -s --cov-report term-missing'
 
 "}}}
 
@@ -208,6 +307,10 @@ set autoread
 "                                  Mappings
 "*****************************************************************************
 "{{{
+
+" if has('nvim')
+"   tmap <C-o> <C-\><C-n>
+" endif
 
 " Split Screen
 noremap <Leader>h :split<CR>
@@ -218,6 +321,12 @@ noremap ,z :bp<CR>
 noremap ,q :bp<CR>
 noremap ,x :bn<CR>
 noremap ,w :bn<CR>
+
+" split navigation
+noremap ,j <C-W><C-J>
+noremap ,k <C-W><C-K>
+noremap ,l <C-W><C-L>
+noremap ,h <C-W><C-H>
 
 " Close buffer
 noremap ,d :bd<CR>
