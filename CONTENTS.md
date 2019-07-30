@@ -3,12 +3,14 @@
 - NeoVim
 - hub
 - httpie
+- aws-cli
 - Python 2 and 3 (using pyenv)
 - Node.js (using nvm)
 - speedtest-cli
-- ansiweather
 - youtube-dl
-- docker-ce
+- docker
+- fd-find
+- bat
 
 
 # And the following applications
