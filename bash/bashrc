@@ -20,8 +20,7 @@ shopt -s cdspell
 # save all lines of a multiple-line command in the same history entry (allows easy re-editing of multi-line commands)
 shopt -s cmdhist
 # Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
-
+shopt -s nocaseglob
 
 # golang
 export GOPATH=~/Code/go
@@ -50,19 +49,22 @@ export WORKON_HOME=~/.virtualenvs
 export PROJECT_HOME=~/Code
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-if type "pyenv" &> /dev/null; then
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+if command -v "pyenv" &>/dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
-    pyenv virtualenvwrapper_lazy
+    if [ -d "$PYENV_ROOT/plugins/pyenv-virtualenvwrapper" ]; then
+        pyenv virtualenvwrapper_lazy
+    fi
 fi
 
 # sg
 # shellcheck source=/dev/null
 [ -f ~/.ssh/startgrid/aliases ] && . ~/.ssh/startgrid/aliases
 
-# node
+# nvm
 export NVM_DIR="$HOME/.nvm"
 # shellcheck source=/dev/null
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 # shellcheck source=/dev/null
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"

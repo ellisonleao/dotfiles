@@ -1,23 +1,24 @@
 #!/bin/bash
 
-declare -r GITHUB_REPOSITORY='ellisonleao/dotfiles'
-declare -r DOTFILES_ORIGIN="https://github.com/$GITHUB_REPOSITORY.git"
-declare dotfilesDirectory=$HOME
-declare dotfilesRepoDirectory="$dotfilesDirectory/.dotfiles"
+GITHUB_REPOSITORY='ellisonleao/dotfiles'
+DOTFILES_ORIGIN="https://github.com/$GITHUB_REPOSITORY.git"
+# DOTFILES_REPO_DIRECTORY="$DOTFILES_DIRECTORY/.dotfiles"
+DOTFILES_REPO_REPOSITORY="$HOME/Code/dotfiles"
+BRANCH="${1-master}"
 
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
 print_in_green() {
-    printf "\\e[0;32m%s\\e[0m\n" "$1"
+    printf "\\e[0;32m%s\\e[0m\\n" "$1"
 }
 
 print_in_purple() {
-    printf "\\e[0;35m%s\\e[0m\n" "$1"
+    printf "\\e[0;35m%s\\e[0m\\n" "$1"
 }
 
 print_in_red() {
-    printf "\\e[0;31m%s\\e[0m\n" "$1"
+    printf "\\e[0;31m%s\\e[0m\\n" "$1"
 }
 
 print_error() {
@@ -45,7 +46,7 @@ print_success() {
 ask_for_sudo() {
 
     # Ask for the administrator password upfront
-    sudo -v &> /dev/null
+    sudo -v &>/dev/null
 
     # Update existing `sudo` time stamp until this script has finished
     # https://gist.github.com/cowboy/3118588
@@ -53,13 +54,8 @@ ask_for_sudo() {
         sudo -n true
         sleep 60
         kill -0 "$$" || exit
-    done &> /dev/null &
+    done &>/dev/null &
 
-}
-
-cmd_exists() {
-    command -v "$1" &> /dev/null
-    return $?
 }
 
 verify_os() {
@@ -68,7 +64,6 @@ verify_os() {
         exit 1
     fi
 }
-
 
 show_spinner() {
 
@@ -101,10 +96,10 @@ show_spinner() {
 }
 
 set_trap() {
-    trap -p "$1" | grep "$2" &> /dev/null \
-        || trap '$2' "$1"
+    trap -p "$1" | grep "$2" &>/dev/null ||
+        trap '$2' "$1"
 
-    }
+}
 
 execute() {
 
@@ -115,52 +110,38 @@ execute() {
     local exitCode=0
     local cmdsPID=""
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     # If the current process is ended,
     # also end all its subprocesses.
 
     set_trap "EXIT" "kill_all_subprocesses"
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     # Execute commands in background
 
     eval "$CMDS" \
-        &> /dev/null \
-        2> "$TMP_FILE" &
+        &>/dev/null \
+        2>"$TMP_FILE" &
 
     cmdsPID=$!
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     # Show a spinner if the commands
     # require more time to complete.
-
     show_spinner "$cmdsPID" "$CMDS" "$MSG"
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     # Wait for the commands to no longer be executing
     # in the background, and then get their exit code.
 
-    wait "$cmdsPID" &> /dev/null
+    wait "$cmdsPID" &>/dev/null
     exitCode=$?
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     # Print output based on what happened.
 
     print_result $exitCode "$MSG"
 
     if [ $exitCode -ne 0 ]; then
-        print_error_stream < "$TMP_FILE"
+        print_error_stream <"$TMP_FILE"
     fi
 
     rm -rf "$TMP_FILE"
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     return $exitCode
 
 }
@@ -171,106 +152,148 @@ print_error_stream() {
     done
 }
 
+cmd_exists() {
+    command -v "$1" &>/dev/null
+    return $?
+}
 
-# ----------------------------------------------------------------------
+# --------------------------------------------------------------------
 # | Main Functions                                                   |
-# ----------------------------------------------------------------------
+# --------------------------------------------------------------------
+
+function check_files() {
+    BACKUP_DIR="$HOME/terminal.bkp"
+    mkdir "$BACKUP_DIR"
+    if [ -d "$HOME/.config/nvim" ]; then
+        execute "mv $HOME/.config/nvim $BACKUP_DIR/nvim" "NVIM config folder already exists. Creating bkp folder"
+    fi
+
+    FILES=(
+        ".bashrc"
+        ".bash_profile"
+        ".bash_prompt"
+        ".bash_aliases"
+        ".gitconfig"
+        ".pyenv"
+        ".nvm"
+    )
+
+    for file in "${FILES[@]}"; do
+        if [ -f "$HOME/$file" ]; then
+            execute "mv $file $BACKUP_DIR/$file" "$file exists. Moving it into bkp folder"
+        fi
+    done
+}
 
 configure_terminal() {
-    execute "mkdir -p ~/.config/nvim" "Creating .config folder"
+    check_files
+    execute "mkdir $HOME/.config/nvim" "Creating nvim config folder"
+
     # base16
     execute "git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell" "Cloning base-16"
 
     print_info "Creating symlinks for nvim and bash"
-    execute "ln -s \"$dotfilesRepoDirectory/nvim/init.vim\" ~/.config/nvim/" "Creating init.vim symlink"
-    execute "ln -s \"$dotfilesRepoDirectory/bash/bashrc\"  \"$HOME/.bashrc\"" "Creating .bashrc symlink"
-    execute "ln -s \"$dotfilesRepoDirectory/bash/bash_profile\"  \"$HOME/.bash_profile\"" "Creating .bash_profile symlink"
-    execute "ln -s \"$dotfilesRepoDirectory/bash/bash_aliases\"  \"$HOME/.bash_aliases\"" "Creating .bash_aliases symlink"
-    execute "ln -s \"$dotfilesRepoDirectory/bash/bash_prompt\"  \"$HOME/.bash_prompt\"" "Creating .bash_prompt symlink"
-    execute "ln -s \"$dotfilesRepoDirectory/git/gitconfig\"  \"$HOME/.gitconfig\"" "Creating .gitconfig symlink"
-    print_result $? "Terminal configuration"
+    execute "ln -s $DOTFILES_REPO_REPOSITORY/nvim/init.vim $HOME/.config/nvim/" "Creating init.vim symlink"
+    execute "ln -s $DOTFILES_REPO_REPOSITORY/bash/bashrc  $HOME/.bashrc" "Creating .bashrc symlink"
+    execute "ln -s $DOTFILES_REPO_REPOSITORY/bash/bash_profile  $HOME/.bash_profile" "Creating .bash_profile symlink"
+    execute "ln -s $DOTFILES_REPO_REPOSITORY/bash/bash_aliases $HOME/.bash_aliases" "Creating .bash_aliases symlink"
+    execute "ln -s $DOTFILES_REPO_REPOSITORY/bash/bash_prompt  $HOME/.bash_prompt" "Creating .bash_prompt symlink"
+    execute "ln -s $DOTFILES_REPO_REPOSITORY/git/gitconfig $HOME/.gitconfig" "Creating .gitconfig symlink"
 }
 
 clone_dotfiles() {
-    if [ -d "$dotfilesRepoDirectory" ]; then
+    if [ -d "$DOTFILES_REPO_REPOSITORY" ]; then
         print_info "Dotfiles folder already exists.. skipping"
         return
     fi
     # Cloning dotfiles on directory
-    execute "git clone \"$DOTFILES_ORIGIN\" \"$dotfilesRepoDirectory\"" "Cloning dotfiles on $dotfilesRepoDirectory"
+    execute "git clone $DOTFILES_ORIGIN $DOTFILES_REPO_REPOSITORY --branch=$BRANCH" "Cloning dotfiles on $DOTFILES_REPO_REPOSITORY branch=$BRANCH"
 }
-
-
 
 configure_python() {
     print_info "Configuring python environment.."
 
     execute "curl https://pyenv.run | bash" "Installing pyenv"
 
-    execute \"eval "$(pyenv init -)"\" "pyenv init"
+    # reload terminal configs
+    # shellcheck source=/dev/null
+    source "$HOME/.bashrc"
 
-    execute "git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv"\
-        "Installing pyenv-virtualenv"
+    if ! cmd_exists "pyenv"; then
+        print_error "pyenv could not be installed. Moving on"
+        return 1
+    fi
+
+    # virtualenvwrapper
+    execute "git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper"
 
     execute "pyenv install 3.7.3" "Installing Python 3.7.3"
+    execute "pyenv install 3.6.8" "Installing Python 3.6.8"
     execute "pyenv install 2.7.15" "Installing Python 2.7.15"
-
     execute "pyenv virtualenv 3.7.3 3" "Creating global python 3 virtualenv"
     execute "pyenv virtualenv 2.7.15 2" "Creating global python 2 virtualenv"
 
     # installing python specific tools on global virtualenvs
     pyenv activate 3
-    execute "pip install neovim howdoi httpie ipython flake8 youtube-dl" "Installing python 3 packages"
+    execute "pip install awscli neovim howdoi httpie ipython flake8 youtube-dl speedtest-cli" "Installing python 3 packages"
     pyenv deactivate
     pyenv activate 2
     execute "pip install flake8 neovim" "Installing python 2 packages"
     pyenv deactivate
 
-    execute "pyenv global 3.7.3 3 2.7.15 2" \
-        "Set python versions global order"
-
-    execute "git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper"\
-        "Install pyenv-virtualenvwrapper"
-    }
-
+    execute "pyenv global 3.7.3 3 2.7.15 2" "Set python versions global order"
+}
 
 configure_node() {
-    execute "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash" "Installing NVM"
-    execute "nvm install 8.16.0" "Installing node 8.16"
+    unset NVM_DIR
+    # execute "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash" "Installing NVM"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+    # shellcheck source=/dev/null
+    source "$HOME/.bashrc"
+    if ! cmd_exists "nvm"; then
+        print_error "Failed to install nvm. Moving on.."
+        return 1
+    fi
+    execute "nvm install --lts" "Installing latest LTS node version"
+
+    # shellcheck source=/dev/null
+    source "$HOME/.bashrc"
+
+    # install js apps
+    execute "npm i -g eslint" "Install eslint"
+    execute "npm i -g prettier" "Install prettier"
 }
 
 install() {
     PACKAGE="$1"
     PACKAGE_READABLE_NAME="$2"
-    SERVICE="${3:-apt}"
-    COMMAND=""
 
-    if [ "$SERVICE" == "apt" ]; then
-        COMMAND="apt-get install"
-    elif [ "$SERVICE" == "snap" ]; then
-        COMMAND="snap install"
-    else
-        print_info "Wrong package command"
-        echo "PACKAGE=$1"
-        echo "READABLE_NAME=$2"
-        echo "SERVICE=$SERVICE"
-        exit 1
-    fi
-
-    if ! package_is_installed "$PACKAGE" "$SERVICE"; then
-        execute "sudo $COMMAND $PACKAGE" "$PACKAGE_READABLE_NAME"
+    if ! package_is_installed "$PACKAGE" "apt"; then
+        execute "yes | sudo apt-get install $PACKAGE" "$PACKAGE_READABLE_NAME"
     else
         print_success "$PACKAGE_READABLE_NAME"
     fi
 }
 
+install_snap() {
+    PACKAGE="$1"
+    PACKAGE_READABLE_NAME="$2"
+
+    if ! package_is_installed "$PACKAGE" "snap"; then
+        execute "sudo snap install $PACKAGE" "$PACKAGE_READABLE_NAME"
+    else
+        print_success "$PACKAGE_READABLE_NAME"
+    fi
+}
 
 package_is_installed() {
-    PROGRAM=${2:-"apt"}
-    if [ "$2" == "apt" ]; then
-        dpkg -s "$1" &> /dev/null
-    else
-        snap list | grep "$1" &> /dev/null
+    PACKAGE="$1"
+    PROGRAM="$2"
+    if [ "$PROGRAM" == "apt" ]; then
+        dpkg -s "$PACKAGE" &>/dev/null
+    elif [ "$PROGRAM" == "snap" ]; then
+        snap list | grep "$PACKAGE" &>/dev/null
     fi
 }
 
@@ -290,16 +313,16 @@ install_apps() {
 
     # apt
     install golang-go "Golang"
+    install go-dep "Golang DEP"
     install snapd "Snapd"
     install hub "Github Hub"
-    install speedtest-cli "Speedtest CLI"
     install neovim "NeoVim"
     install ripgrep "ripgrep"
-    install httpie "HTTPie"
     install pass "pass"
     install bat "bat"
-    install fd "fd"
-    install docker "docker-ce"
+    install fd-find "fd"
+    install shellcheck "shellcheck"
+    install docker "docker"
     install docker-compose "docker compose"
     install google-chrome-stable "Chrome"
     install firefox "Firefox"
@@ -311,7 +334,8 @@ install_apps() {
     install fonts-firacode "FiraCode font"
 
     # snaps
-    install spotify "Spotify" "snap"
+    install_snap spotify "Spotify"
+    install_snap shfmt "shfmt"
 }
 
 # ----------------------------------------------------------------------
