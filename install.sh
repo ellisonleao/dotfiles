@@ -51,15 +51,39 @@ configure_python() {
     execute "pyenv virtualenv 3.7.3 3" "Creating global python 3 virtualenv"
     execute "pyenv virtualenv 2.7.15 2" "Creating global python 2 virtualenv"
 
-    # installing python specific tools on global virtualenvs
+    PY2=(
+        flake8
+        neovim
+    )
+
+    PY3=(
+        flake8
+        neovim
+        awscli
+        neovim
+        howdoi
+        httpie
+        ipython
+        youtube-dl
+        speedtest-cli
+        docker-compose
+    )
+
+    print_info "Installing python 3 packages"
     pyenv activate 3
-    execute "pip install awscli neovim howdoi httpie ipython flake8 youtube-dl speedtest-cli" "Installing python 3 packages"
-    pyenv deactivate
-    pyenv activate 2
-    execute "pip install flake8 neovim" "Installing python 2 packages"
+    for pkg in "${PY3[@]}"; do
+        pip install "$pkg"
+    done
     pyenv deactivate
 
-    execute "pyenv global 3.7.3 3 2.7.15 2" "Set python versions global order"
+    print_info "Installing python 2 packages"
+    pyenv activate 2
+    for pkg in "${PY2[@]}"; do
+        pip install "$pkg"
+    done
+    pyenv deactivate
+
+    pyenv global 3.7.3 3 2.7.15 2
 }
 
 configure_node() {
@@ -115,19 +139,19 @@ package_is_installed() {
     fi
 }
 
-add_ppts_and_update() {
+add_ppts() {
     yes | sudo add-apt-repository ppa:longsleep/golang-backports
 
     # docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-    execute "sudo apt-get update -qqy" "APT (update)"
 }
 
 install_apps() {
+    execute "sudo apt-get update" "APT (update)"
     print_info "Installing APT/Snap apps"
-    # add_ppts_and_update
+    add_ppts
 
     # apt
     install stow "GNU Stow"
@@ -140,9 +164,9 @@ install_apps() {
     install pass "pass"
     install bat "bat"
     install fd-find "fd"
+    install jq "jq"
     install shellcheck "shellcheck"
     install docker "docker"
-    install docker-compose "docker compose"
     install google-chrome-stable "Chrome"
     install firefox "Firefox"
     install tor "TOR"

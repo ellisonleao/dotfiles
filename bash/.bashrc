@@ -23,7 +23,7 @@ shopt -s cmdhist
 shopt -s nocaseglob
 
 # golang
-export GOPATH=~/Code/go
+export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
 
 # fuzzy finder
