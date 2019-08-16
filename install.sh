@@ -13,7 +13,7 @@ source ./helpers.sh
 
 configure_terminal() {
     print_info "Configuring terminal"
-    FOLDERS="base16 bash git nvim python"
+    FOLDERS="base16 bash git nvim python kitty"
     for item in $FOLDERS; do
         execute "stow ${item}" "Creating ${item} symlink"
     done
@@ -62,10 +62,8 @@ configure_python() {
         awscli
         neovim
         howdoi
-        httpie
         ipython
         youtube-dl
-        speedtest-cli
         docker-compose
     )
 
@@ -155,11 +153,12 @@ install_apps() {
 
     # apt
     install stow "GNU Stow"
+    install fonts-firacode "FiraCode font"
+    install kitty "Kitty Terminal"
+    install neovim "NeoVim"
     install golang-go "Golang"
-    install go-dep "Golang DEP"
     install snapd "Snapd"
     install hub "Github Hub"
-    install neovim "NeoVim"
     install ripgrep "ripgrep"
     install pass "pass"
     install bat "bat"
@@ -172,9 +171,7 @@ install_apps() {
     install tor "TOR"
     install qbittorrent "QBitTorrent"
     install vlc "VLC"
-    install terminator "Terminator"
     install gnome-tweaks "GNOME Tweaks"
-    install fonts-firacode "FiraCode font"
 
     # snaps
     install_snap spotify "Spotify"

@@ -62,6 +62,12 @@ fi
 # shellcheck source=/dev/null
 [ -f ~/.ssh/startgrid/aliases ] && . ~/.ssh/startgrid/aliases
 
+# kitty completion
+# shellcheck source=/dev/null
+if command -v "kitty" &>/dev/null; then
+    source <(kitty + complete setup bash)
+fi
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 # shellcheck source=/dev/null

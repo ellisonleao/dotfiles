@@ -209,7 +209,8 @@ let g:ale_fixers = {
 let g:ale_linters = {
     \ 'javascript': ['eslint'],
     \ 'python': ['pyls'],
-    \ 'sh': ['shellcheck']
+    \ 'sh': ['shellcheck'],
+    \ 'go': ['gopls']
     \}
 
 nnoremap <silent> K :ALEHover<CR>
