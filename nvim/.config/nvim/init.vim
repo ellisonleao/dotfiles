@@ -5,7 +5,7 @@
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source "$HOME/.config/nvim/init.vim"
+  autocmd VimEnter * PlugInstall --sync | source $HOME."/.config/nvim/init.vim"
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -300,6 +300,16 @@ let test#strategy = {
     \}
 let test#python#runner = 'pytest'
 let test#python#pytest#options = '-W ignore -s --cov-report term-missing'
+
+
+" clear netrwhist file upon close
+function! ClearNetrwhistFile() abort
+    let l:path = $HOME."/.config/nvim/.netrwhist"
+    if filereadable(l:path)
+        call delete(l:path)
+    endif
+endfunction
+au VimLeave * call ClearNetrwhistFile()
 
 "}}}
 
