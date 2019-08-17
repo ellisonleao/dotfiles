@@ -87,3 +87,6 @@ alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GE
 
 # fdfind as find
 alias find='fdfind'
+
+# shellcheck source=/dev/null
+[ -f ".dockerfunc" ] && source ".dockerfunc"

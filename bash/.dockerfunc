@@ -1,0 +1,46 @@
+#!/bin/bash
+
+DOCKER_REPO_PREFIX=ellisonleao
+
+# helpers
+dcleanup() {
+    local containers
+    mapfile -t containers < <(docker ps -aq 2>/dev/null)
+    docker rm "${containers[@]}" 2>/dev/null
+    local volumes
+    mapfile -t volumes < <(docker ps --filter status=exited -q 2>/dev/null)
+    docker rm -v "${volumes[@]}" 2>/dev/null
+    local images
+    mapfile -t images < <(docker images --filter dangling=true -q 2>/dev/null)
+    docker rmi "${images[@]}" 2>/dev/null
+}
+
+del_stopped() {
+    local name=$1
+    local state
+    state=$(docker inspect --format "{{.State.Running}}" "$name" 2>/dev/null)
+
+    if [[ "$state" == "false" ]]; then
+        docker rm "$name"
+    fi
+}
+
+rmctr() {
+    # shellcheck disable=SC2068
+    docker rm -f $@ 2>/dev/null || true
+}
+
+# MAIN FUNCTIONS
+
+http() {
+    docker run -t --rm \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        --log-driver none \
+        ${DOCKER_REPO_PREFIX}/httpie "$@"
+}
+
+speedtest-cli() {
+    docker run -t --rm \
+        --log-driver none \
+        ${DOCKER_REPO_PREFIX}/speedtest-cli "$@"
+}
