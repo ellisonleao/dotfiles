@@ -92,4 +92,4 @@ alias find='fdfind'
 alias weather="curl http://wttr.in/Curitiba?0F1qn"
 
 # shellcheck source=/dev/null
-[ -f ".dockerfunc" ] && source ".dockerfunc"
+[ -f "$HOME/.dockerfunc" ] && source "$HOME/.dockerfunc"

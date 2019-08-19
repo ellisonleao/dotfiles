@@ -30,7 +30,11 @@ rmctr() {
     docker rm -f $@ 2>/dev/null || true
 }
 
-# MAIN FUNCTIONS
+##################
+# MAIN FUNCTIONS #
+##################
+
+# CLI
 
 http() {
     docker run -t --rm \
@@ -43,4 +47,19 @@ speedtest-cli() {
     docker run -t --rm \
         --log-driver none \
         ${DOCKER_REPO_PREFIX}/speedtest-cli "$@"
+}
+
+# GUI
+
+gimp() {
+    # xhost local:docker
+    del_stopped gimp
+
+    docker run -d \
+        -v /etc/localtime:/etc/localtime:ro \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -e "DISPLAY=unix${DISPLAY}" \
+        -v "${HOME}/Pictures:/root/Pictures" \
+        --name gimp \
+        ${DOCKER_REPO_PREFIX}/gimp
 }
