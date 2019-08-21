@@ -1,12 +1,11 @@
 #!/bin/bash
-
-# Enable aliases to be sudo’ed
-alias sudo='sudo '
-
 # editor
 alias vim=nvim
 alias vi=nvim
 alias v=nvim
+
+# Enable aliases to be sudo’ed
+alias sudo='sudo '
 
 # virtualenvwrapper
 alias w=workon

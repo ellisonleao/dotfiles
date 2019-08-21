@@ -13,7 +13,7 @@ source ./helpers.sh
 
 configure_terminal() {
     print_info "Configuring terminal"
-    FOLDERS="base16 bash git nvim python kitty"
+    FOLDERS="base16 bash git nvim python kitty gnupg"
     for item in $FOLDERS; do
         execute "stow ${item}" "Creating ${item} symlink"
     done
