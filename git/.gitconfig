@@ -1,7 +1,7 @@
 [user]
 	name = Ellison Leão
 	email = ellisonleao@gmail.com
-	signingkey = 4CCC2A8759D8D81C
+	signingkey = 57F9323F9D390C47
 [alias]
 	# View abbreviated SHA, description, and history graph of the latest 20 commits
 	l = log --pretty=oneline -n 20 --graph --abbrev-commit
