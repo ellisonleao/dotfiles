@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BRANCH="${1-master}"
+BRANCH="${1-linux}"
 DOTFILES_ORIGIN="https://github.com/ellisonleao/dotfiles.git"
 DOTFILES_REPO_DIR="$HOME/dotfiles"
 
