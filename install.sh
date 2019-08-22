@@ -22,14 +22,25 @@ configure_terminal() {
 clone_dotfiles() {
     if [ -d "$DOTFILES_REPO_DIR" ]; then
         print_info "Dotfiles folder already exists.. skipping"
-        return
+        return 0
     fi
     # Cloning dotfiles on directory
-    execute "git clone $DOTFILES_ORIGIN $DOTFILES_REPO_DIR --branch=$BRANCH" "Cloning dotfiles on $DOTFILES_REPO_DIR branch=$BRANCH"
+    execute "git clone $DOTFILES_ORIGIN $DOTFILES_REPO_DIR --recursive --branch=$BRANCH" "Cloning dotfiles on $DOTFILES_REPO_DIR branch=$BRANCH"
 }
 
 configure_python() {
     print_info "Configuring python environment.."
+
+    if [ -d "$HOME/.pyenv" ]; then
+        print_info "$HOME/.pyenv folder already exists. please remove it and try again"
+        return 1
+    fi
+
+    # pyenv prereqs
+    # shellcheck disable=SC2033
+    sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
+        libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+        xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 
     execute "curl https://pyenv.run | bash" "Installing pyenv"
 
@@ -86,7 +97,11 @@ configure_python() {
 
 configure_node() {
     unset NVM_DIR
-    # execute "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash" "Installing NVM"
+    if [ -d "$HOME/.nvm" ]; then
+        print_info "$HOME/.nvm folder exists, please remove it and try again"
+        return 1
+    fi
+
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
     # shellcheck source=/dev/null
@@ -105,7 +120,7 @@ configure_node() {
     execute "npm i -g prettier" "Install prettier"
 }
 
-install() {
+install_apt() {
     PACKAGE="$1"
     PACKAGE_READABLE_NAME="$2"
 
@@ -119,9 +134,10 @@ install() {
 install_snap() {
     PACKAGE="$1"
     PACKAGE_READABLE_NAME="$2"
+    MORE="$3"
 
     if ! package_is_installed "$PACKAGE" "snap"; then
-        execute "sudo snap install $PACKAGE" "$PACKAGE_READABLE_NAME"
+        execute "sudo snap install $PACKAGE $MORE" "$PACKAGE_READABLE_NAME"
     else
         print_success "$PACKAGE_READABLE_NAME"
     fi
@@ -138,44 +154,140 @@ package_is_installed() {
 }
 
 add_ppts() {
+    # golang
     yes | sudo add-apt-repository ppa:longsleep/golang-backports
+
+    # chrome
+    # wget -q -O -- https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    # sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+    curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
 
     # docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
+    # neovim
+    yes | sudo add-apt-repository ppa:neovim-ppa/stable
+
+    # flat remix theme
+    yes | sudo add-apt-repository ppa:daniruiz/flat-remix
+
+    sudo apt-get update
+}
+
+install_kitty() {
+    print_info "Kitty Terminal"
+
+    if cmd_exists "kitty"; then
+        print_success "Kitty Terminal"
+        return 0
+    fi
+
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    # set as default
+    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator \
+        "$HOME/.local/kitty.app/bin/kitty" 50
+    sudo update-alternatives --set x-terminal-emulator "$HOME/.local/kitty.app/bin/kitty"
+    return 0
+}
+
+install_bat() {
+    print_info "bat"
+
+    if cmd_exists "bat"; then
+        print_success "bat"
+        return 0
+    fi
+
+    curl -LO https://github.com/sharkdp/bat/releases/download/v0.11.0/bat_0.11.0_amd64.deb
+    sudo apt install ./bat_0.11.0_amd64.deb
+    if [ "$#" -eq 0 ]; then
+        rm ./bat_0.11.0_amd64.deb
+        return 0
+    fi
+    return 1
+}
+
+install_fdfind() {
+    print_info "fd"
+
+    if cmd_exists "fd"; then
+        print_success "fd"
+        return 0
+    fi
+
+    curl -LO https://github.com/sharkdp/fd/releases/download/v7.3.0/fd_7.3.0_amd64.deb
+    sudo dpkg -i fd_7.3.0_amd64.deb
+    if [ "$#" -eq 0 ]; then
+        rm ./fd_7.3.0_amd64.deb
+        return 0
+    fi
+    return 1
+
+}
+
+install_ripgrep() {
+    print_info "RipGrep"
+
+    if cmd_exists "rg"; then
+        print_success "RipGrep"
+        return 0
+    fi
+
+    curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
+    sudo dpkg -i ripgrep_11.0.2_amd64.deb
+    if [ "$#" -eq 0 ]; then
+        rm ./ripgrep_11.0.2_amd64.deb
+        return 0
+    fi
+    return 1
+}
+
+install_hub() {
+    execute "go get -u github.com/github/hub" "hub"
 }
 
 install_apps() {
-    execute "sudo apt-get update" "APT (update)"
-    print_info "Installing APT/Snap apps"
     add_ppts
 
+    print_info "Installing APT/Snap apps"
+
     # apt
-    install stow "GNU Stow"
-    install fonts-firacode "FiraCode font"
-    install kitty "Kitty Terminal"
-    install neovim "NeoVim"
-    install golang-go "Golang"
-    install snapd "Snapd"
-    install hub "Github Hub"
-    install ripgrep "ripgrep"
-    install pass "pass"
-    install bat "bat"
-    install fd-find "fd"
-    install jq "jq"
-    install shellcheck "shellcheck"
-    install docker "docker"
-    install google-chrome-stable "Chrome"
-    install firefox "Firefox"
-    install tor "TOR"
-    install qbittorrent "QBitTorrent"
-    install vlc "VLC"
-    install gnome-tweaks "GNOME Tweaks"
+    install_apt stow "GNU Stow"
+    install_apt fonts-firacode "FiraCode font"
+    install_apt neovim "Neovim"
+    install_apt golang-go "Golang"
+    install_apt snapd "Snapd"
+    install_apt pass "pass"
+    install_apt jq "jq"
+    install_apt shellcheck "shellcheck"
+    install_apt docker-ce "docker"
+    install_apt docker-ce-cli "docker cli"
+    install_apt containerd.io "containerd runtime"
+    install_apt google-chrome-stable "Chrome"
+    install_apt firefox "Firefox"
+    install_apt tor "TOR"
+    install_apt qbittorrent "QBitTorrent"
+    install_apt vlc "VLC"
+    install_apt gnome-tweaks "GNOME Tweaks"
 
     # snaps
     install_snap spotify "Spotify"
     install_snap shfmt "shfmt"
+    install_snap snap-store "Snap Store"
+
+    # not on apt apps
+    install_hub
+    install_kitty
+    install_bat
+    install_fdfind
+    install_ripgrep
+}
+
+configure_ui() {
+    install_apt flat-remix-gtk "Flat Remix"
+    gsettings set org.gnome.desktop.interface gtk-theme "Flat-Remix-GTK-Green-Darkest-Solid-NoBorder"
 }
 
 # ----------------------------------------------------------------------
@@ -197,6 +309,8 @@ main() {
     configure_python
 
     configure_node
+
+    configure_ui
 
     print_in_green "Success! Please restart the terminal to see the changes!"
 }
