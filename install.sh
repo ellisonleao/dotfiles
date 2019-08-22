@@ -170,8 +170,8 @@ add_ppts() {
     # neovim
     yes | sudo add-apt-repository ppa:neovim-ppa/stable
 
-    # flat remix theme
-    yes | sudo add-apt-repository ppa:daniruiz/flat-remix
+    # pop os theme
+    yes | sudo apt-add-repository ppa:system76/pop
 
     sudo apt-get update
 }
@@ -271,6 +271,7 @@ install_apps() {
     install_apt qbittorrent "QBitTorrent"
     install_apt vlc "VLC"
     install_apt gnome-tweaks "GNOME Tweaks"
+    install_apt chrome-gnome-shell "Chrome GNOME shell"
 
     # snaps
     install_snap spotify "Spotify"
@@ -286,8 +287,14 @@ install_apps() {
 }
 
 configure_ui() {
-    install_apt flat-remix-gtk "Flat Remix"
-    gsettings set org.gnome.desktop.interface gtk-theme "Flat-Remix-GTK-Green-Darkest-Solid-NoBorder"
+    install_apt pop-theme "Pop OS! Theme"
+    gsettings set org.gnome.shell.extensions.user-theme name 'Pop-dark-slim'
+    gsettings set org.gnome.desktop.interface icon-theme 'Pop'
+    gsettings set org.gnome.desktop.interface gtk-theme 'Pop-slim-dark'
+    gsettings set org.gnome.desktop.interface show-battery-percentage true
+    gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
+    gsettings set org.gnome.desktop.interface font-name 'Sans 11'
+    gsettings set org.gnome.desktop.interface clock-show-date true
 }
 
 # ----------------------------------------------------------------------

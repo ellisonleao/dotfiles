@@ -67,7 +67,7 @@ omo() {
 
 # startgrid
 # shellcheck source=/dev/null
-[ -f "$HOME/Code/sg/sg_helpers.sh" ] && source "$HOME/Code/sg/sg_helpers.sh"
+[ -f "$HOME/.ssh/startgrid/aliases" ] && source "$HOME/.ssh/startgrid/aliases"
 
 # cat using bat
 alias cat="bat -p"
