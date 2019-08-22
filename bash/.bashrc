@@ -68,6 +68,11 @@ if command -v "kitty" &>/dev/null; then
     source <(kitty + complete setup bash)
 fi
 
+# enable bash completion
+# Use bash-completion, if available
+# shellcheck source=/dev/null
+[[ "$PS1" && -f /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 # shellcheck source=/dev/null
