@@ -65,6 +65,7 @@ configure_python() {
     PY2=(
         flake8
         neovim
+        ansible
     )
 
     PY3=(
@@ -72,7 +73,6 @@ configure_python() {
         neovim
         awscli
         neovim
-        howdoi
         ipython
         youtube-dl
         docker-compose
