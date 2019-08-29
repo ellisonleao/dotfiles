@@ -13,7 +13,7 @@ source ./helpers.sh
 
 configure_terminal() {
     print_info "Configuring terminal"
-    FOLDERS="base16 bash git nvim python kitty gnupg"
+    FOLDERS="base16 bash git nvim python kitty gnupg ui prettier"
     for item in $FOLDERS; do
         execute "stow ${item}" "Creating ${item} symlink"
     done
@@ -59,40 +59,37 @@ configure_python() {
     execute "pyenv install 3.7.3" "Installing Python 3.7.3"
     execute "pyenv install 3.6.8" "Installing Python 3.6.8"
     execute "pyenv install 2.7.15" "Installing Python 2.7.15"
-    execute "pyenv virtualenv 3.7.3 3" "Creating global python 3 virtualenv"
-    execute "pyenv virtualenv 2.7.15 2" "Creating global python 2 virtualenv"
+
+    pyenv global 3.7.3 2.7.15
 
     PY2=(
-        flake8
+        pylint
         neovim
         ansible
     )
 
     PY3=(
-        flake8
+        pylint
         neovim
         awscli
         neovim
         ipython
         youtube-dl
         docker-compose
+        black
+        python-language-server
     )
 
     print_info "Installing python 3 packages"
-    pyenv activate 3
     for pkg in "${PY3[@]}"; do
         pip install "$pkg"
     done
-    pyenv deactivate
 
     print_info "Installing python 2 packages"
     pyenv activate 2
     for pkg in "${PY2[@]}"; do
-        pip install "$pkg"
+        pip2 install "$pkg"
     done
-    pyenv deactivate
-
-    pyenv global 3.7.3 3 2.7.15 2
 }
 
 configure_node() {
@@ -295,6 +292,7 @@ configure_ui() {
     gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
     gsettings set org.gnome.desktop.interface font-name 'Sans 11'
     gsettings set org.gnome.desktop.interface clock-show-date true
+    gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/ellison/Pictures/pathfinder.jpg'
 }
 
 # ----------------------------------------------------------------------
