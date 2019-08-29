@@ -4,6 +4,12 @@ alias vim=nvim
 alias vi=nvim
 alias v=nvim
 
+# Easier navigation: .., ..., ...., ....., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 

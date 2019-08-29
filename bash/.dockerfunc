@@ -30,6 +30,18 @@ rmctr() {
     docker rm -f $@ 2>/dev/null || true
 }
 
+relies_on() {
+    for container in "$@"; do
+        local state
+        state=$(docker inspect --format "{{.State.Running}}" "$container" 2>/dev/null)
+
+        if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
+            echo "$container is not running, starting it for you."
+            $container
+        fi
+    done
+}
+
 ##################
 # MAIN FUNCTIONS #
 ##################
@@ -38,13 +50,14 @@ rmctr() {
 
 http() {
     docker run -t --rm \
-        -v /var/run/docker.sock:/var/run/docker.sock \
+        --name=http \
         --log-driver none \
         ${DOCKER_REPO_PREFIX}/httpie "$@"
 }
 
 speedtest-cli() {
     docker run -t --rm \
+        --name=speedtest-cli \
         --log-driver none \
         ${DOCKER_REPO_PREFIX}/speedtest-cli "$@"
 }
@@ -52,8 +65,21 @@ speedtest-cli() {
 ctop() {
     docker run --rm -ti \
         --name=ctop \
-        --volume /var/run/docker.sock:/var/run/docker.sock:ro \
+        -v /var/run/docker.sock:/var/run/docker.sock:ro \
         quay.io/vektorlab/ctop:latest
+}
+
+howdoi() {
+    docker run --rm -t --name=howdoi ${DOCKER_REPO_PREFIX}/howdoi "$@"
+}
+
+wrk() {
+    docker run --rm -t --name=wrk ${DOCKER_REPO_PREFIX}/wrk "$@"
+}
+
+nmap() {
+    # add --net=host if docker is not user namespaced
+    docker run --rm -t --name=nmap ${DOCKER_REPO_PREFIX}/nmap "$@"
 }
 
 # GUI
