@@ -1,17 +1,8 @@
 {
-    "coc.preferences.formatOnSaveFiletypes": [
-        "python",
-        "go",
-        "css",
-        "markdown",
-        "javascript",
-        "javascriptreact",
-        "yaml"
-    ],
     "languageserver": {
         "golang": {
             "command": "gopls",
-            "rootPatterns": ["go.mod"],
+            "rootPatterns": ["go.mod", ".vim/", ".git", ".hg/"],
             "filetypes": ["go"]
         },
         "bash": {
@@ -19,8 +10,14 @@
             "args": ["start"],
             "filetypes": ["sh"],
             "ignoredRootPaths": ["~"]
+        },
+        "dockerfile": {
+            "command": "docker-langserver",
+            "filetypes": ["dockerfile"],
+            "args": ["--stdio"]
         }
     },
+    "tsserver.npm": "~/.nvm/versions/node/v10.16.3/bin/npm",
     "python.venvPath": "~/.virtualenvs",
     "python.formatting.provider": "black",
     "python.formatting.blackPath": "~/.pyenv/shims/black"
