@@ -56,11 +56,10 @@ configure_python() {
     # virtualenvwrapper
     execute "git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper"
 
-    execute "pyenv install 3.7.3" "Installing Python 3.7.3"
-    execute "pyenv install 3.6.8" "Installing Python 3.6.8"
+    execute "pyenv install 3.7.4" "Installing Python 3.7.4"
     execute "pyenv install 2.7.15" "Installing Python 2.7.15"
 
-    pyenv global 3.7.3 2.7.15
+    pyenv global 3.7.4 2.7.15
 
     PY2=(
         pylint
@@ -70,7 +69,6 @@ configure_python() {
 
     PY3=(
         pylint
-        neovim
         awscli
         neovim
         ipython
@@ -78,6 +76,7 @@ configure_python() {
         docker-compose
         black
         python-language-server
+        jedi
     )
 
     print_info "Installing python 3 packages"
