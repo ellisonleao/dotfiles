@@ -88,14 +88,17 @@ alias localip="sudo ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' | gr
 alias ips="sudo ifconfig -a | grep -o 'inet6\\? \\(addr:\\)\\?\\s\\?\\(\\(\\([0-9]\\+\\.\\)\\{3\\}[0-9]\\+\\)\\|[a-fA-F0-9:]\\+\\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # View HTTP traffic
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
+alias sniff="sudo ngrep -d 'wlp2s0' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i wlp2s0 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
 
 # fdfind as find
 alias find='fd'
 
 # weather
 alias weather="curl http://wttr.in/Curitiba?0F1qn"
+
+# unixtime to human format
+alias humandate="python -c \"import datetime,sys;print(datetime.datetime.utcfromtimestamp(int(sys.argv[1][:10])).strftime('%d/%m/%Y @ %H:%M:%S'));\""
 
 # shellcheck source=/dev/null
 [ -f "$HOME/.dockerfunc" ] && source "$HOME/.dockerfunc"
