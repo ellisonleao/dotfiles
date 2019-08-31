@@ -292,6 +292,7 @@ configure_ui() {
     gsettings set org.gnome.desktop.interface font-name 'Sans 11'
     gsettings set org.gnome.desktop.interface clock-show-date true
     gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/ellison/Pictures/pathfinder.jpg'
+    gsettings set org.gnome.desktop.background picture-uri 'file:///home/ellison/Pictures/pathfinder3.jpg'
 }
 
 # ----------------------------------------------------------------------
