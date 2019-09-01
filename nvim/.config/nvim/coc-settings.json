@@ -15,6 +15,11 @@
             "command": "docker-langserver",
             "filetypes": ["dockerfile"],
             "args": ["--stdio"]
+        },
+        "metals": {
+            "command": "metals-vim",
+            "rootPatterns": ["build.sbt"],
+            "filetypes": ["scala", "sbt"]
         }
     },
     "tsserver.npm": "~/.nvm/versions/node/v10.16.3/bin/npm",
