@@ -268,6 +268,7 @@ install_apps() {
     install_apt vlc "VLC"
     install_apt gnome-tweaks "GNOME Tweaks"
     install_apt chrome-gnome-shell "Chrome GNOME shell"
+    install_apt imagemagick "ImageMagick"
 
     # snaps
     install_snap spotify "Spotify"

@@ -100,5 +100,8 @@ alias weather="curl http://wttr.in/Curitiba?0F1qn"
 # unixtime to human format
 alias humandate="python -c \"import datetime,sys;print(datetime.datetime.utcfromtimestamp(int(sys.argv[1][:10])).strftime('%d/%m/%Y @ %H:%M:%S'));\""
 
+# icat alias
+alias icat="kitty +kitten icat"
+
 # shellcheck source=/dev/null
 [ -f "$HOME/.dockerfunc" ] && source "$HOME/.dockerfunc"

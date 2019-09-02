@@ -82,6 +82,9 @@ nmap() {
     docker run --rm -t --name=nmap ${DOCKER_REPO_PREFIX}/nmap "$@"
 }
 
+hey() {
+    docker run --rm -t --name=hey ${DOCKER_REPO_PREFIX}/hey "$@"
+}
 # GUI
 
 gimp() {
