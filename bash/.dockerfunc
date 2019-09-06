@@ -85,6 +85,14 @@ nmap() {
 hey() {
     docker run --rm -t --name=hey ${DOCKER_REPO_PREFIX}/hey "$@"
 }
+
+
+htop() {
+    docker run --rm -ti \
+        -v /var/run/docker.sock:/var/run/docker.sock:ro \
+        --pid host \
+        --name=htop ${DOCKER_REPO_PREFIX}/htop
+}
 # GUI
 
 gimp() {

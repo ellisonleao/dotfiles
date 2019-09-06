@@ -25,6 +25,7 @@ shopt -s nocaseglob
 # golang
 export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
+export GO111MODULE=on
 
 # fuzzy finder
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
