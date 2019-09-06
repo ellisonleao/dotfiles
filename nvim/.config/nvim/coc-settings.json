@@ -1,15 +1,10 @@
 {
+    "coc.preferences.formatOnSaveFiletypes": ["python", "javascript", "javascriptreact"],
     "languageserver": {
         "golang": {
             "command": "gopls",
             "rootPatterns": ["go.mod", ".vim/", ".git", ".hg/"],
             "filetypes": ["go"]
-        },
-        "bash": {
-            "command": "bash-language-server",
-            "args": ["start"],
-            "filetypes": ["sh"],
-            "ignoredRootPaths": ["~"]
         },
         "dockerfile": {
             "command": "docker-langserver",
@@ -25,5 +20,9 @@
     "tsserver.npm": "~/.nvm/versions/node/v10.16.3/bin/npm",
     "python.venvPath": "~/.virtualenvs",
     "python.formatting.provider": "black",
-    "python.formatting.blackPath": "~/.pyenv/shims/black"
+    "python.formatting.blackPath": "~/.pyenv/shims/black",
+    "python.linting.pylintPath": "~/.pyenv/shims/pylint",
+    "diagnostic.errorSign": "•",
+    "diagnostic.warningSign": "•",
+    "diagnostic.infoSign": "•"
 }

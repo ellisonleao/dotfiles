@@ -15,6 +15,7 @@ Plug 'airblade/vim-gitgutter'
 
 " snippets, keyboard helpers
 Plug 'tpope/vim-commentary'
+Plug 'honza/vim-snippets'
 Plug 'AndrewRadev/splitjoin.vim'
 
 " fuzzy search
@@ -84,7 +85,7 @@ set noswapfile
 set autoindent smartindent
 
 " neovim python modules
-let g:python3_host_prog='~/.pyenv/versions/3.7.3/bin/python'
+let g:python3_host_prog='~/.pyenv/versions/3.7.4/bin/python'
 let g:python_host_prog='~/.pyenv/versions/2.7.15/bin/python'
 
 
@@ -207,11 +208,13 @@ nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 
+" Golang
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
-"Coc Mappings
+
+" Coc Mappings
 
 " Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
