@@ -60,8 +60,10 @@ if command -v "pyenv" &>/dev/null; then
 fi
 
 # sg
-# shellcheck source=/dev/null
-[ -f ~/.ssh/startgrid/aliases ] && . ~/.ssh/startgrid/aliases
+if [[ -f "~/.ssh/startgrid/aliases" ]]; then
+    # shellcheck source=/dev/null
+    source ~/.ssh/startgrid/aliases
+fi
 
 # kitty completion
 # shellcheck source=/dev/null
@@ -71,12 +73,14 @@ fi
 
 # enable bash completion
 # Use bash-completion, if available
-# shellcheck source=/dev/null
-[[ "$PS1" && -f /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
+if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+    # shellcheck source=/dev/null
+    source /usr/share/bash-completion/bash_completion
+fi
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
 # shellcheck source=/dev/null
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 # shellcheck source=/dev/null
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"

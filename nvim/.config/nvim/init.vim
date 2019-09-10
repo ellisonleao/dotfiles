@@ -96,10 +96,11 @@ let g:python_host_prog='~/.pyenv/versions/2.7.15/bin/python'
 
 " colorscheme, fonts, menus and etc
 let base16colorspace=256
+set termguicolors
 
 " This must happen before the syntax system is enabled
 set mouse-=a
-colorscheme base16-default-dark
+colorscheme base16-seti
 
 " let the colors begin
 syntax on
