@@ -1,9 +1,5 @@
 #!/bin/bash
 
-BRANCH="${1-linux}"
-DOTFILES_ORIGIN="https://github.com/ellisonleao/dotfiles.git"
-DOTFILES_REPO_DIR="$HOME/dotfiles"
-
 # shellcheck source=/dev/null
 source ./helpers.sh
 
@@ -17,15 +13,6 @@ configure_terminal() {
     for item in $FOLDERS; do
         execute "stow ${item}" "Creating ${item} symlink"
     done
-}
-
-clone_dotfiles() {
-    if [ -d "$DOTFILES_REPO_DIR" ]; then
-        print_info "Dotfiles folder already exists.. skipping"
-        return 0
-    fi
-    # Cloning dotfiles on directory
-    execute "git clone $DOTFILES_ORIGIN $DOTFILES_REPO_DIR --recursive --branch=$BRANCH" "Cloning dotfiles on $DOTFILES_REPO_DIR branch=$BRANCH"
 }
 
 configure_python() {
@@ -250,6 +237,7 @@ install_apps() {
     print_info "Installing APT/Snap apps"
 
     # apt
+    install_apt git "Git"
     install_apt stow "GNU Stow"
     install_apt fonts-firacode "FiraCode font"
     install_apt neovim "Neovim"
@@ -305,8 +293,6 @@ main() {
     verify_os
 
     ask_for_sudo
-
-    clone_dotfiles
 
     install_apps
 

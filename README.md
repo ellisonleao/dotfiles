@@ -1,14 +1,12 @@
 dotfiles
 ========
 
-Personal configuration files for some programs.
+Personal configuration files.
 
 ## Installing
 
-*WARNING! Don't run this command if you do not understand what it does! Checkout what is being installed [clicking here](https://github.com/ellisonleao/dotfiles/blob/linux/CONTENTS.md)*
+*P.S: Only working on Ubuntu and related distros for now*
 
-P.S: Only working on Ubuntu related distros for now.
-
-```bash
-	bash -c "$(curl -LsS https://raw.githubusercontent.com/ellisonleao/dotfiles/linux/install)"
-```
+1. Clone repo
+2. `cd dotfiles`
+3. `./install.sh`
