@@ -103,5 +103,8 @@ alias humandate="python -c \"import datetime,sys;print(datetime.datetime.utcfrom
 # icat alias
 alias icat="kitty +kitten icat"
 
+# http server
+alias httpserver="python -m http.server"
+
 # shellcheck source=/dev/null
 [ -f "$HOME/.dockerfunc" ] && source "$HOME/.dockerfunc"
