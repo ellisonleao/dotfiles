@@ -1,0 +1,8 @@
+[python]
+prefix = ""
+
+[golang]
+prefix = ""
+
+[directory]
+style = "bold green"

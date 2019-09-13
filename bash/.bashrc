@@ -1,15 +1,7 @@
-export LC_ALL="en_US.UTF-8"
-export LC_CTYPE="en_US.UTF-8"
+eval "$(starship init bash)"
 
-# don't put duplicate lines in the history
-export HISTCONTROL=ignoreboth:erasedups
-# set history length
-HISTFILESIZE=1000000000
-HISTSIZE=1000000
-
-# dir colors
-export CLICOLOR=1
-export LSCOLORS=ExFxCxDxBxegedabagacad
+# shellcheck source=/dev/null
+source ~/.exports
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -22,13 +14,6 @@ shopt -s cmdhist
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
 
-# golang
-export GOPATH=~/go
-export PATH=$PATH:$GOPATH/bin
-export GO111MODULE=on
-
-# fuzzy finder
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 # shellcheck source=/dev/null
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
@@ -40,17 +25,6 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 # shellcheck source=/dev/null
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
-# load prompt
-# shellcheck source=/dev/null
-[ -f ~/.bash_prompt ] && source ~/.bash_prompt
-
-# pyenv
-export EDITOR=nvim
-export WORKON_HOME=~/.virtualenvs
-export PROJECT_HOME=~/Code
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 if command -v "pyenv" &>/dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
@@ -79,7 +53,6 @@ if [[ -f /usr/share/bash-completion/bash_completion ]]; then
 fi
 
 # nvm
-export NVM_DIR="$HOME/.nvm"
 # shellcheck source=/dev/null
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 # shellcheck source=/dev/null
