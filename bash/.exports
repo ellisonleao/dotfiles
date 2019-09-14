@@ -3,6 +3,10 @@
 # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth:erasedups
 
+# increase history size
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000
+
 # dir colors
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad

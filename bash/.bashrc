@@ -1,4 +1,6 @@
-eval "$(starship init bash)"
+if command -v "starship" &>/dev/null; then
+    eval "$(starship init bash)"
+fi
 
 # shellcheck source=/dev/null
 source ~/.exports
