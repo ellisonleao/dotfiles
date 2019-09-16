@@ -103,6 +103,33 @@ configure_node() {
     execute "npm i -g prettier" "Install prettier"
 }
 
+configure_scala() {
+    print_info "Configuring Scala"
+
+    # sbt deb
+    echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
+
+    # installing requirements
+    install_apt default-jdk "JDK"
+    install_apt sbt "SBT"
+
+    # install metals-vim
+    METALS_VERSION=0.7.5
+    curl -L -o ~/.local/bin/coursier https://git.io/coursier && chmod +x ~/.local/bin/coursier
+    ~/.local/bin/coursier bootstrap \
+      --java-opt -Xss4m \
+      --java-opt -Xms100m \
+      --java-opt -Dmetals.client=coc.nvim \
+      org.scalameta:metals_2.12:$METALS_VERSION \
+      -r bintray:scalacenter/releases \
+      -r sonatype:snapshots \
+      -o ~/.local/bin/metals-vim -f
+
+    # install ammonite repl
+    sudo sh -c '(echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1) > ~/.local/bin/scala && chmod +x ~/.local/bin/scala'
+}
+
 install_apt() {
     PACKAGE="$1"
     PACKAGE_READABLE_NAME="$2"
@@ -301,6 +328,8 @@ main() {
     configure_python
 
     configure_node
+
+    configure_scala
 
     configure_ui
 
