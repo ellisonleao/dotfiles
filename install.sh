@@ -162,13 +162,15 @@ install_browserpass() {
     RELEASE="browserpass-linux64"
     FILE="$RELEASE-3.0.6.tar.gz"
     # dowload release
+    cd ~/.local
     curl -L -o "$HOME/.local/$FILE" "https://github.com/browserpass/browserpass-native/releases/download/3.0.6/$FILE"
 
     # extract and make the executabe into the path
     tar xvf $FILE
-    cd ~/.local/$RELEASE
+    cd $RELEASE
     make BIN=$RELEASE configure
     sudo make BIN=$RELEASE install
+    sudo make BIN=$RELEASE hosts-brave-user
 }
 
 install_apt() {
