@@ -29,3 +29,6 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
+
+# local folder
+export PATH=$PATH:$HOME/.local/bin

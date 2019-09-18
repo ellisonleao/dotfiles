@@ -7,6 +7,12 @@ source ./helpers.sh
 # | Main Functions                                                   |
 # --------------------------------------------------------------------
 
+
+create_folders() {
+    mkdir -p ~/.local/bin
+    mkdir -p ~/.local/share/applications
+}
+
 configure_terminal() {
     print_info "Configuring terminal"
     FOLDERS="base16 bash git nvim python kitty gnupg ui prettier"
@@ -130,6 +136,41 @@ configure_scala() {
     sudo sh -c '(echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1) > ~/.local/bin/scala && chmod +x ~/.local/bin/scala'
 }
 
+configure_keys() {
+    print_info "Keybase + pass"
+    install_apt pass "Pass"
+
+    # download keybase
+    curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
+    sudo apt install ./keybase_amd64.deb
+
+    # login
+    keybase login
+
+    # import private keys
+    keybase pgp export -s | gpg --allow-secret-key-import --import -
+    git clone keybase://private/ellison/ssh ~/.ssh
+    chmod 0400 ~/.ssh/id_rsa
+    ssh-add
+
+    # import password store
+    git clone keybase://private/ellison/vault ~/.password-store
+}
+
+
+install_browserpass() {
+    RELEASE="browserpass-linux64"
+    FILE="$RELEASE-3.0.6.tar.gz"
+    # dowload release
+    curl -L -o "$HOME/.local/$FILE" "https://github.com/browserpass/browserpass-native/releases/download/3.0.6/$FILE"
+
+    # extract and make the executabe into the path
+    tar xvf $FILE
+    cd ~/.local/$RELEASE
+    make BIN=$RELEASE configure
+    sudo make BIN=$RELEASE install
+}
+
 install_apt() {
     PACKAGE="$1"
     PACKAGE_READABLE_NAME="$2"
@@ -189,17 +230,15 @@ add_ppts() {
 install_kitty() {
     print_info "Kitty Terminal"
 
-    if cmd_exists "kitty"; then
-        print_success "Kitty Terminal"
-        return 0
-    fi
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
 
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    # add desktop integration
+    cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications
+    sed -i "s/Icon\=kitty/Icon\=\/home\/$USER\/.local\/kitty.app\/share\/icons\/hicolor\/256x256\/apps\/kitty.png/g" ~/.local/share/applications/kitty.desktop
+
     # set as default
-    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator \
-        "$HOME/.local/kitty.app/bin/kitty" 50
+    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$HOME/.local/kitty.app/bin/kitty" 50
     sudo update-alternatives --set x-terminal-emulator "$HOME/.local/kitty.app/bin/kitty"
-    return 0
 }
 
 install_bat() {
@@ -219,43 +258,12 @@ install_bat() {
     return 1
 }
 
-install_fdfind() {
-    print_info "fd"
-
-    if cmd_exists "fd"; then
-        print_success "fd"
-        return 0
-    fi
-
-    curl -LO https://github.com/sharkdp/fd/releases/download/v7.3.0/fd_7.3.0_amd64.deb
-    sudo dpkg -i fd_7.3.0_amd64.deb
-    if [ "$#" -eq 0 ]; then
-        rm ./fd_7.3.0_amd64.deb
-        return 0
-    fi
-    return 1
-
-}
-
-install_ripgrep() {
-    print_info "RipGrep"
-
-    if cmd_exists "rg"; then
-        print_success "RipGrep"
-        return 0
-    fi
-
-    curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
-    sudo dpkg -i ripgrep_11.0.2_amd64.deb
-    if [ "$#" -eq 0 ]; then
-        rm ./ripgrep_11.0.2_amd64.deb
-        return 0
-    fi
-    return 1
-}
-
-install_hub() {
-    execute "go get -u github.com/github/hub" "hub"
+install_starship() {
+    cd ~/.local
+    curl -LO https://github.com/starship/starship/releases/download/v0.17.0/starship-v0.17.0-x86_64-unknown-linux-gnu.tar.gz
+    tar xvf starship-v0.17.0-x86_64-unknown-linux-gnu.tar.gz
+    mv x86_64-unknown-linux-gnu starship
+    ln -s ~/.local/starship/starship ~/.local/bin
 }
 
 install_apps() {
@@ -270,13 +278,13 @@ install_apps() {
     install_apt neovim "Neovim"
     install_apt golang-go "Golang"
     install_apt snapd "Snapd"
-    install_apt pass "pass"
     install_apt jq "jq"
+    install_apt fd-find "fd"
+    install_apt ripgrep "ripgrep"
     install_apt shellcheck "shellcheck"
     install_apt docker-ce "docker"
     install_apt docker-ce-cli "docker cli"
     install_apt containerd.io "containerd runtime"
-    install_apt google-chrome-stable "Chrome"
     install_apt firefox "Firefox"
     install_apt tor "TOR"
     install_apt qbittorrent "QBitTorrent"
@@ -284,6 +292,7 @@ install_apps() {
     install_apt gnome-tweaks "GNOME Tweaks"
     install_apt chrome-gnome-shell "Chrome GNOME shell"
     install_apt imagemagick "ImageMagick"
+    install_apt dconf-editor "dconf-editor"
 
     # snaps
     install_snap spotify "Spotify"
@@ -291,11 +300,10 @@ install_apps() {
     install_snap snap-store "Snap Store"
 
     # not on apt apps
-    install_hub
     install_kitty
     install_bat
-    install_fdfind
-    install_ripgrep
+    install_browserpass
+    install_starship
 }
 
 configure_ui() {
