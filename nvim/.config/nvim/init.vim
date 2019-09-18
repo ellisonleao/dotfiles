@@ -68,12 +68,6 @@ set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png,*.ico
 set wildignore+=*.pdf,*.psd
 set completeopt=menuone,noinsert,noselect,preview
 
-"" Remember last location in file
-if has("autocmd")
-    autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-                \| exe "normal g'\"" | endif
-endif
-
 " no swp/bkp files
 set nobackup
 set nowritebackup
@@ -85,6 +79,8 @@ set autoindent smartindent
 " neovim python modules
 let g:python3_host_prog='~/.pyenv/versions/3.7.4/bin/python'
 let g:python_host_prog='~/.pyenv/versions/2.7.15/bin/python'
+
+autocmd BufWritePre * %s/\s\+$//e
 
 " Coc.nvim settings and mappings
 source ~/.config/nvim/coc.vim
@@ -132,7 +128,7 @@ set showtabline=2
 " Lighline
 source ~/.config/nvim/lightline.vim
 
-" vim-test confs and mappings 
+" vim-test confs and mappings
 let test#strategy = {
             \ 'nearest': 'neovim',
             \ 'file': 'neovim',
@@ -166,7 +162,7 @@ endfunction
 autocmd VimLeave * call ClearNetrwhistFile()
 
 
-" ***************** PYTHON 
+" ***************** PYTHON
 let test#python#runner = 'pytest'
 let test#python#pytest#options = '-W ignore -s --cov-report term-missing'
 

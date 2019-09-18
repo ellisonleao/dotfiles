@@ -139,16 +139,23 @@ configure_scala() {
 configure_keys() {
     print_info "Keybase + pass"
     install_apt pass "Pass"
-
+    for folder in "$HOME/.ssh" "$HOME/.password-store"; do
+        if [ -d "$folder" ]; then
+            echo "Removing $folder .."
+            rm -r "$folder"
+        fi
+    done
     # download keybase
     curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
     sudo apt install ./keybase_amd64.deb
+    rm keybase_amd64.deb
 
     # login
     keybase login
 
     # import private keys
     keybase pgp export -s | gpg --allow-secret-key-import --import -
+
     git clone keybase://private/ellison/ssh ~/.ssh
     chmod 0400 ~/.ssh/id_rsa
     ssh-add
@@ -162,15 +169,18 @@ install_browserpass() {
     RELEASE="browserpass-linux64"
     FILE="$RELEASE-3.0.6.tar.gz"
     # dowload release
-    cd ~/.local
-    curl -L -o "$HOME/.local/$FILE" "https://github.com/browserpass/browserpass-native/releases/download/3.0.6/$FILE"
+    pushd "$HOME/.local" || exit
+        curl -LO "https://github.com/browserpass/browserpass-native/releases/download/3.0.6/$FILE"
+        # extract and make the executabe into the path
+        tar xvf $FILE
+        rm $FILE
+    popd
 
-    # extract and make the executabe into the path
-    tar xvf $FILE
-    cd $RELEASE
-    make BIN=$RELEASE configure
-    sudo make BIN=$RELEASE install
-    sudo make BIN=$RELEASE hosts-brave-user
+    pushd $RELEASE || exit
+        make BIN=$RELEASE configure
+        sudo make BIN=$RELEASE install
+        sudo make BIN=$RELEASE hosts-brave-user
+    popd
 }
 
 install_apt() {
@@ -241,6 +251,23 @@ install_kitty() {
     # set as default
     sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$HOME/.local/kitty.app/bin/kitty" 50
     sudo update-alternatives --set x-terminal-emulator "$HOME/.local/kitty.app/bin/kitty"
+
+    # update desktop icon list
+    update-desktop-database "$HOME/.local/share/applications"
+}
+
+install_neovim() {
+    print_info "Neovim"
+    VERSION="v0.4.2"
+    pushd "$HOME/.local" || exit
+        curl -LO "https://github.com/neovim/neovim/releases/download/$VERSION/nvim-linux64.tar.gz"
+        tar xvf nvim-linux64.tar.gz
+        rm nvim-linux64.tar.gz
+    popd
+    ln -s "$HOME/.local/nvim-linux64/bin/nvim" "$HOME/.local/bin"
+    ln -s "$HOME/.local/nvim-linux64/share/applications/nvim.desktop" "$HOME/.local/share/applications"
+    sed -i "s/Icon\=nvim/Icon\=\/home\/$USER\/.local\/nvim-linux64\/share\/pixmaps\/nvim.png/g" "$HOME/.local/share/applications/nvim.desktop"
+    update-desktop-database "$HOME/.local/share/applications"
 }
 
 install_bat() {
@@ -261,11 +288,12 @@ install_bat() {
 }
 
 install_starship() {
-    cd ~/.local
-    curl -LO https://github.com/starship/starship/releases/download/v0.17.0/starship-v0.17.0-x86_64-unknown-linux-gnu.tar.gz
-    tar xvf starship-v0.17.0-x86_64-unknown-linux-gnu.tar.gz
-    mv x86_64-unknown-linux-gnu starship
-    ln -s ~/.local/starship/starship ~/.local/bin
+    pushd "$HOME/.local" || exit
+        curl -LO https://github.com/starship/starship/releases/download/v0.17.0/starship-v0.17.0-x86_64-unknown-linux-gnu.tar.gz
+        tar xvf starship-v0.17.0-x86_64-unknown-linux-gnu.tar.gz
+        mv x86_64-unknown-linux-gnu starship
+    popd
+    ln -s "$HOME/.local/starship/starship" "$HOME/.local/bin"
 }
 
 install_apps() {
@@ -303,6 +331,7 @@ install_apps() {
 
     # not on apt apps
     install_kitty
+    install_neovim
     install_bat
     install_browserpass
     install_starship
@@ -310,13 +339,13 @@ install_apps() {
 
 configure_ui() {
     install_apt pop-theme "Pop OS! Theme"
-    gsettings set org.gnome.shell.extensions.user-theme name 'Pop-dark-slim'
     gsettings set org.gnome.desktop.interface icon-theme 'Pop'
     gsettings set org.gnome.desktop.interface gtk-theme 'Pop-slim-dark'
     gsettings set org.gnome.desktop.interface show-battery-percentage true
     gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
     gsettings set org.gnome.desktop.interface font-name 'Sans 11'
     gsettings set org.gnome.desktop.interface clock-show-date true
+    gsettings set org.gnome.desktop.interface monospace-font-name 'Fira Sans 13'
     gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/ellison/Pictures/pathfinder.jpg'
     gsettings set org.gnome.desktop.background picture-uri 'file:///home/ellison/Pictures/pathfinder3.jpg'
 }
@@ -330,6 +359,8 @@ main() {
     verify_os
 
     ask_for_sudo
+
+    configure_keys
 
     install_apps
 

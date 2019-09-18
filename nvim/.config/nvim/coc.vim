@@ -17,7 +17,7 @@ let g:coc_global_extensions = [
 let g:coc_user_config = {
             \ 'coc': {
             \     'preferences': {
-            \         'formatOnSaveFiletypes': ['python', 'javascript', 'javascriptreact', 'go', 'scala']
+            \         'formatOnSaveFiletypes': ['python', 'javascript', 'javascriptreact', 'go', 'scala', 'sh']
             \     }
             \ },
             \ 'diagnostic': {
@@ -41,7 +41,13 @@ let g:coc_user_config = {
             \         'command': 'metals-vim',
             \         'rootPatterns': ['build.sbt'],
             \         'filetypes': ['scala', 'sbt']
-            \     }
+            \     },
+            \     'bash': {
+            \         'command': 'bash-language-server',
+            \         'filetypes': ['sh'],
+            \         'args': ['start'],
+            \         'ignoredRootPaths': ['~'],
+            \     },
             \ },
             \ 'tsserver': {
             \     'npm': expand('~/.nvm/versions/node/v10.16.3/bin/npm'),
@@ -52,9 +58,15 @@ let g:coc_user_config = {
             \         'provider': 'black',
             \         'blackPath': expand('~/.pyenv/shims/black'),
             \     },
-            \     'linting': { 
+            \     'linting': {
             \         'pylintPath': expand('~/.pyenv/shims/pylint'),
             \     },
+            \ },
+            \ 'html': {
+            \     'format': {
+            \         'enable': 1,
+            \     },
+            \     'enable': 1
             \ },
             \}
 
