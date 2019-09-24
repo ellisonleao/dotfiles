@@ -121,7 +121,7 @@ configure_scala() {
     install_apt sbt "SBT"
 
     # install metals-vim
-    METALS_VERSION=0.7.5
+    METALS_VERSION=0.7.6
     curl -L -o ~/.local/bin/coursier https://git.io/coursier && chmod +x ~/.local/bin/coursier
     ~/.local/bin/coursier bootstrap \
       --java-opt -Xss4m \
