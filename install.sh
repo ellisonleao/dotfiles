@@ -288,9 +288,10 @@ install_bat() {
 }
 
 install_starship() {
+    VERSION="v0.19.0"
     pushd "$HOME/.local" || exit
-        curl -LO https://github.com/starship/starship/releases/download/v0.17.0/starship-v0.17.0-x86_64-unknown-linux-gnu.tar.gz
-        tar xvf starship-v0.17.0-x86_64-unknown-linux-gnu.tar.gz
+        curl -LO "https://github.com/starship/starship/releases/download/$VERSION/starship-$VERSION-x86_64-unknown-linux-gnu.tar.gz"
+        tar xvf "starship-$VERSION-x86_64-unknown-linux-gnu.tar.gz"
         mv x86_64-unknown-linux-gnu starship
     popd
     ln -s "$HOME/.local/starship/starship" "$HOME/.local/bin"
