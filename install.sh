@@ -122,6 +122,7 @@ configure_scala() {
 
     # install metals-vim
     METALS_VERSION=0.7.6
+    print_info "metals-vim"
     curl -L -o ~/.local/bin/coursier https://git.io/coursier && chmod +x ~/.local/bin/coursier
     ~/.local/bin/coursier bootstrap \
       --java-opt -Xss4m \
@@ -131,9 +132,12 @@ configure_scala() {
       -r bintray:scalacenter/releases \
       -r sonatype:snapshots \
       -o ~/.local/bin/metals-vim -f
+    print_result $? "metals-vim"
 
     # install ammonite repl
-    sudo sh -c '(echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1) > ~/.local/bin/scala && chmod +x ~/.local/bin/scala'
+    print_info "Ammonite repl"
+    sudo sh -c '(echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1) > ~/.local/bin/amm && chmod +x ~/.local/bin/amm'
+    print_result $? "Ammonite repl"
 }
 
 configure_keys() {
