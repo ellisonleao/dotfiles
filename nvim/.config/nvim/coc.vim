@@ -53,6 +53,7 @@ let g:coc_user_config = {
             \     'npm': expand('~/.nvm/versions/node/v10.16.3/bin/npm'),
             \ },
             \ 'python': {
+            \     'jediEnabled': 0,
             \     'venvPath': expand('~/.virtualenvs'),
             \     'formatting': {
             \         'provider': 'black',

@@ -47,12 +47,12 @@ configure_python() {
     fi
 
     # virtualenvwrapper
-    execute "git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper"
+    git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper"
 
     execute "pyenv install 3.7.4" "Installing Python 3.7.4"
-    execute "pyenv install 2.7.15" "Installing Python 2.7.15"
+    execute "pyenv install 2.7.16" "Installing Python 2.7.15"
 
-    pyenv global 3.7.4 2.7.15
+    pyenv global 3.7.4 2.7.16
 
     PY2=(
         pylint
@@ -70,6 +70,7 @@ configure_python() {
         black
         python-language-server
         jedi
+        vim-vint
     )
 
     print_info "Installing python 3 packages"
@@ -78,7 +79,6 @@ configure_python() {
     done
 
     print_info "Installing python 2 packages"
-    pyenv activate 2
     for pkg in "${PY2[@]}"; do
         pip2 install "$pkg"
     done
@@ -221,26 +221,25 @@ package_is_installed() {
 }
 
 add_ppts() {
-    # golang
-    yes | sudo add-apt-repository ppa:longsleep/golang-backports
-
-    # chrome
-    # wget -q -O -- https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    # sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-    curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+    print_info "adding additional apt sources"
 
     # docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-    # neovim
-    yes | sudo add-apt-repository ppa:neovim-ppa/stable
+    # TODO: add ppa:neovim-ppa/stable when it updates new version
 
-    # pop os theme
-    yes | sudo apt-add-repository ppa:system76/pop
+    PPTS=(
+        ppa:longsleep/golang-backports
+        ppa:system76/pop
+        "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    )
+
+    for ppt in "${PPTS[@]}"; do
+        yes | sudo add-apt-repository "$PPT"
+    done
 
     sudo apt-get update
+    print_result $? "adding additional apt sources"
 }
 
 install_kitty() {

@@ -24,6 +24,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " testing
+Plug 'junegunn/vader.vim', {'for': 'vim'}
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestLast', 'TestSuite', 'TestVisit', 'TestFile']}
 
 " linter , lsp completion
