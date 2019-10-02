@@ -19,6 +19,10 @@ alias w=workon
 # git
 alias git=hub
 alias gs="git sync"
+function gitignore() {
+    curl -sL "https://www.gitignore.io/api/"$@
+}
+alias gig=gitignore
 
 colorflag="--color=auto"
 
