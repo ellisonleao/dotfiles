@@ -342,6 +342,7 @@ install_apps() {
 }
 
 configure_ui() {
+    # changing default font, themes and backgrounds
     install_apt pop-theme "Pop OS! Theme"
     gsettings set org.gnome.desktop.interface icon-theme 'Pop'
     gsettings set org.gnome.desktop.interface gtk-theme 'Pop-slim-dark'
@@ -352,6 +353,27 @@ configure_ui() {
     gsettings set org.gnome.desktop.interface monospace-font-name 'Fira Sans 13'
     gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/ellison/Pictures/pathfinder.jpg'
     gsettings set org.gnome.desktop.background picture-uri 'file:///home/ellison/Pictures/pathfinder3.jpg'
+
+    # custom keyboard bindings
+    gsettings set org.gnome.settings-daemon.plugins.media-keys terminal '<Super>t'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys www '<Super>c'
+
+    # media keys bindings
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Alt>p'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Spotify Play/Pause'
+
+
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding '<Alt>p'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Spotify Next'
+
+
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding '<Alt>p'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'Spotify Play/Pause'
+
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings ['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']
 }
 
 # ----------------------------------------------------------------------
