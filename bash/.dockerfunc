@@ -93,6 +93,11 @@ htop() {
         --pid host \
         --name=htop ${DOCKER_REPO_PREFIX}/htop
 }
+
+function kafkacat() {
+    docker run --rm -it --network=host edenhill/kafkacat:1.5.0 "$@"
+}
+
 # GUI
 
 gimp() {

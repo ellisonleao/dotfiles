@@ -6,3 +6,6 @@ prefix = ""
 
 [directory]
 style = "bold green"
+
+[package]
+disabled = true
