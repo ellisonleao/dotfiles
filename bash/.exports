@@ -16,6 +16,11 @@ export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
 export GO111MODULE=on
 
+# rust
+if [ -d "$HOME/.cargo/bin" ]; then
+    export PATH=$PATH:"$HOME/.cargo/bin"
+fi
+
 # fuzzy finder
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 

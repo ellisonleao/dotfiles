@@ -51,6 +51,7 @@ relies_on() {
 http() {
     docker run -t --rm \
         --name=http \
+        -v /var/run/docker.sock:/var/run/docker.sock \
         --log-driver none \
         ${DOCKER_REPO_PREFIX}/httpie "$@"
 }
@@ -58,6 +59,7 @@ http() {
 speedtest-cli() {
     docker run -t --rm \
         --name=speedtest-cli \
+        -v /var/run/docker.sock:/var/run/docker.sock \
         --log-driver none \
         ${DOCKER_REPO_PREFIX}/speedtest-cli "$@"
 }
