@@ -35,7 +35,7 @@ configure_python() {
         libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
         xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 
-    execute "curl https://pyenv.run | bash" "Installing pyenv"
+    execute "curl -fs https://pyenv.run | bash" "Installing pyenv"
 
     # reload terminal configs
     # shellcheck source=/dev/null
@@ -124,7 +124,7 @@ configure_scala() {
     # install metals-vim
     METALS_VERSION=0.7.6
     print_info "metals-vim"
-    curl -L -o ~/.local/bin/coursier https://git.io/coursier && chmod +x ~/.local/bin/coursier
+    curl -fsL -o ~/.local/bin/coursier https://git.io/coursier && chmod +x ~/.local/bin/coursier
     ~/.local/bin/coursier bootstrap \
       --java-opt -Xss4m \
       --java-opt -Xms100m \
@@ -137,7 +137,7 @@ configure_scala() {
 
     # install ammonite repl
     print_info "Ammonite repl"
-    sudo sh -c '(echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1) > ~/.local/bin/amm && chmod +x ~/.local/bin/amm'
+    sudo sh -c '(echo "#!/usr/bin/env sh" && curl -fsL https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1) > ~/.local/bin/amm && chmod +x ~/.local/bin/amm'
     print_result $? "Ammonite repl"
 }
 
@@ -227,7 +227,7 @@ add_ppts() {
 install_kitty() {
     print_info "Kitty Terminal"
 
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
+    curl -fsL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
 
     # add desktop integration
     cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications
@@ -245,7 +245,7 @@ install_neovim() {
     print_info "Neovim"
     VERSION="v0.4.2"
     pushd "$HOME/.local" || exit
-        curl -LO "https://github.com/neovim/neovim/releases/download/$VERSION/nvim-linux64.tar.gz"
+        curl -fsLO "https://github.com/neovim/neovim/releases/download/$VERSION/nvim-linux64.tar.gz"
         tar xvf nvim-linux64.tar.gz
         rm nvim-linux64.tar.gz
     popd
@@ -263,7 +263,7 @@ install_bat() {
         return 0
     fi
 
-    curl -LO https://github.com/sharkdp/bat/releases/download/v0.11.0/bat_0.11.0_amd64.deb
+    curl -fsLO https://github.com/sharkdp/bat/releases/download/v0.11.0/bat_0.11.0_amd64.deb
     sudo apt install ./bat_0.11.0_amd64.deb
     if [ "$#" -eq 0 ]; then
         rm ./bat_0.11.0_amd64.deb
@@ -281,7 +281,7 @@ install_starship() {
     fi
 
     pushd "$HOME/.local" || exit
-        curl -LO "https://github.com/starship/starship/releases/download/$VERSION/$FILENAME"
+        curl -fsLO "https://github.com/starship/starship/releases/download/$VERSION/$FILENAME"
         tar xvf "$FILENAME" -C "$HOME/.local/bin"
         rm "$FILENAME"
     popd
