@@ -55,13 +55,13 @@ configure_python() {
     pyenv global 3.7.4 2.7.16
 
     PY2=(
-        pylint
+        flake8
         neovim
         ansible
     )
 
     PY3=(
-        pylint
+        flake8
         awscli
         neovim
         ipython
@@ -107,6 +107,7 @@ configure_node() {
     # install js apps
     execute "npm i -g eslint" "Install eslint"
     execute "npm i -g prettier" "Install prettier"
+    execute "npm i -g @bitwarden/cli" "Install bitwarden cli"
 }
 
 configure_scala() {
@@ -166,25 +167,6 @@ configure_keys() {
 
     # import password store
     git clone keybase://private/ellison/vault ~/.password-store
-}
-
-
-install_browserpass() {
-    RELEASE="browserpass-linux64"
-    FILE="$RELEASE-3.0.6.tar.gz"
-    # dowload release
-    pushd "$HOME/.local" || exit
-        curl -LO "https://github.com/browserpass/browserpass-native/releases/download/3.0.6/$FILE"
-        # extract and make the executabe into the path
-        tar xvf $FILE
-        rm $FILE
-    popd
-
-    pushd $RELEASE || exit
-        make BIN=$RELEASE configure
-        sudo make BIN=$RELEASE install
-        sudo make BIN=$RELEASE hosts-brave-user
-    popd
 }
 
 install_apt() {
@@ -291,13 +273,18 @@ install_bat() {
 }
 
 install_starship() {
-    VERSION="v0.19.0"
+    VERSION="v0.24.0"
+    FILENAME="starship-x86_64-unknown-linux-gnu.tar.gz"
+
+    if [ -f "$HOME/.local/bin/starship" ]; then
+        rm  "$HOME/.local/bin/starship"
+    fi
+
     pushd "$HOME/.local" || exit
-        curl -LO "https://github.com/starship/starship/releases/download/$VERSION/starship-$VERSION-x86_64-unknown-linux-gnu.tar.gz"
-        tar xvf "starship-$VERSION-x86_64-unknown-linux-gnu.tar.gz"
-        mv x86_64-unknown-linux-gnu starship
+        curl -LO "https://github.com/starship/starship/releases/download/$VERSION/$FILENAME"
+        tar xvf "$FILENAME" -C "$HOME/.local/bin"
+        rm "$FILENAME"
     popd
-    ln -s "$HOME/.local/starship/starship" "$HOME/.local/bin"
 }
 
 install_apps() {
@@ -329,15 +316,15 @@ install_apps() {
     install_apt dconf-editor "dconf-editor"
 
     # snaps
+    install_snap snap-store "Snap Store"
     install_snap spotify "Spotify"
     install_snap shfmt "shfmt"
-    install_snap snap-store "Snap Store"
+    install_snap bitwarden "Snap Store"
 
     # not on apt apps
     install_kitty
     install_neovim
     install_bat
-    install_browserpass
     install_starship
 }
 

@@ -7,7 +7,6 @@ function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
 endfunction
 
-"\ 'colorscheme': 'seoul256',
 let g:lightline = {
             \ 'active': {
             \   'left': [
@@ -48,7 +47,7 @@ function! s:lightline_coc_diagnostic(kind, sign) abort
         return ''
     endif
     try
-        let s = g:coc_user_config['diagnostic'][a:sign . 'Sign'] 
+        let s = g:coc_user_config['diagnostic'][a:sign . 'Sign']
     catch
         let s = '!'
     endtry

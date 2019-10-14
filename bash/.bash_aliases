@@ -53,29 +53,6 @@ alias mv='mv -i'
 # untar
 alias untar='tar xvf'
 
-# cd into go projects easily
-gop() {
-    if [ "$#" -ne 1 ]; then
-        echo "project missing"
-    else
-        project=$(fd -p -t d -E vendor "$1" "$GOPATH/src" | head -n 1)
-        if [ -z "$project" ]; then
-            echo "project $project doesn't exist"
-        else
-            cd "$project" || exit
-        fi
-    fi
-}
-
-# remove build python files
-omo() {
-    find . -name '*.pyc' -exec rm -f {} +
-    find . -name '*.pyo' -exec rm -f {} +
-    find . -name '*~' -exec rm -f {} +
-    find . -name '__pycache__' -exec rm -fr {} +
-    echo "Omo lava mais branco!"
-}
-
 # startgrid
 # shellcheck source=/dev/null
 [ -f "$HOME/.ssh/startgrid/aliases" ] && source "$HOME/.ssh/startgrid/aliases"
@@ -83,7 +60,6 @@ omo() {
 # cat using bat
 alias cat="bat -p"
 
-# Always enable colored `grep` output
 alias grep="grep --color=auto "
 
 # IP addresses
@@ -110,5 +86,10 @@ alias icat="kitty +kitten icat"
 # http server
 alias httpserver="python -m http.server"
 
+# youtube-dl
+alias ydl="youtube-dl"
+
 # shellcheck source=/dev/null
-[ -f "$HOME/.dockerfunc" ] && source "$HOME/.dockerfunc"
+if [ -f "$HOME/.dockerfunc" ]; then
+    source "$HOME/.dockerfunc"
+fi

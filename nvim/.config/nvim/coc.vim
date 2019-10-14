@@ -53,14 +53,16 @@ let g:coc_user_config = {
             \     'npm': expand('~/.nvm/versions/node/v10.16.3/bin/npm'),
             \ },
             \ 'python': {
-            \     'jediEnabled': 0,
             \     'venvPath': expand('~/.virtualenvs'),
             \     'formatting': {
             \         'provider': 'black',
             \         'blackPath': expand('~/.pyenv/shims/black'),
+            \         'blackArgs': ['--line-length=100'],
             \     },
             \     'linting': {
-            \         'pylintPath': expand('~/.pyenv/shims/pylint'),
+            \         'pylintEnabled': 0,
+            \         'flake8Enabled': 1,
+            \         'flake8Args': ['--append-config='.expand('~/.config/.flake8')]
             \     },
             \ },
             \ 'html': {
