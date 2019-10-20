@@ -15,8 +15,7 @@ create_folders() {
 
 configure_terminal() {
     print_info "Configuring terminal"
-    FOLDERS="base16 bash git nvim python kitty gnupg ui prettier"
-    for item in $FOLDERS; do
+    for item in "$(find . --type d -d 1)"; do
         execute "stow -R ${item}" "Creating ${item} symlink"
     done
 }
