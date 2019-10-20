@@ -26,6 +26,7 @@ Plug 'junegunn/fzf.vim'
 " testing
 Plug 'junegunn/vader.vim', {'for': 'vim'}
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestLast', 'TestSuite', 'TestVisit', 'TestFile']}
+Plug 'tpope/vim-dispatch', {'on': ['TestNearest', 'TestLast', 'TestSuite', 'TestVisit', 'TestFile']}
 
 " linter , lsp completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -130,12 +131,7 @@ set showtabline=2
 source ~/.config/nvim/lightline.vim
 
 " vim-test confs and mappings
-let test#strategy = {
-            \ 'nearest': 'neovim',
-            \ 'file': 'neovim',
-            \ 'suite': 'neovim',
-            \}
-
+let test#strategy = "dispatch"
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>

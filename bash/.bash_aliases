@@ -89,6 +89,8 @@ alias httpserver="python -m http.server"
 # youtube-dl
 alias ydl="youtube-dl"
 
+alias xclip="xclip -se c"
+
 # shellcheck source=/dev/null
 if [ -f "$HOME/.dockerfunc" ]; then
     source "$HOME/.dockerfunc"
