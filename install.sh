@@ -15,7 +15,7 @@ create_folders() {
 
 configure_terminal() {
     print_info "Configuring terminal"
-    for item in "$(find . --type d -d 1)"; do
+    for item in "base16 bash git gnupg kitty nvim prettier starship ui"; do
         execute "stow -R ${item}" "Creating ${item} symlink"
     done
 }
@@ -46,12 +46,12 @@ configure_python() {
     fi
 
     # virtualenvwrapper
-    git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper"
+    git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git" "$(pyenv root)/plugins/pyenv-virtualenvwrapper"
 
-    execute "pyenv install 3.7.4" "Installing Python 3.7.4"
-    execute "pyenv install 2.7.16" "Installing Python 2.7.15"
+    execute "pyenv install 3.8.0" "Installing Python 3.8"
+    execute "pyenv install 2.7.16" "Installing Python 2.7.16"
 
-    pyenv global 3.7.4 2.7.16
+    pyenv global 3.8.0 2.7.16
 
     PY2=(
         flake8
@@ -106,6 +106,7 @@ configure_node() {
     # install js apps
     execute "npm i -g eslint" "Install eslint"
     execute "npm i -g prettier" "Install prettier"
+    execute "npm i -g bash-language-server" "Install bash language server"
     execute "npm i -g @bitwarden/cli" "Install bitwarden cli"
 }
 
@@ -136,7 +137,8 @@ configure_scala() {
 
     # install ammonite repl
     print_info "Ammonite repl"
-    sudo sh -c '(echo "#!/usr/bin/env sh" && curl -fsL https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1) > ~/.local/bin/amm && chmod +x ~/.local/bin/amm'
+    curl -fsL "https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1" > "$HOME/.local/bin/amm" \
+        && chmod +x "$HOME/.local/bin/amm"
     print_result $? "Ammonite repl"
 }
 
@@ -150,9 +152,9 @@ configure_keys() {
         fi
     done
     # download keybase
-    curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
-    sudo apt install ./keybase_amd64.deb
-    rm keybase_amd64.deb
+    curl --remote-name https://prerelease.keybase.io/nightly/keybase_amd64.deb
+    sudo dpkg -i keybase_amd64.deb
+    [ $? == 0 ] && rm keybase_amd64.deb
 
     # login
     keybase login
@@ -207,16 +209,13 @@ add_ppts() {
     # docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-    # TODO: add ppa:neovim-ppa/stable when it updates new version
-
     PPTS=(
-        ppa:longsleep/golang-backports
-        ppa:system76/pop
-        "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        "ppa:longsleep/golang-backports"
+        "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
     )
 
     for ppt in "${PPTS[@]}"; do
-        yes | sudo add-apt-repository "$PPT"
+        yes | sudo add-apt-repository "$ppt"
     done
 
     sudo apt-get update
@@ -248,7 +247,7 @@ install_neovim() {
         tar xvf nvim-linux64.tar.gz
         rm nvim-linux64.tar.gz
     popd
-    ln -s "$HOME/.local/nvim-linux64/bin/nvim" "$HOME/.local/bin"
+    ln -s "$HOME/.local/nvim-linux64/bin/nvim" "$HOME/.local/bin/"
     ln -s "$HOME/.local/nvim-linux64/share/applications/nvim.desktop" "$HOME/.local/share/applications"
     sed -i "s/Icon\=nvim/Icon\=\/home\/$USER\/.local\/nvim-linux64\/share\/pixmaps\/nvim.png/g" "$HOME/.local/share/applications/nvim.desktop"
     update-desktop-database "$HOME/.local/share/applications"
@@ -272,6 +271,7 @@ install_bat() {
 }
 
 install_starship() {
+    print_info "starship"
     VERSION="v0.24.0"
     FILENAME="starship-x86_64-unknown-linux-gnu.tar.gz"
 
@@ -293,6 +293,7 @@ install_apps() {
 
     # apt
     install_apt git "Git"
+    install_apt hub "hub"
     install_apt stow "GNU Stow"
     install_apt fonts-firacode "FiraCode font"
     install_apt neovim "Neovim"
@@ -307,7 +308,6 @@ install_apps() {
     install_apt containerd.io "containerd runtime"
     install_apt firefox "Firefox"
     install_apt tor "TOR"
-    install_apt qbittorrent "QBitTorrent"
     install_apt vlc "VLC"
     install_apt gnome-tweaks "GNOME Tweaks"
     install_apt chrome-gnome-shell "Chrome GNOME shell"
@@ -315,10 +315,9 @@ install_apps() {
     install_apt dconf-editor "dconf-editor"
 
     # snaps
-    install_snap snap-store "Snap Store"
     install_snap spotify "Spotify"
     install_snap shfmt "shfmt"
-    install_snap bitwarden "Snap Store"
+    install_snap bitwarden "Bitwarden"
 
     # not on apt apps
     install_kitty
@@ -329,37 +328,35 @@ install_apps() {
 
 configure_ui() {
     # changing default font, themes and backgrounds
-    install_apt pop-theme "Pop OS! Theme"
-    gsettings set org.gnome.desktop.interface icon-theme 'Pop'
-    gsettings set org.gnome.desktop.interface gtk-theme 'Pop-slim-dark'
+    gsettings set org.gnome.desktop.interface icon-theme "Pop"
+    gsettings set org.gnome.desktop.interface gtk-theme "Pop-slim-dark"
     gsettings set org.gnome.desktop.interface show-battery-percentage true
     gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
-    gsettings set org.gnome.desktop.interface font-name 'Sans 11'
+    gsettings set org.gnome.desktop.interface font-name "Sans 11"
     gsettings set org.gnome.desktop.interface clock-show-date true
-    gsettings set org.gnome.desktop.interface monospace-font-name 'Fira Sans 13'
-    gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/ellison/Pictures/pathfinder.jpg'
-    gsettings set org.gnome.desktop.background picture-uri 'file:///home/ellison/Pictures/pathfinder3.jpg'
+    gsettings set org.gnome.desktop.interface monospace-font-name "Fira Sans 13"
+    gsettings set org.gnome.desktop.screensaver picture-uri "file:///home/ellison/Pictures/pathfinder.jpg"
+    gsettings set org.gnome.desktop.background picture-uri "file:///home/ellison/Pictures/pathfinder3.jpg"
 
     # custom keyboard bindings
-    gsettings set org.gnome.settings-daemon.plugins.media-keys terminal '<Super>t'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys www '<Super>c'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>c']"
 
     # media keys bindings
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Alt>p'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Spotify Play/Pause'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "['<Alt>p']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Spotify Play/Pause"
 
 
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding '<Alt>p'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Spotify Next'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding "['<Alt>p']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name "Spotify Next"
 
 
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding '<Alt>p'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding "['<Alt>p']"
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'Spotify Play/Pause'
 
-    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings ['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
 }
 
 # ----------------------------------------------------------------------
