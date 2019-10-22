@@ -212,6 +212,7 @@ add_ppts() {
     PPTS=(
         "ppa:longsleep/golang-backports"
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
+        "ppa:papirus/papirus"
     )
 
     for ppt in "${PPTS[@]}"; do
@@ -313,6 +314,7 @@ install_apps() {
     install_apt chrome-gnome-shell "Chrome GNOME shell"
     install_apt imagemagick "ImageMagick"
     install_apt dconf-editor "dconf-editor"
+    install_apt papirus-icon-theme "papirus theme"
 
     # snaps
     install_snap spotify "Spotify"
@@ -328,7 +330,7 @@ install_apps() {
 
 configure_ui() {
     # changing default font, themes and backgrounds
-    gsettings set org.gnome.desktop.interface icon-theme "Pop"
+    gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
     gsettings set org.gnome.desktop.interface gtk-theme "Pop-slim-dark"
     gsettings set org.gnome.desktop.interface show-battery-percentage true
     gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
