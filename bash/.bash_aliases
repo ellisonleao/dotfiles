@@ -72,7 +72,7 @@ alias sniff="sudo ngrep -d 'wlp2s0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i wlp2s0 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
 
 # fdfind as find
-alias find='fd'
+alias find='fdfind'
 
 # weather
 alias weather="curl http://wttr.in/Curitiba?0F1qn"

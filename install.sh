@@ -49,18 +49,20 @@ configure_python() {
     git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git" "$(pyenv root)/plugins/pyenv-virtualenvwrapper"
 
     execute "pyenv install 3.8.0" "Installing Python 3.8"
-    execute "pyenv install 2.7.16" "Installing Python 2.7.16"
+    execute "pyenv install 2.7.17" "Installing Python 2.7.17"
 
     pyenv global 3.8.0 2.7.16
 
     PY2=(
         flake8
+        flake8-bugbear
         neovim
         ansible
     )
 
     PY3=(
         flake8
+        flake8-bugbear
         awscli
         neovim
         ipython
