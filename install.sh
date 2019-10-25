@@ -31,7 +31,7 @@ configure_python() {
     # pyenv prereqs
     # shellcheck disable=SC2033
     sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
-        libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+        libreadline-dev libsqlite3-dev llvm libncurses5-dev libncursesw5-dev \
         xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 
     execute "curl -fs https://pyenv.run | bash" "Installing pyenv"
@@ -142,6 +142,22 @@ configure_scala() {
     curl -fsL "https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1" > "$HOME/.local/bin/amm" \
         && chmod +x "$HOME/.local/bin/amm"
     print_result $? "Ammonite repl"
+
+    # install scalastyle
+    SCALASTYLE_DIR="$HOME/.local/scalastyle"
+    SCALASTYLE_FILE="scalastyle_2.12-1.0.0-batch.jar"
+    if [ ! -d  "$SCALASTYLE_DIR" ]; then
+        mkdir "$SCALASTYLE_DIR"
+    fi
+    pushd "$SCALASTYLE_DIR"
+        curl -fsLO "https://oss.sonatype.org/content/repositories/releases/org/scalastyle/scalastyle_2.12/1.0.0/$SCALASTYLE_FILE"
+        curl -fsLO "http://www.scalastyle.org/scalastyle_config.xml"
+        cat >"$HOME/.local/bin/scalastyle" <<-EOF
+#!/bin/bash
+java -jar "$SCALASTYLE_DIR/$SCALASTYLE_FILE" -c "$SCALASTYLE_DIR/scalastyle_config.xml" "\$@"
+        EOF
+        chmod +x "$HOME/.local/bin/scalastyle"
+    popd
 }
 
 configure_keys() {
@@ -298,6 +314,7 @@ install_apps() {
     install_apt git "Git"
     install_apt hub "hub"
     install_apt stow "GNU Stow"
+    install_apt wget "wget"
     install_apt fonts-firacode "FiraCode font"
     install_apt neovim "Neovim"
     install_apt golang-go "Golang"
@@ -312,6 +329,7 @@ install_apps() {
     install_apt firefox "Firefox"
     install_apt tor "TOR"
     install_apt vlc "VLC"
+    install_apt transmission "Transmission"
     install_apt gnome-tweaks "GNOME Tweaks"
     install_apt chrome-gnome-shell "Chrome GNOME shell"
     install_apt imagemagick "ImageMagick"

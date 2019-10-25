@@ -30,6 +30,7 @@ Plug 'tpope/vim-dispatch', {'on': ['TestNearest', 'TestLast', 'TestSuite', 'Test
 
 " linter , lsp completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'dense-analysis/ale'
 
 " visual plugins
 Plug 'chriskempson/base16-vim'
@@ -168,6 +169,13 @@ let test#python#pytest#options = '-W ignore -s --cov-report term-missing'
 " run goimports on save
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
+
+" Ale configs
+let g:ale_linters_explicit = 1
+let g:ale_fixers = {}
+let g:ale_linters = {
+            \ 'scala': ['scalastyle'],
+            \}
 
 "*****************************************************************************
 "                                  Mappings
