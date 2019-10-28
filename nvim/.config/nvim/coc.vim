@@ -21,8 +21,8 @@ let g:coc_user_config = {
             \     }
             \ },
             \ 'diagnostic': {
-            \     'errorSign': '✘',
-            \     'warningSign': '⚠',
+            \     'errorSign': '❌',
+            \     'warningSign': '⚠️',
             \     'infoSign': 'ℹ',
             \     'hintSign': '💡'
             \ },

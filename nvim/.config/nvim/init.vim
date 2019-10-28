@@ -152,7 +152,7 @@ set autoread
 
 " clear netrwhist file upon close
 function! ClearNetrwhistFile() abort
-    let l:path = expand("~/.config/nvim/.netrwhist")
+    let l:path = expand('~/.config/nvim/.netrwhist')
     if filereadable(l:path)
         call delete(l:path)
     endif
@@ -172,10 +172,19 @@ autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeIm
 
 " Ale configs
 let g:ale_linters_explicit = 1
+highlight ALEWarning ctermbg=DarkYellow
+highlight ALEError ctermbg=DarkRed
+
+let g:ale_sign_warning = '►'
+let g:ale_sign_error = '►'
 let g:ale_fixers = {}
 let g:ale_linters = {
             \ 'scala': ['scalastyle'],
+            \ 'vim': ['vint'],
             \}
+nmap <silent> <leader>[ <Plug>(ale_next_wrap)
+nmap <silent> <leader>] <Plug>(ale_previous_wrap)
+
 
 "*****************************************************************************
 "                                  Mappings
