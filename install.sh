@@ -15,7 +15,7 @@ create_folders() {
 
 configure_terminal() {
     print_info "Configuring terminal"
-    for item in "base16 bash git gnupg kitty nvim prettier starship ui"; do
+    for item in "base16 bash git gnupg kitty nvim prettier ui"; do
         execute "stow -R ${item}" "Creating ${item} symlink"
     done
 }
@@ -289,22 +289,6 @@ install_bat() {
     return 1
 }
 
-install_starship() {
-    print_info "starship"
-    VERSION="v0.24.0"
-    FILENAME="starship-x86_64-unknown-linux-gnu.tar.gz"
-
-    if [ -f "$HOME/.local/bin/starship" ]; then
-        rm  "$HOME/.local/bin/starship"
-    fi
-
-    pushd "$HOME/.local" || exit
-        curl -fsLO "https://github.com/starship/starship/releases/download/$VERSION/$FILENAME"
-        tar xvf "$FILENAME" -C "$HOME/.local/bin"
-        rm "$FILENAME"
-    popd
-}
-
 install_apps() {
     add_ppts
 
@@ -345,7 +329,6 @@ install_apps() {
     install_kitty
     install_neovim
     install_bat
-    install_starship
 }
 
 configure_ui() {
