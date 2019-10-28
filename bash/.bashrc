@@ -27,6 +27,11 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 # shellcheck source=/dev/null
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
+# load prompt
+# shellcheck source=/dev/null
+[ -f ~/.bash_prompt ] && source ~/.bash_prompt
+
+
 if command -v "pyenv" &>/dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
