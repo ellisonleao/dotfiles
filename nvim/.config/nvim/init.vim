@@ -42,6 +42,7 @@ set autoindent smartindent
 let g:python3_host_prog='~/.pyenv/versions/3.8.0/bin/python'
 let g:python_host_prog='~/.pyenv/versions/2.7.16/bin/python'
 
+" vint: -ProhibitAutocmdWithNoGroup
 autocmd BufWritePre * %s/\s\+$//e
 
 " Coc.nvim settings and mappings
@@ -67,7 +68,7 @@ syntax on
 set backspace=indent,eol,start
 
 " color column 100 by default
-set cc=100
+set colorcolumn=100
 
 " if hidden not set, TextEdit might fail.
 set hidden
@@ -91,7 +92,7 @@ set showtabline=2
 source ~/.config/nvim/lightline.vim
 
 " vim-test confs and mappings
-let test#strategy = "dispatch"
+let test#strategy = 'dispatch'
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
@@ -101,6 +102,7 @@ nmap <silent> <leader>g :TestVisit<CR>
 
 " Some minor or more generic autocmd rules
 " The PC is fast enough, do syntax highlight syncing from start
+" vint: -ProhibitAutocmdWithNoGroup
 autocmd BufEnter * :syntax sync fromstart
 
 " Remember cursor position

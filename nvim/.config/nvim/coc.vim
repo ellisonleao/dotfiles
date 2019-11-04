@@ -1,3 +1,4 @@
+scriptencoding utf-8
 " Coc configs and mappings
 
 " extensions
@@ -98,6 +99,7 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
+" vint: -ProhibitAutocmdWithNoGroup
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Use `:Format` to format current buffer
