@@ -1,4 +1,4 @@
-" load plugins
+scriptencoding utf-8
 so ~/.config/nvim/plugins.vim
 
 "*****************************************************************************
@@ -58,8 +58,7 @@ set termguicolors
 
 " This must happen before the syntax system is enabled
 set mouse-=a
-"colorscheme base16-google-dark  " another option
-colorscheme base16-pop
+colorscheme base16-google-dark
 
 " let the colors begin
 syntax on
