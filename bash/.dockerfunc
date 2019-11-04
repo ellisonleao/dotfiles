@@ -15,6 +15,12 @@ dcleanup() {
     docker rmi "${images[@]}" 2>/dev/null
 }
 
+dnuke() {
+    dcleanup
+    yes | docker volume prune
+    yes | docker network prune
+}
+
 del_stopped() {
     local name=$1
     local state
