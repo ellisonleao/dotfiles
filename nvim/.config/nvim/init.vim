@@ -59,7 +59,7 @@ set termguicolors
 
 " This must happen before the syntax system is enabled
 set mouse-=a
-colorscheme base16-google-dark
+colorscheme base16-pop
 
 " let the colors begin
 syntax on
@@ -124,7 +124,7 @@ autocmd VimLeave * call ClearNetrwhistFile()
 " ***************** PYTHON
 let test#python#runner = 'pytest'
 let test#python#pytest#options = '-W ignore -s --cov-report term-missing'
-
+let g:ale_python_flake8_options = '--max-line-length=100'
 
 " ***************** GO
 " run goimports on save
@@ -142,6 +142,7 @@ let g:ale_fixers = {}
 let g:ale_linters = {
             \ 'scala': ['scalastyle', 'metals'],
             \ 'vim': ['vint'],
+            \ 'python': ['flake8'],
             \}
 nmap <silent> <leader>[ <Plug>(ale_next_wrap)
 nmap <silent> <leader>] <Plug>(ale_previous_wrap)

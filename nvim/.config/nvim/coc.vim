@@ -61,9 +61,7 @@ let g:coc_user_config = {
             \         'blackArgs': ['--line-length=100'],
             \     },
             \     'linting': {
-            \         'pylintEnabled': 0,
-            \         'flake8Enabled': 1,
-            \         'flake8Args': ['--append-config='.expand('~/.config/.flake8')]
+            \         'enabled': 0
             \     },
             \ },
             \ 'html': {
