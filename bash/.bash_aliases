@@ -79,6 +79,7 @@ alias weather="curl http://wttr.in/Curitiba?0F1qn"
 
 # unixtime to human format
 alias humandate="python -c \"import datetime,sys;print(datetime.datetime.utcfromtimestamp(int(sys.argv[1][:10])).strftime('%d/%m/%Y @ %H:%M:%S'));\""
+alias tounixtime="python -c \"import time,datetime,sys;print(time.mktime(datetime.datetime.strptime(sys.argv[1], '%d-%m-%Y').timetuple()));\""
 
 # icat alias
 alias icat="kitty +kitten icat"
