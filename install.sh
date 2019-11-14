@@ -137,12 +137,6 @@ configure_scala() {
       -o ~/.local/bin/metals-vim -f
     print_result $? "metals-vim"
 
-    # install ammonite repl
-    print_info "Ammonite repl"
-    curl -fsL "https://github.com/lihaoyi/Ammonite/releases/download/1.7.1/2.13-1.7.1" > "$HOME/.local/bin/amm" \
-        && chmod +x "$HOME/.local/bin/amm"
-    print_result $? "Ammonite repl"
-
     # install scalastyle
     SCALASTYLE_DIR="$HOME/.local/scalastyle"
     SCALASTYLE_FILE="scalastyle_2.12-1.0.0-batch.jar"
@@ -161,14 +155,12 @@ java -jar "$SCALASTYLE_DIR/$SCALASTYLE_FILE" -c "$SCALASTYLE_DIR/scalastyle_conf
 }
 
 configure_keys() {
-    print_info "Keybase + pass"
-    install_apt pass "Pass"
-    for folder in "$HOME/.ssh" "$HOME/.password-store"; do
-        if [ -d "$folder" ]; then
-            echo "Removing $folder .."
-            rm -r "$folder"
-        fi
-    done
+    print_info "Keybase"
+
+    if [ -d "$HOME/.ssh" ]; then
+        rm -r "$HOME/.ssh"
+    fi
+
     # download keybase
     curl --remote-name https://prerelease.keybase.io/nightly/keybase_amd64.deb
     sudo dpkg -i keybase_amd64.deb
@@ -180,12 +172,11 @@ configure_keys() {
     # import private keys
     keybase pgp export -s | gpg --allow-secret-key-import --import -
 
+    # import ssh configs
     git clone keybase://private/ellison/ssh ~/.ssh
     chmod 0400 ~/.ssh/id_rsa
     ssh-add
 
-    # import password store
-    git clone keybase://private/ellison/vault ~/.password-store
 }
 
 install_apt() {
