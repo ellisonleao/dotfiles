@@ -92,7 +92,9 @@ set showtabline=2
 source ~/.config/nvim/lightline.vim
 
 " vim-test confs and mappings
-let test#strategy = 'dispatch'
+let test#strategy = 'neovim'
+let test#java#runner = 'gradletest'
+
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>

@@ -57,6 +57,7 @@ relies_on() {
 http() {
     docker run -t --rm \
         --name=http \
+        --net host \
         -v /var/run/docker.sock:/var/run/docker.sock \
         --log-driver none \
         ${DOCKER_REPO_PREFIX}/httpie "$@"
@@ -108,6 +109,21 @@ kafkacat() {
 
 sherlock() {
     docker run --rm ${DOCKER_REPO_PREFIX}/sherlock:latest "$@"
+}
+
+nginx() {
+    del_stopped nginx
+
+    docker run -d \
+        --restart always \
+        -v "${HOME}/.nginx/:/etc/nginx" \
+        --net host \
+        --name nginx \
+        nginx
+}
+
+wavemon() {
+    docker run -it --rm --net host ${DOCKER_REPO_PREFIX}/wavemon:latest "$@"
 }
 
 # GUI
