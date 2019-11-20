@@ -10,6 +10,7 @@ call plug#begin('~/.vim/plugged')
 " Code languages
 Plug 'sheerun/vim-polyglot'
 Plug 'sebdah/vim-delve', {'for': 'go'}
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " git
 Plug 'tpope/vim-fugitive'
