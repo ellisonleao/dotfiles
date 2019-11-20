@@ -1,7 +1,6 @@
 #!/bin/bash
 # editor
 alias vim=nvim
-alias vi=nvim
 alias v=nvim
 
 # Easier navigation: .., ..., ...., ....., ~ and -
