@@ -125,6 +125,11 @@ wavemon() {
     docker run -it --rm --net=host ${DOCKER_REPO_PREFIX}/wavemon:latest "$@"
 }
 
+changelog() {
+    docker run -it --rm -v "$(pwd)":/usr/local/src/your-app \
+        ferrarimarco/github-changelog-generator "$@"
+}
+
 # GUI
 
 gimp() {
