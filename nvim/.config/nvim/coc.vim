@@ -18,14 +18,14 @@ let g:coc_global_extensions = [
 let g:coc_user_config = {
             \ 'coc': {
             \     'preferences': {
-            \         'formatOnSaveFiletypes': ['python', 'javascript', 'javascriptreact', 'go', 'scala', 'sh']
+            \         'formatOnSaveFiletypes': ['python', 'javascript', 'javascriptreact', 'scala', 'sh', 'java']
             \     }
             \ },
-            \ 'diagnostic': {
-            \     'errorSign': '❌',
-            \     'warningSign': '⚠️',
-            \     'infoSign': 'ℹ',
-            \     'hintSign': '💡'
+            \ 'diagnostic':  {
+            \     'errorSign': 'x',
+            \     'warningSign': '!',
+            \     'infoSign': 'i',
+            \     'hintSign': '?'
             \ },
             \ 'languageserver': {
             \     'golang': {
@@ -69,6 +69,11 @@ let g:coc_user_config = {
             \         'enable': 1,
             \     },
             \     'enable': 1
+            \ },
+            \ 'java': {
+            \     'format': {
+            \         'enabled': 1,
+            \     },
             \ },
             \}
 

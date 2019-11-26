@@ -101,6 +101,10 @@ nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 
+if has('nvim')
+    tmap <C-o> <C-\><C-n>
+endif
+
 
 " Some minor or more generic autocmd rules
 " The PC is fast enough, do syntax highlight syncing from start
@@ -140,11 +144,11 @@ highlight ALEError ctermbg=DarkRed
 
 let g:ale_sign_warning = '►'
 let g:ale_sign_error = '►'
-let g:ale_fixers = {}
 let g:ale_linters = {
             \ 'scala': ['scalastyle', 'metals'],
             \ 'vim': ['vint'],
             \ 'python': ['flake8'],
+            \ 'sh': ['shellcheck'],
             \}
 nmap <silent> <leader>[ <Plug>(ale_next_wrap)
 nmap <silent> <leader>] <Plug>(ale_previous_wrap)
@@ -171,7 +175,7 @@ noremap ,l <C-W><C-L>
 noremap ,h <C-W><C-H>
 
 " Close buffer
-noremap ,d :bd<CR>
+noremap ,d :bd!<CR>
 
 " Clean search (highlight)
 noremap <leader>\ :noh<CR>
