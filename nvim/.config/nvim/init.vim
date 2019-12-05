@@ -130,26 +130,16 @@ autocmd VimLeave * call ClearNetrwhistFile()
 " ***************** PYTHON
 let test#python#runner = 'pytest'
 let test#python#pytest#options = '-W ignore -s --cov-report term-missing'
-let g:ale_python_flake8_options = '--max-line-length=100'
-
-" ***************** GO
-" run goimports on save
-autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
-
 
 " Ale configs
-let g:ale_linters_explicit = 1
-highlight ALEWarning ctermbg=DarkYellow
-highlight ALEError ctermbg=DarkRed
-
 let g:ale_sign_warning = '►'
 let g:ale_sign_error = '►'
 let g:ale_linters = {
             \ 'scala': ['scalastyle', 'metals'],
             \ 'vim': ['vint'],
-            \ 'python': ['flake8'],
             \ 'sh': ['shellcheck'],
             \}
+
 nmap <silent> <leader>[ <Plug>(ale_next_wrap)
 nmap <silent> <leader>] <Plug>(ale_previous_wrap)
 

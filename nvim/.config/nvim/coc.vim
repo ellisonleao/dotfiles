@@ -9,16 +9,16 @@ let g:coc_global_extensions = [
             \ 'coc-html',
             \ 'coc-css',
             \ 'coc-vimlsp',
-            \ 'coc-python',
             \ 'coc-snippets',
             \ 'coc-tsserver',
+            \ 'coc-python',
             \]
 
 " Coc config (thumbs up to not have to use that coc-settings.json file)
 let g:coc_user_config = {
             \ 'coc': {
             \     'preferences': {
-            \         'formatOnSaveFiletypes': ['python', 'javascript', 'javascriptreact', 'scala', 'sh', 'java']
+            \         'formatOnSaveFiletypes': ['javascript', 'javascriptreact', 'scala', 'sh', 'java', 'python']
             \     }
             \ },
             \ 'diagnostic':  {
@@ -50,9 +50,6 @@ let g:coc_user_config = {
             \         'ignoredRootPaths': ['~'],
             \     },
             \ },
-            \ 'tsserver': {
-            \     'npm': expand('~/.nvm/versions/node/v10.16.3/bin/npm'),
-            \ },
             \ 'python': {
             \     'venvPath': expand('~/.virtualenvs'),
             \     'formatting': {
@@ -61,8 +58,13 @@ let g:coc_user_config = {
             \         'blackArgs': ['--line-length=100'],
             \     },
             \     'linting': {
-            \         'enabled': 0
+            \         'pylintEnabled': 0,
+            \         'flake8Enabled': 1,
+            \         'flake8Args': ['--append-config='.expand('~/.config/flake8')]
             \     },
+            \ },
+            \ 'tsserver': {
+            \     'npm': expand('~/.nvm/versions/node/v10.16.3/bin/npm'),
             \ },
             \ 'html': {
             \     'format': {
