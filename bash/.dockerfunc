@@ -130,17 +130,10 @@ changelog() {
         ferrarimarco/github-changelog-generator "$@"
 }
 
-# GUI
+mongo() {
+    docker run -it --rm --net=host mongo:bionic mongo "$@"
+}
 
-gimp() {
-    # xhost local:docker
-    del_stopped gimp
-
-    docker run -d \
-        -v /etc/localtime:/etc/localtime:ro \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
-        -e "DISPLAY=unix${DISPLAY}" \
-        -v "${HOME}/Pictures:/root/Pictures" \
-        --name gimp \
-        ${DOCKER_REPO_PREFIX}/gimp
+subfinder() {
+    docker run --rm --net=host ${DOCKER_REPO_PREFIX}/subfinder:latest "$@"
 }
