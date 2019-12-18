@@ -106,10 +106,6 @@ kafkacat() {
     docker run --rm -it --net=host edenhill/kafkacat:1.5.0 "$@"
 }
 
-sherlock() {
-    docker run --rm ${DOCKER_REPO_PREFIX}/sherlock:latest "$@"
-}
-
 nginx() {
     del_stopped nginx
 
@@ -136,4 +132,8 @@ mongo() {
 
 subfinder() {
     docker run --rm --net=host ${DOCKER_REPO_PREFIX}/subfinder:latest "$@"
+}
+
+dnsperf() {
+    docker run --rm --net=host ${DOCKER_REPO_PREFIX}/dnsperf:latest
 }

@@ -19,7 +19,8 @@ alias w=workon
 alias git=hub
 alias gs="git sync"
 function gitignore() {
-    curl -sL "https://www.gitignore.io/api/"$@
+    ARGS=$*
+    curl -sL "https://www.gitignore.io/api/${ARGS}"
 }
 alias gig=gitignore
 
@@ -90,6 +91,9 @@ alias httpserver="python -m http.server"
 alias ydl="youtube-dl"
 
 alias xclip="xclip -se c"
+
+# file permission in octec value
+alias perm='stat -c "%a %n"'
 
 # shellcheck source=/dev/null
 if [ -f "$HOME/.dockerfunc" ]; then

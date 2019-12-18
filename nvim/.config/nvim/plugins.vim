@@ -15,6 +15,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+Plug 'rhysd/git-messenger.vim', {'on': 'GitMessenger'}
 
 " snippets, keyboard helpers
 Plug 'tpope/vim-commentary'
@@ -28,11 +29,11 @@ Plug 'junegunn/fzf.vim'
 " testing
 Plug 'junegunn/vader.vim', {'for': 'vim'}
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestLast', 'TestSuite', 'TestVisit', 'TestFile']}
-Plug 'tpope/vim-dispatch', {'on': ['TestNearest', 'TestLast', 'TestSuite', 'TestVisit', 'TestFile']}
 
 " linter , lsp completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
+" Plug 'neovim/nvim-lsp'
 
 " visual plugins
 Plug 'chriskempson/base16-vim'

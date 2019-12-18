@@ -46,7 +46,7 @@ let g:python_host_prog='~/.pyenv/versions/2.7.16/bin/python'
 autocmd BufWritePre * %s/\s\+$//e
 
 " Coc.nvim settings and mappings
-source ~/.config/nvim/coc.vim
+so ~/.config/nvim/coc.vim
 
 
 "*****************************************************************************
