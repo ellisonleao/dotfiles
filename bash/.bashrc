@@ -37,7 +37,7 @@ if command -v "pyenv" &>/dev/null; then
 fi
 
 # sg
-if [ -f "~/.ssh/startgrid/aliases" ]; then
+if [ -f "$HOME/.ssh/startgrid/aliases" ]; then
     # shellcheck source=/dev/null
     source ~/.ssh/startgrid/aliases
 fi
@@ -51,10 +51,9 @@ fi
 # enable bash completion
 # Use bash-completion, if available
 # shellcheck source=/dev/null
-[ -s "/usr/share/bash-completion/bash_completion" ] && source /usr/share/bash-completion/bash_completion
+[ -f "/usr/share/bash-completion/bash_completion" ] && source /usr/share/bash-completion/bash_completion
 
 # nvm
 # shellcheck source=/dev/null
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-# shellcheck source=/dev/null
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
