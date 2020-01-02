@@ -8,9 +8,9 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Code languages
-Plug 'sheerun/vim-polyglot'
-Plug 'sebdah/vim-delve', {'for': 'go'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'sebdah/vim-delve', {'for': 'go'}
+Plug 'sheerun/vim-polyglot'
 
 " git
 Plug 'tpope/vim-fugitive'

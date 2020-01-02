@@ -112,48 +112,6 @@ configure_node() {
     execute "npm i -g @bitwarden/cli" "Install bitwarden cli"
 }
 
-configure_scala() {
-    print_info "Configuring Scala"
-
-    # sbt deb
-    echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
-
-    # installing requirements
-    install_apt default-jdk "JDK"
-    install_apt sbt "SBT"
-
-    # install metals-vim
-    METALS_VERSION=0.7.6
-    print_info "metals-vim"
-    curl -fsL -o ~/.local/bin/coursier https://git.io/coursier && chmod +x ~/.local/bin/coursier
-    ~/.local/bin/coursier bootstrap \
-      --java-opt -Xss4m \
-      --java-opt -Xms100m \
-      --java-opt -Dmetals.client=coc.nvim \
-      org.scalameta:metals_2.12:$METALS_VERSION \
-      -r bintray:scalacenter/releases \
-      -r sonatype:snapshots \
-      -o ~/.local/bin/metals-vim -f
-    print_result $? "metals-vim"
-
-    # install scalastyle
-    SCALASTYLE_DIR="$HOME/.local/scalastyle"
-    SCALASTYLE_FILE="scalastyle_2.12-1.0.0-batch.jar"
-    if [ ! -d  "$SCALASTYLE_DIR" ]; then
-        mkdir "$SCALASTYLE_DIR"
-    fi
-    pushd "$SCALASTYLE_DIR"
-        curl -fsLO "https://oss.sonatype.org/content/repositories/releases/org/scalastyle/scalastyle_2.12/1.0.0/$SCALASTYLE_FILE"
-        curl -fsLO "http://www.scalastyle.org/scalastyle_config.xml"
-        cat >"$HOME/.local/bin/scalastyle" <<-EOF
-#!/bin/bash
-java -jar "$SCALASTYLE_DIR/$SCALASTYLE_FILE" -c "$SCALASTYLE_DIR/scalastyle_config.xml" "\$@"
-        EOF
-        chmod +x "$HOME/.local/bin/scalastyle"
-    popd
-}
-
 configure_keys() {
     print_info "Keybase"
 
@@ -256,7 +214,7 @@ install_neovim() {
         curl -fsLO "https://github.com/neovim/neovim/releases/download/$VERSION/nvim-linux64.tar.gz"
         tar xvf nvim-linux64.tar.gz
         rm nvim-linux64.tar.gz
-    popd
+    popd || exit
     ln -s "$HOME/.local/nvim-linux64/bin/nvim" "$HOME/.local/bin/"
     ln -s "$HOME/.local/nvim-linux64/share/applications/nvim.desktop" "$HOME/.local/share/applications"
     sed -i "s/Icon\=nvim/Icon\=\/home\/$USER\/.local\/nvim-linux64\/share\/pixmaps\/nvim.png/g" "$HOME/.local/share/applications/nvim.desktop"

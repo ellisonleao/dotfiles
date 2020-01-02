@@ -12,6 +12,7 @@ let g:coc_global_extensions = [
             \ 'coc-snippets',
             \ 'coc-tsserver',
             \ 'coc-python',
+            \ 'coc-go',
             \]
 
 " Coc config (thumbs up to not have to use that coc-settings.json file)
@@ -28,20 +29,10 @@ let g:coc_user_config = {
             \     'hintSign': '?'
             \ },
             \ 'languageserver': {
-            \     'golang': {
-            \         'command': 'gopls',
-            \         'rootPatterns': ['go.mod', '.vim/', '.git', '.hg/'],
-            \         'filetypes': ['go']
-            \     },
             \     'dockerfile': {
             \         'command': 'docker-langserver',
             \         'filetypes': ['dockerfile'],
             \         'args': ['--stdio']
-            \     },
-            \     'metals': {
-            \         'command': 'metals-vim',
-            \         'rootPatterns': ['build.sbt'],
-            \         'filetypes': ['scala', 'sbt']
             \     },
             \     'bash': {
             \         'command': 'bash-language-server',
