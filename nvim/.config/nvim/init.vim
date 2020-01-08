@@ -94,6 +94,8 @@ source ~/.config/nvim/lightline.vim
 " vim-test confs and mappings
 let test#strategy = 'neovim'
 let test#java#runner = 'gradletest'
+let test#java#gradletest#executable = 'gradle test -i'
+let test#go#gotest#executable = 'go test -v'
 
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
