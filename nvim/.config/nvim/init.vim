@@ -95,7 +95,7 @@ source ~/.config/nvim/lightline.vim
 let test#strategy = 'neovim'
 let test#java#runner = 'gradletest'
 let test#java#gradletest#executable = 'gradle test -i'
-let test#go#gotest#executable = 'go test -v'
+let test#go#gotest#executable = 'gotest -v'
 
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
