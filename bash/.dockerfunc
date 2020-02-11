@@ -63,14 +63,6 @@ http() {
         ${DOCKER_REPO_PREFIX}/httpie "$@"
 }
 
-speedtest-cli() {
-    docker run -t --rm \
-        --name=speedtest-cli \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        --log-driver none \
-        ${DOCKER_REPO_PREFIX}/speedtest-cli "$@"
-}
-
 ctop() {
     docker run --rm -ti \
         --name=ctop \
@@ -122,7 +114,7 @@ wavemon() {
 }
 
 changelog() {
-    docker run -it --rm -v "$(pwd)":/usr/local/src/your-app \
+    docker run -it --rm -v "$(pwd)":/usr/local/src/app \
         ferrarimarco/github-changelog-generator "$@"
 }
 
@@ -130,10 +122,21 @@ mongo() {
     docker run -it --rm --net=host mongo:bionic mongo "$@"
 }
 
+mongoimport() {
+    docker run -it --rm --net=host mongo:bionic mongoimport "$@"
+}
+
+mongorestore() {
+    docker run -it --rm --net=host mongo:bionic mongorestore "$@"
+}
 subfinder() {
     docker run --rm --net=host ${DOCKER_REPO_PREFIX}/subfinder:latest "$@"
 }
 
 dnsperf() {
     docker run --rm --net=host ${DOCKER_REPO_PREFIX}/dnsperf:latest
+}
+
+evans() {
+    docker run --rm -it --net=host ${DOCKER_REPO_PREFIX}/evans:latest "$@"
 }

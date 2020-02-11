@@ -64,6 +64,11 @@ colorscheme base16-seti
 " let the colors begin
 syntax on
 
+" Some minor or more generic autocmd rules
+" The PC is fast enough, do syntax highlight syncing from start
+" vint: -ProhibitAutocmdWithNoGroup
+autocmd BufEnter * :syntax sync fromstart
+
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
@@ -112,11 +117,6 @@ if has('persistent_undo')
   set undofile
 endif
 
-" Some minor or more generic autocmd rules
-" The PC is fast enough, do syntax highlight syncing from start
-" vint: -ProhibitAutocmdWithNoGroup
-autocmd BufEnter * :syntax sync fromstart
-
 " Remember cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
@@ -152,9 +152,6 @@ let g:go_highlight_generate_tags = 1
 augroup go
   autocmd!
 
-  " Show by default 4 spaces for a tab
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-
   " :GoBuild and :GoTestCompile
   autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
@@ -169,11 +166,6 @@ augroup go
 
   " :GoMetaLinter
   autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
-
-  " :GoDef but opens in a vertical split
-  autocmd FileType go nmap <Leader>v <Plug>(go-def-vertical)
-  " :GoDef but opens in a horizontal split
-  autocmd FileType go nmap <Leader>s <Plug>(go-def-split)
 
 augroup END
 

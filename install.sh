@@ -85,6 +85,15 @@ configure_python() {
     done
 }
 
+configure_rust() {
+    print_info "Installing rust"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+    print_info "Installing rust packages"
+    RUST_PACKAGES=('bat' 'exa' 'rg' 'ripgrep' 'fd-find' )
+    print_result "cargo install ${RUST_PACKAGES[*]}" "Installing rust packages"
+}
+
 configure_node() {
     unset NVM_DIR
     if [ -d "$HOME/.nvm" ]; then
@@ -122,7 +131,7 @@ configure_keys() {
     # download keybase
     curl --remote-name https://prerelease.keybase.io/nightly/keybase_amd64.deb
     sudo dpkg -i keybase_amd64.deb
-    [ $? == 0 ] && rm keybase_amd64.deb
+    [[ $? == 0 ]] && rm keybase_amd64.deb
 
     # login
     keybase login
@@ -177,7 +186,6 @@ add_ppts() {
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
     PPTS=(
-        "ppa:longsleep/golang-backports"
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
         "ppa:papirus/papirus"
     )
@@ -209,7 +217,7 @@ install_kitty() {
 
 install_neovim() {
     print_info "Neovim"
-    VERSION="v0.4.2"
+    VERSION="v0.5.0"
     pushd "$HOME/.local" || exit
         curl -fsLO "https://github.com/neovim/neovim/releases/download/$VERSION/nvim-linux64.tar.gz"
         tar xvf nvim-linux64.tar.gz
@@ -219,23 +227,6 @@ install_neovim() {
     ln -s "$HOME/.local/nvim-linux64/share/applications/nvim.desktop" "$HOME/.local/share/applications"
     sed -i "s/Icon\=nvim/Icon\=\/home\/$USER\/.local\/nvim-linux64\/share\/pixmaps\/nvim.png/g" "$HOME/.local/share/applications/nvim.desktop"
     update-desktop-database "$HOME/.local/share/applications"
-}
-
-install_bat() {
-    print_info "bat"
-
-    if cmd_exists "bat"; then
-        print_success "bat"
-        return 0
-    fi
-
-    curl -fsLO https://github.com/sharkdp/bat/releases/download/v0.11.0/bat_0.11.0_amd64.deb
-    sudo apt install ./bat_0.11.0_amd64.deb
-    if [ "$#" -eq 0 ]; then
-        rm ./bat_0.11.0_amd64.deb
-        return 0
-    fi
-    return 1
 }
 
 install_apps() {
@@ -249,13 +240,8 @@ install_apps() {
     install_apt stow "GNU Stow"
     install_apt wget "wget"
     install_apt fonts-firacode "FiraCode font"
-    install_apt neovim "Neovim"
-    install_apt golang-go "Golang"
     install_apt snapd "Snapd"
     install_apt jq "jq"
-    install_apt fd-find "fd"
-    install_apt ripgrep "ripgrep"
-    install_apt shellcheck "shellcheck"
     install_apt docker-ce "docker"
     install_apt docker-ce-cli "docker cli"
     install_apt containerd.io "containerd runtime"
@@ -273,11 +259,14 @@ install_apps() {
     install_snap spotify "Spotify"
     install_snap shfmt "shfmt"
     install_snap bitwarden "Bitwarden"
+    install_snap go "Golang"
+    install_snap shellcheck "shellcheck"
+    install_snap shotcut "Shotcut"
+    install_snap slack "Slack"
 
     # not on apt apps
     install_kitty
     install_neovim
-    install_bat
 }
 
 configure_ui() {
@@ -331,9 +320,9 @@ main() {
 
     configure_python
 
-    configure_node
+    configure_rust
 
-    configure_scala
+    configure_node
 
     configure_ui
 

@@ -33,7 +33,7 @@ let g:lightline = {
             \   'coc_ok'           : 'left',
             \ },
             \ 'component_function': {
-            \   'gitbranch': 'fugitive#head',
+            \   'gitbranch': 'FugitiveHead',
             \   'cocstatus': 'coc#status',
             \   'currentfunction': 'CocCurrentFunction'
             \ }

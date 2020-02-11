@@ -13,13 +13,15 @@ let g:coc_global_extensions = [
             \ 'coc-tsserver',
             \ 'coc-python',
             \ 'coc-go',
+            \ 'coc-rust-analyzer',
             \]
 
 " Coc config (thumbs up to not have to use that coc-settings.json file)
 let g:coc_user_config = {
             \ 'coc': {
             \     'preferences': {
-            \         'formatOnSaveFiletypes': ['javascript', 'javascriptreact', 'scala', 'sh', 'java', 'python']
+            \         'formatOnSaveFiletypes': ['javascript', 'javascriptreact', 'scala', 'sh',
+            \                                   'java', 'python', 'rust']
             \     }
             \ },
             \ 'diagnostic':  {
