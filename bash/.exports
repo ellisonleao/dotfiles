@@ -7,6 +7,9 @@ export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 
+# node
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+
 # dir colors
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
@@ -28,9 +31,6 @@ export PROJECT_HOME=~/code
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-
-# nvm
-export NVM_DIR="$HOME/.nvm"
 
 # local folder
 export PATH=$PATH:$HOME/.local/bin

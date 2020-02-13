@@ -95,21 +95,7 @@ configure_rust() {
 }
 
 configure_node() {
-    unset NVM_DIR
-    if [ -d "$HOME/.nvm" ]; then
-        print_info "$HOME/.nvm folder exists, please remove it and try again"
-        return 1
-    fi
-
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-
-    # shellcheck source=/dev/null
-    source "$HOME/.bashrc"
-    if ! cmd_exists "nvm"; then
-        print_error "Failed to install nvm. Moving on.."
-        return 1
-    fi
-    execute "nvm install --lts" "Installing latest LTS node version"
+    execute "curl -L https://git.io/n-install | N_PREFIX=~/.local/n bash -s -- -y -n" "Installing n"
 
     # shellcheck source=/dev/null
     source "$HOME/.bashrc"

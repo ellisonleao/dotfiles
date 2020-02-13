@@ -13,7 +13,7 @@ shopt -s cmdhist
 shopt -s nocaseglob
 
 # shellcheck source=/dev/null
-[ -s "$HOME/.fzf.bash" ] && source "$HOME/.fzf.bash"
+[[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
 
 # base16 shell
 BASE16_SHELL=$HOME/.config/base16-shell/
@@ -21,11 +21,11 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 
 # load aliases
 # shellcheck source=/dev/null
-[ -s "$HOME/.bash_aliases" ] && source "$HOME/.bash_aliases"
+[[ -f "$HOME/.bash_aliases" ]] && source "$HOME/.bash_aliases"
 
 # load prompt
 # shellcheck source=/dev/null
-[ -s "$HOME/.bash_prompt" ] && source "$HOME/.bash_prompt"
+[[ -f "$HOME/.bash_prompt" ]] && source "$HOME/.bash_prompt"
 
 
 if command -v "pyenv" &>/dev/null; then
@@ -38,7 +38,7 @@ fi
 
 # sg
 # shellcheck source=/dev/null
-[ -s "$HOME/.ssh/startgrid/aliases" ] && source "$HOME/.ssh/startgrid/aliases"
+[[ -f "$HOME/.ssh/startgrid/aliases" ]] && source "$HOME/.ssh/startgrid/aliases"
 
 # kitty completion
 # shellcheck source=/dev/null
@@ -49,11 +49,4 @@ fi
 # enable bash completion
 # Use bash-completion, if available
 # shellcheck source=/dev/null
-[ -s "/usr/share/bash-completion/bash_completion" ] && source /usr/share/bash-completion/bash_completion
-
-# nvm
-# shellcheck source=/dev/null
-[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[[ -f "/usr/share/bash-completion/bash_completion" ]] && source /usr/share/bash-completion/bash_completion

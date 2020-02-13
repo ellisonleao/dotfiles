@@ -57,7 +57,7 @@ let g:coc_user_config = {
             \     },
             \ },
             \ 'tsserver': {
-            \     'npm': expand('~/.nvm/versions/node/v10.16.3/bin/npm'),
+            \     'npm': expand('~/.local/n/bin/npm'),
             \ },
             \ 'html': {
             \     'format': {
