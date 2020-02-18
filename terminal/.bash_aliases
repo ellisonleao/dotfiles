@@ -9,6 +9,8 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
+
+
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
@@ -24,7 +26,9 @@ function gitignore() {
 }
 alias gig=gitignore
 
+# better ls
 alias ls="exa"
+alias la="ls -laF"
 
 # # copy file interactive
 alias cp='cp -i'
