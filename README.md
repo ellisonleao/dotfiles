@@ -1,7 +1,13 @@
 dotfiles
 ========
 
-Personal configuration files.
+Personal configuration files. All symlinks are created with [stow](https://www.gnu.org/software/stow/)
+
+The main configs are for:
+
+- Neovim configs and plugins
+- Visual settings and keyboard shorcuts for GNOME3
+- Terminal settings (for Kitty terminal)
 
 ## Installing
 

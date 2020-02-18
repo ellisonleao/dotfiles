@@ -55,7 +55,6 @@ configure_python() {
 
     PY2=(
         flake8
-        flake8-bugbear
         neovim
         ansible
     )
@@ -116,8 +115,9 @@ configure_keys() {
 
     # download keybase
     curl --remote-name https://prerelease.keybase.io/nightly/keybase_amd64.deb
-    sudo dpkg -i keybase_amd64.deb
-    [[ $? == 0 ]] && rm keybase_amd64.deb
+    if [[ $(sudo dpkg -i keybase_amd64.deb) == 0 ]]; then
+        rm keybase_amd64.deb
+    fi
 
     # login
     keybase login
@@ -129,7 +129,6 @@ configure_keys() {
     git clone keybase://private/ellison/ssh ~/.ssh
     chmod 0400 ~/.ssh/id_rsa
     ssh-add
-
 }
 
 install_apt() {
