@@ -131,38 +131,6 @@ configure_keys() {
     ssh-add
 }
 
-install_apt() {
-    PACKAGE="$1"
-    PACKAGE_READABLE_NAME="$2"
-
-    if ! package_is_installed "$PACKAGE" "apt"; then
-        execute "yes | sudo apt-get install $PACKAGE" "$PACKAGE_READABLE_NAME"
-    else
-        print_success "$PACKAGE_READABLE_NAME"
-    fi
-}
-
-install_snap() {
-    PACKAGE="$1"
-    PACKAGE_READABLE_NAME="$2"
-    MORE="$3"
-
-    if ! package_is_installed "$PACKAGE" "snap"; then
-        execute "sudo snap install $PACKAGE $MORE" "$PACKAGE_READABLE_NAME"
-    else
-        print_success "$PACKAGE_READABLE_NAME"
-    fi
-}
-
-package_is_installed() {
-    PACKAGE="$1"
-    PROGRAM="$2"
-    if [ "$PROGRAM" == "apt" ]; then
-        dpkg -s "$PACKAGE" &>/dev/null
-    elif [ "$PROGRAM" == "snap" ]; then
-        snap list | grep "$PACKAGE" &>/dev/null
-    fi
-}
 
 add_ppts() {
     print_info "adding additional apt sources"
@@ -184,7 +152,7 @@ add_ppts() {
 }
 
 install_kitty() {
-    print_info "Kitty Terminal"
+    print_info "Installing Kitty Terminal"
 
     curl -fsL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
 
@@ -255,6 +223,7 @@ install_apps() {
 }
 
 configure_ui() {
+    print_info "Configuring UI"
     # changing default font, themes and backgrounds
     gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
     gsettings set org.gnome.desktop.interface gtk-theme "Pop-slim-dark"

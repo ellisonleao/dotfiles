@@ -150,3 +150,36 @@ cmd_exists() {
     command -v "$1" &>/dev/null
     return $?
 }
+
+install_apt() {
+    PACKAGE="$1"
+    PACKAGE_READABLE_NAME="$2"
+
+    if ! package_is_installed "$PACKAGE" "apt"; then
+        execute "yes | sudo apt-get install $PACKAGE" "$PACKAGE_READABLE_NAME"
+    else
+        print_success "$PACKAGE_READABLE_NAME"
+    fi
+}
+
+install_snap() {
+    PACKAGE="$1"
+    PACKAGE_READABLE_NAME="$2"
+    MORE="$3"
+
+    if ! package_is_installed "$PACKAGE" "snap"; then
+        execute "sudo snap install $PACKAGE $MORE" "$PACKAGE_READABLE_NAME"
+    else
+        print_success "$PACKAGE_READABLE_NAME"
+    fi
+}
+
+package_is_installed() {
+    PACKAGE="$1"
+    PROGRAM="$2"
+    if [ "$PROGRAM" == "apt" ]; then
+        dpkg -s "$PACKAGE" &>/dev/null
+    elif [ "$PROGRAM" == "snap" ]; then
+        snap list | grep "$PACKAGE" &>/dev/null
+    fi
+}
