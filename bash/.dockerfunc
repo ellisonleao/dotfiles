@@ -129,14 +129,11 @@ mongoimport() {
 mongorestore() {
     docker run -it --rm --net=host mongo:bionic mongorestore "$@"
 }
+
 subfinder() {
     docker run --rm --net=host ${DOCKER_REPO_PREFIX}/subfinder:latest "$@"
 }
 
 dnsperf() {
     docker run --rm --net=host ${DOCKER_REPO_PREFIX}/dnsperf:latest
-}
-
-evans() {
-    docker run --rm -it --net=host ${DOCKER_REPO_PREFIX}/evans:latest "$@"
 }

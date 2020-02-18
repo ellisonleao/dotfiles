@@ -141,6 +141,7 @@ let test#python#pytest#options = '-W ignore -s --cov-report term-missing'
 let g:go_fmt_command = "goimports"
 let g:go_autodetect_gopath = 1
 let g:go_list_type = "quickfix"
+let g:go_addtags_transform = "camelcase"
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
