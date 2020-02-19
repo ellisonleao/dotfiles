@@ -1,7 +1,8 @@
 #!/bin/bash
 # editor
-alias vim=nvim
-alias v=nvim
+alias vim=~/.local/bin/nvim
+alias vi=vim
+alias v=vim
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
