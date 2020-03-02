@@ -75,7 +75,7 @@ alias icat="kitty +kitten icat"
 alias httpserver="python -m http.server"
 
 # youtube-dl
-alias ydl="youtube-dl"
+alias dl="annie"
 
 alias xclip="xclip -se c"
 
