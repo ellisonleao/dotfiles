@@ -135,7 +135,6 @@ autocmd VimLeave * call ClearNetrwhistFile()
 
 " ***************** PYTHON
 let test#python#runner = 'pytest'
-let test#python#pytest#options = '-W ignore -s --cov-report term-missing'
 
 " ***************** GOLANG
 let g:go_fmt_command = "goimports"
@@ -184,6 +183,7 @@ endfunction
 let g:polyglot_disabled = ['go']
 
 " Ale configs
+let g:ale_linters_explicit = 1
 let g:ale_sign_warning = '►'
 let g:ale_sign_error = '►'
 let g:ale_linters = {

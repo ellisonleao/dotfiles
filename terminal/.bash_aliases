@@ -83,6 +83,8 @@ alias xclip="xclip -se c"
 alias perm='stat -c "%a %n"'
 
 # shellcheck source=/dev/null
-if [ -f "$HOME/.dockerfunc" ]; then
-    source "$HOME/.dockerfunc"
-fi
+[[ -f "$HOME/.dockerfunc" ]] && source "$HOME/.dockerfunc"
+
+# dolar/euro to brl latest quotation
+alias dollar="curl -s 'https://api.cotacoes.uol.com/currency/intraday/list?currency=1&fields=bidvalue,date' | jq .docs[0].bidvalue"
+alias euro="curl -s 'https://api.cotacoes.uol.com/currency/intraday/list?currency=5&fields=bidvalue,date' | jq .docs[0].bidvalue"

@@ -54,15 +54,6 @@ relies_on() {
 
 # CLI
 
-http() {
-    docker run -t --rm \
-        --name=http \
-        --net host \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        --log-driver none \
-        ${DOCKER_REPO_PREFIX}/httpie "$@"
-}
-
 ctop() {
     docker run --rm -ti \
         --name=ctop \

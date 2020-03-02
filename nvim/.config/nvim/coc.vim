@@ -47,8 +47,7 @@ let g:coc_user_config = {
             \     'venvPath': expand('~/.virtualenvs'),
             \     'formatting': {
             \         'provider': 'black',
-            \         'blackPath': expand('~/.pyenv/shims/black'),
-            \         'blackArgs': ['--line-length=100'],
+            \         'blackPath': expand('~/.pyenv/shims/black')
             \     },
             \     'linting': {
             \         'pylintEnabled': 0,

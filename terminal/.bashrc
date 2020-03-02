@@ -12,9 +12,6 @@ shopt -s cmdhist
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
 
-# shellcheck source=/dev/null
-[[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
-
 # base16 shell
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$("$BASE16_SHELL/profile_helper.sh")"
@@ -50,5 +47,3 @@ fi
 # Use bash-completion, if available
 # shellcheck source=/dev/null
 [[ -f "/usr/share/bash-completion/bash_completion" ]] && source /usr/share/bash-completion/bash_completion
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
