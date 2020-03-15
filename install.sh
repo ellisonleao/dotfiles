@@ -89,8 +89,22 @@ configure_rust() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
     print_info "Installing rust packages"
-    RUST_PACKAGES=('bat' 'exa' 'rg' 'ripgrep' 'fd-find' )
-    print_result "cargo install ${RUST_PACKAGES[*]}" "Installing rust packages"
+    RUST_CRATES=(
+        'bat'
+        'exa'
+        'ripgrep'
+        'fd-find'
+        'hx'
+        'licensor'
+        'procs'
+        'du-dust'
+        'hyperfine'
+        'bandwhich'
+    )
+    print_result "cargo install ${RUST_CRATES[*]}" "Installing rust packages"
+
+    # special case
+    cargo install -f --git https://github.com/cjbassi/ytop ytop
 }
 
 configure_node() {
@@ -98,12 +112,13 @@ configure_node() {
 
     # shellcheck source=/dev/null
     source "$HOME/.bashrc"
-
-    # install js apps
-    execute "npm i -g eslint" "Install eslint"
-    execute "npm i -g prettier" "Install prettier"
-    execute "npm i -g bash-language-server" "Install bash language server"
-    execute "npm i -g @bitwarden/cli" "Install bitwarden cli"
+    NODE_PACKAGES=(
+        'eslist'
+        'prettier'
+        'bash-language-server'
+        '@bitwarden/cli'
+    )
+    print_result "npm i -g ${NODE_PACKAGES[*]}" "Installing node packages"
 }
 
 configure_keys() {

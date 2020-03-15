@@ -27,14 +27,8 @@ function gitignore() {
 }
 alias gig=gitignore
 
-# better ls
-alias ls="exa"
-alias la="ls -laF"
-
-# # copy file interactive
+# copy and move files interactive
 alias cp='cp -i'
-
-# move file interactive
 alias mv='mv -i'
 
 # untar
@@ -44,10 +38,19 @@ alias untar='tar xvf'
 # shellcheck source=/dev/null
 [ -f "$HOME/.ssh/startgrid/aliases" ] && source "$HOME/.ssh/startgrid/aliases"
 
-# cat using bat
-alias cat="bat -p"
-
-alias grep="grep --color=auto "
+# modern command replacements
+alias cat='bat -p'
+alias less='bat -p'
+alias grep='ripgrep'
+alias find='fdfind'
+alias ps='procs'
+alias hexdump='hx'
+alias time='hyperfine'
+alias du='dust'
+alias top='ytop'
+alias iftop='sudo ~/.cargo/bin/bandwhich'
+alias ls="exa"
+alias la="ls -laF"
 
 # IP addresses
 alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -57,9 +60,6 @@ alias ips="sudo ifconfig -a | grep -o 'inet6\\? \\(addr:\\)\\?\\s\\?\\(\\(\\([0-
 # View HTTP traffic
 alias sniff="sudo ngrep -d 'wlp2s0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i wlp2s0 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
-
-# fdfind as find
-alias find='fdfind'
 
 # weather
 alias weather="curl http://wttr.in/Curitiba?0F1qn"
