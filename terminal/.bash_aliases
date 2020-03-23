@@ -41,7 +41,7 @@ alias untar='tar xvf'
 # modern command replacements
 alias cat='bat -p'
 alias less='bat -p'
-alias grep='ripgrep'
+alias grep='rg'
 alias find='fdfind'
 alias ps='procs'
 alias hexdump='hx'
