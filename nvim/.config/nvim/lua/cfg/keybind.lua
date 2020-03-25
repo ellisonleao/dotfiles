@@ -35,6 +35,8 @@ function keybind.post_init()
     col = -2,
     width = -1,
   }
+
+  vim.o.wildmode = "list:longest"
 end
 
 --- Split a key sequence string like "fed" into { "f", "e", "d" }
