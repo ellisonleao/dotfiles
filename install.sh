@@ -301,6 +301,7 @@ configure_node() {
         'prettier'
         'bash-language-server'
         'typescript-language-server'
+        'vscode-html-languageserver-bin'
         '@bitwarden/cli'
     )
     print_result "npm i -g ${NODE_PACKAGES[*]}" "Installing node packages"
