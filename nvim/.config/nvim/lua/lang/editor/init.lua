@@ -65,6 +65,10 @@ function layer.init_config()
   -- close buffer
   keybind.bind_command(edit_mode.NORMAL, ",d", ":bd!<CR>", { noremap = true}, "Close buffer")
 
+  -- " Vmap for maintain Visual Mode after shifting > and <
+  keybind.bind_command(edit_mode.VISUAL, "<", "<gv")
+  keybind.bind_command(edit_mode.VISUAL, ">", ">gv")
+
   -- vim-test bindings
   keybind.set_group_name("<leader>t", "Test")
   keybind.bind_command(edit_mode.NORMAL, "<leader>tt", ":TestNearest<CR>")
@@ -87,6 +91,10 @@ function layer.init_config()
   set_default_buf_opt("smartindent", true)
   set_default_buf_opt("swapfile", false)
 
+  -- Remeber last cursor position
+  autocmd.bind("BufReadPost *", function()
+    vim.api.nvim_exec("normal! g`\"", false)
+  end)
 end
 
 return layer

@@ -75,6 +75,14 @@ function autocmd.bind_vim_enter(func)
   autocmd.bind("VimEnter *", func)
 end
 
+--- Register a callback for when Vim exits
+--
+-- @tparam function func The function to call when the autocommand fires
+function autocmd.bind_vim_leave(func)
+  autocmd.bind("VimLeave *", func)
+end
+
+
 --- Register a callback for colorscheme changes
 --
 -- @tparam function func The function to call when the autocommand fires
