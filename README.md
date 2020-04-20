@@ -7,7 +7,7 @@ The main configs are for:
 
 - Neovim configs and plugins
 - Visual settings and keyboard shorcuts for GNOME3
-- Terminal settings (for Kitty terminal)
+- Terminal settings (for Alacritty terminal + tmux)
 
 ## Installing
 

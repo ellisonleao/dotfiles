@@ -14,14 +14,15 @@ keybind.register_plugins()
 autocmd.init()
 
 local modules = {
+  "go", -- Go configs
   "editor", -- Mappings, autocmd configs
   "style", -- color, syntax, configs
   "git", -- Git configs
   "lsp", -- Common language server configs
   "lua", -- Lua configs
   "python", -- Python configs
-  "go", -- Go configs
   "js", -- Js, ts, react configs
+  "html", -- html configs
   "rust" -- Rust configs
 }
 for _, item in ipairs(modules) do

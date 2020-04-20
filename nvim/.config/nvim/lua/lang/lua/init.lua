@@ -17,13 +17,10 @@ end
 function layer.init_config()
   local lsp = require("lang.lsp")
   local nvim_lsp = require("nvim_lsp")
-  local lang_server_path = "/home/ellison/.local/lua-language-server"
 
-  -- TODO: Make this configurable per-project
   lsp.register_server(
     nvim_lsp.sumneko_lua,
     {
-      cmd = {lang_server_path.."/bin/Linux/lua-language-server", "-E", lang_server_path.."/main.lua"},
       settings = {
         Lua = {
           diagnostics = {

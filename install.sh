@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# shellcheck source=/dev/null
-source ./helpers.sh
-
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
@@ -19,7 +16,7 @@ print_in_red() {
 }
 
 print_error() {
-    print_in_red "  [✖] $1 $2"
+    print_in_red " [✖] $1 $2"
 }
 
 print_info() {
@@ -37,14 +34,11 @@ print_result() {
 }
 
 print_success() {
-    print_in_green "  [✔] $1"
+    print_in_green " [✔] $1"
 }
 
 ask_for_sudo() {
-
-    # Ask for the administrator password upfront
     sudo -v &>/dev/null
-
     # Update existing `sudo` time stamp until this script has finished
     # https://gist.github.com/cowboy/3118588
     while true; do
@@ -63,75 +57,49 @@ verify_os() {
 }
 
 show_spinner() {
-
     local -r FRAMES='/-\|'
-
     # shellcheck disable=SC2034
     local -r NUMBER_OR_FRAMES=${#FRAMES}
-
     local -r CMDS="$2"
     local -r MSG="$3"
     local -r PID="$1"
-
     local i=0
     local frameText=""
 
     # Display spinner while the commands are being executed.
-
     while kill -0 "$PID" &>/dev/null; do
-
         frameText="   [${FRAMES:i++%NUMBER_OR_FRAMES:1}] $MSG"
-        # Print frame text.
         printf "%s" "$frameText"
         sleep 0.2
-
-        # Clear frame text.
         printf "\\r"
-
     done
-
 }
 
 set_trap() {
-    trap -p "$1" | grep "$2" &>/dev/null ||
-        trap '$2' "$1"
-
+    trap -p "$1" | grep "$2" &>/dev/null || trap '$2' "$1"
 }
 
 execute() {
-
     local -r CMDS="$1"
     local -r MSG="${2:-$1}"
     local -r TMP_FILE="$(mktemp /tmp/XXXXX)"
-
     local exitCode=0
     local cmdsPID=""
 
     # If the current process is ended,
     # also end all its subprocesses.
-
     set_trap "EXIT" "kill_all_subprocesses"
 
     # Execute commands in background
-
     eval "$CMDS" \
         &>/dev/null \
         2>"$TMP_FILE" &
 
     cmdsPID=$!
 
-    # Show a spinner if the commands
-    # require more time to complete.
     show_spinner "$cmdsPID" "$CMDS" "$MSG"
-
-    # Wait for the commands to no longer be executing
-    # in the background, and then get their exit code.
-
     wait "$cmdsPID" &>/dev/null
     exitCode=$?
-
-    # Print output based on what happened.
-
     print_result $exitCode "$MSG"
 
     if [ $exitCode -ne 0 ]; then
@@ -140,7 +108,6 @@ execute() {
 
     rm -rf "$TMP_FILE"
     return $exitCode
-
 }
 
 print_error_stream() {
@@ -152,29 +119,6 @@ print_error_stream() {
 cmd_exists() {
     command -v "$1" &>/dev/null
     return $?
-}
-
-install_apt() {
-    PACKAGE="$1"
-    PACKAGE_READABLE_NAME="$2"
-
-    if ! package_is_installed "$PACKAGE" "apt"; then
-        execute "yes | sudo apt-get install $PACKAGE" "$PACKAGE_READABLE_NAME"
-    else
-        print_success "$PACKAGE_READABLE_NAME"
-    fi
-}
-
-install_snap() {
-    PACKAGE="$1"
-    PACKAGE_READABLE_NAME="$2"
-    MORE="$3"
-
-    if ! package_is_installed "$PACKAGE" "snap"; then
-        execute "sudo snap install $PACKAGE $MORE" "$PACKAGE_READABLE_NAME"
-    else
-        print_success "$PACKAGE_READABLE_NAME"
-    fi
 }
 
 package_is_installed() {
@@ -191,7 +135,6 @@ package_is_installed() {
 # | Main Functions                                                   |
 # --------------------------------------------------------------------
 
-
 create_folders() {
     mkdir -p ~/.local/bin
     mkdir -p ~/.local/share/applications
@@ -207,35 +150,29 @@ configure_terminal() {
 configure_python() {
     print_info "Configuring python environment.."
 
-    if [ -d "$HOME/.pyenv" ]; then
-        print_info "$HOME/.pyenv folder already exists. please remove it and try again"
-        return 1
-    fi
-
     # pyenv prereqs
     # shellcheck disable=SC2033
     sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
-        libreadline-dev libsqlite3-dev llvm libncurses5-dev libncursesw5-dev \
-        xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+                            libreadline-dev libsqlite3-dev llvm libncurses5-dev \
+                            libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
+                            python-openssl git
 
-    execute "curl -fs https://pyenv.run | bash" "Installing pyenv"
+    if [[ ! -d "$HOME/.pyenv" ]]; then
+        execute "curl -fs https://pyenv.run | bash" "Installing pyenv"
+    fi
 
     # reload terminal configs
     # shellcheck source=/dev/null
     source "$HOME/.bashrc"
 
-    if ! cmd_exists "pyenv"; then
-        print_error "pyenv could not be installed. Moving on"
-        return 1
-    fi
-
     # virtualenvwrapper
-    git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git" "$(pyenv root)/plugins/pyenv-virtualenvwrapper"
+    if [[ ! -d  "$(pyenv root)/plugins/pyenv-virtualenvwrapper" ]] ;  then
+        git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git" "$(pyenv root)/plugins/pyenv-virtualenvwrapper"
+    fi
 
     execute "pyenv install 3.8.0" "Installing Python 3.8"
     execute "pyenv install 2.7.17" "Installing Python 2.7.17"
-
-    pyenv global 3.8.0 2.7.16
+    execute "pyenv global 3.8.0 2.7.17" "Set global python"
 
     PY2=(
         flake8
@@ -244,17 +181,15 @@ configure_python() {
     )
 
     PY3=(
+        black
         flake8
-        flake8-bugbear
         awscli
         neovim
         ipython
-        youtube-dl
         docker-compose
-        black
         python-language-server
-        jedi
         vim-vint
+        pyls-black
     )
 
     print_info "Installing python 3 packages"
@@ -270,9 +205,12 @@ configure_python() {
 
 configure_rust() {
     print_info "Installing rust"
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-    print_info "Installing rust packages"
+    # shellcheck source=/dev/null
+    source "$HOME/.bashrc"
+
+    print_info "Installing rust crates"
     RUST_CRATES=(
         'bat'
         'exa'
@@ -285,7 +223,9 @@ configure_rust() {
         'hyperfine'
         'bandwhich'
     )
-    print_result "cargo install ${RUST_CRATES[*]}" "Installing rust packages"
+    for pkg in "${RUST_CRATES[@]}"; do
+        cargo install "$pkg"
+    done
 
     # special case
     cargo install -f --git https://github.com/cjbassi/ytop ytop
@@ -296,28 +236,39 @@ configure_node() {
 
     # shellcheck source=/dev/null
     source "$HOME/.bashrc"
+
+    print_info "Installing node packages"
     NODE_PACKAGES=(
-        'eslist'
+        'npm'
+        'eslint'
         'prettier'
         'bash-language-server'
         'typescript-language-server'
         'vscode-html-languageserver-bin'
         '@bitwarden/cli'
     )
-    print_result "npm i -g ${NODE_PACKAGES[*]}" "Installing node packages"
+    for pkg in "${NODE_PACKAGES[@]}"; do
+        npm install -i "$pkg"
+    done
+
 }
 
 configure_keys() {
-    print_info "Keybase"
+    print_info "Installing Keybase"
 
-    if [ -d "$HOME/.ssh" ]; then
-        rm -r "$HOME/.ssh"
+    if [[ -f "$HOME/.ssh/id_rsa" ]]; then
+        print_info "key already imported"
+        return 0
     fi
+    FILE="keybase_amd64.deb"
 
     # download keybase
-    curl --remote-name https://prerelease.keybase.io/nightly/keybase_amd64.deb
-    if [[ $(sudo dpkg -i keybase_amd64.deb) == 0 ]]; then
-        rm keybase_amd64.deb
+    if [[ ! -f "$FILE" ]]; then
+        curl --remote-name https://prerelease.keybase.io/nightly/$FILE
+        execute "sudo dpkg -i $FILE" "Installing Keybase"
+        sudo apt install --fix-broken
+    else
+        print_info "keybase file already exists, skipping download."
     fi
 
     # login
@@ -339,9 +290,15 @@ add_ppts() {
     # docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
+    # brave
+    curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+    echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+
+
     PPTS=(
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
         "ppa:papirus/papirus"
+        "ppa:mmstick76/alacritty"
     )
 
     for ppt in "${PPTS[@]}"; do
@@ -352,35 +309,25 @@ add_ppts() {
     print_result $? "adding additional apt sources"
 }
 
-install_kitty() {
-    print_info "Installing Kitty Terminal"
-
-    curl -fsL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
-
-    # add desktop integration
-    cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications
-    sed -i "s/Icon\=kitty/Icon\=\/home\/$USER\/.local\/kitty.app\/share\/icons\/hicolor\/256x256\/apps\/kitty.png/g" ~/.local/share/applications/kitty.desktop
-
-    # set as default
-    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$HOME/.local/kitty.app/bin/kitty" 50
-    sudo update-alternatives --set x-terminal-emulator "$HOME/.local/kitty.app/bin/kitty"
-
-    # update desktop icon list
-    update-desktop-database "$HOME/.local/share/applications"
-}
-
 install_neovim() {
     print_info "Neovim"
-    VERSION="v0.5.0"
-    pushd "$HOME/.local" || exit
-        curl -fsLO "https://github.com/neovim/neovim/releases/download/$VERSION/nvim-linux64.tar.gz"
-        tar xvf nvim-linux64.tar.gz
-        rm nvim-linux64.tar.gz
-    popd || exit
-    ln -s "$HOME/.local/nvim-linux64/bin/nvim" "$HOME/.local/bin/"
-    ln -s "$HOME/.local/nvim-linux64/share/applications/nvim.desktop" "$HOME/.local/share/applications"
-    sed -i "s/Icon\=nvim/Icon\=\/home\/$USER\/.local\/nvim-linux64\/share\/pixmaps\/nvim.png/g" "$HOME/.local/share/applications/nvim.desktop"
-    update-desktop-database "$HOME/.local/share/applications"
+    NPATH="$HOME/.local"
+    FILENAME="nvim-linux64.tar.gz"
+    # download latest nightly
+    curl -fLo "$NPATH" --create-dirs \
+        "https://github.com/neovim/neovim/releases/download/$VERSION/$FILENAME"
+
+    # extract and remove tar
+    tar xvf "$NPATH/$FILENAME"
+    rm "$NPATH/$FILENAME"
+
+    # create symlinks for bin and desktop icon
+    ln -fs "$NPATH/nvim-linux64/bin/nvim" "$NPATH/bin/"
+    ln -fs "$NPATH/nvim-linux64/share/applications/nvim.desktop" "$NPATH/share/applications"
+
+    # change desktop icon image path and update gnome applications db
+    sed -i "s/Icon\=nvim/Icon\=\/home\/$USER\/.local\/nvim-linux64\/share\/pixmaps\/nvim.png/g" "$NPATH/share/applications/nvim.desktop"
+    update-desktop-database "$NPATH/share/applications"
 }
 
 install_apps() {
@@ -389,37 +336,48 @@ install_apps() {
     print_info "Installing APT/Snap apps"
 
     # apt
-    install_apt git "Git"
-    install_apt hub "hub"
-    install_apt stow "GNU Stow"
-    install_apt wget "wget"
-    install_apt fonts-firacode "FiraCode font"
-    install_apt snapd "Snapd"
-    install_apt jq "jq"
-    install_apt docker-ce "docker"
-    install_apt docker-ce-cli "docker cli"
-    install_apt containerd.io "containerd runtime"
-    install_apt firefox "Firefox"
-    install_apt tor "TOR"
-    install_apt vlc "VLC"
-    install_apt transmission "Transmission"
-    install_apt gnome-tweaks "GNOME Tweaks"
-    install_apt chrome-gnome-shell "Chrome GNOME shell"
-    install_apt imagemagick "ImageMagick"
-    install_apt dconf-editor "dconf-editor"
-    install_apt papirus-icon-theme "papirus theme"
+    APT_APPS=(
+        git
+        curl
+        stow
+        hub
+        wget
+        fonts-firacode
+        snapd
+        jq
+        docker-ce
+        docker-ce-cli
+        containerd.io
+        vlc
+        transmission
+        gnome-tweaks
+        chrome-gnome-shell
+        imagemagick
+        dconf-editor
+        papirus-icon-theme
+        brave-browser
+        alacritty
+        tmux
+    )
+    for pkg in "${APT_APPS[@]}"; do
+        execute "sudo apt-get install -y $pkg" "$pkg"
+    done
 
     # snaps
-    install_snap spotify "Spotify"
-    install_snap shfmt "shfmt"
-    install_snap bitwarden "Bitwarden"
-    install_snap go "Golang"
-    install_snap shellcheck "shellcheck"
-    install_snap shotcut "Shotcut"
-    install_snap slack "Slack"
+    SNAPS=(
+        spotify
+        shfmt
+        bitwarden
+        shellcheck
+        'go --classic'
+        'shotcut --classic'
+        'slack --classic'
+    )
 
-    # not on apt apps
-    install_kitty
+    for pkg in "${SNAPS[@]}"; do
+        execute "sudo snap install $pkg" "$pkg"
+    done
+
     install_neovim
 }
 
@@ -427,7 +385,7 @@ configure_ui() {
     print_info "Configuring UI"
     # changing default font, themes and backgrounds
     gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
-    gsettings set org.gnome.desktop.interface gtk-theme "Pop-slim-dark"
+    gsettings set org.gnome.desktop.interface gtk-theme "Pop-dark"
     gsettings set org.gnome.desktop.interface show-battery-percentage true
     gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
     gsettings set org.gnome.desktop.interface font-name "Sans 11"
@@ -444,15 +402,13 @@ configure_ui() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Spotify Play/Pause"
 
-
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding "['<Alt>Right']"
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name "Spotify Next"
 
-
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding "['<Alt>Left']"
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'Spotify Play/Pause'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'Spotify Previous'
 
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
 }
@@ -462,10 +418,11 @@ configure_ui() {
 # ----------------------------------------------------------------------
 
 main() {
-
     verify_os
 
     ask_for_sudo
+
+    create_folders
 
     configure_keys
 

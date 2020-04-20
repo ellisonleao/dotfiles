@@ -81,17 +81,6 @@ kafkacat() {
     docker run --rm -it --net=host edenhill/kafkacat:1.5.0 "$@"
 }
 
-nginx() {
-    del_stopped nginx
-
-    docker run -d \
-        --restart always \
-        -v "${HOME}/.nginx/:/etc/nginx" \
-        --net host \
-        --name nginx \
-        nginx
-}
-
 wavemon() {
     docker run -it --rm --net=host ${DOCKER_REPO_PREFIX}/wavemon:latest "$@"
 }

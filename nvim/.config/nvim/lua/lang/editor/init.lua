@@ -21,6 +21,7 @@ function layer.register_plugins()
   plug.add_plugin("tpope/vim-commentary") -- Commenting
   plug.add_plugin("liuchengxu/vim-clap", {["do"] = ":Clap install-binary"}) -- fuzzy search
   plug.add_plugin("janko-m/vim-test") --test plugin
+  plug.add_plugin("sheerun/vim-polyglot") -- language pack
 end
 
 --- Configures vim and plugins for this layer
