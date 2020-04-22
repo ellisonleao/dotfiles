@@ -243,6 +243,7 @@ configure_node() {
         'eslint'
         'prettier'
         'bash-language-server'
+        'typescript'
         'typescript-language-server'
         'vscode-html-languageserver-bin'
         '@bitwarden/cli'
