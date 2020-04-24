@@ -23,6 +23,7 @@ local modules = {
   "python", -- Python configs
   "js", -- Js, ts, react configs
   "html", -- html configs
+  "sh", -- bash configs
   "rust" -- Rust configs
 }
 for _, item in ipairs(modules) do

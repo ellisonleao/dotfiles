@@ -10,6 +10,7 @@ local layer = {}
 function layer.register_plugins()
   plug.add_plugin("neovim/nvim-lsp")
   plug.add_plugin("haorenW1025/completion-nvim")
+  plug.add_plugin("haorenW1025/diagnostic-nvim")
 end
 
 local function user_stop_all_clients()
@@ -119,9 +120,13 @@ layer.filetype_servers = {}
 -- @param config The config for the server (in the format expected by `nvim_lsp`)
 function layer.register_server(server, config)
   local completion = require("completion") -- From completion-nvim
+  local diagnostic = require("diagnostic") -- From diagnostic-nvim
 
   config = config or {}
-  config.on_attach = completion.on_attach
+  config.on_attach = function()
+    completion.on_attach()
+    diagnostic.on_attach()
+  end
   config = vim.tbl_extend("keep", config, server.document_config.default_config)
 
   server.setup(config)

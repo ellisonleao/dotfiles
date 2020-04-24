@@ -3,38 +3,22 @@
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
-print_in_green() {
-    printf "\\e[0;32m%s\\e[0m\\n" "$1"
-}
-
-print_in_purple() {
-    printf "\\e[0;35m%s\\e[0m\\n" "$1"
-}
-
-print_in_red() {
-    printf "\\e[0;31m%s\\e[0m\\n" "$1"
-}
-
 print_error() {
-    print_in_red " [✖] $1 $2"
+    printf "\\e[0;31m%s\\e[0m\\n" " [ ✖ ] $1 $2"
 }
 
 print_info() {
-    print_in_purple "$1"
+    printf "\\e[0;35m%s\\e[0m\\n" "$1"
 }
 
 print_result() {
     if [ "$1" -eq 0 ]; then
-        print_success "$2"
+        printf "\\e[0;32m%s\\e[0m\\n" " [ ✔ ] $2"
     else
         print_error "$2"
     fi
 
     return "$1"
-}
-
-print_success() {
-    print_in_green " [✔] $1"
 }
 
 ask_for_sudo() {
@@ -300,6 +284,7 @@ add_ppts() {
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
         "ppa:papirus/papirus"
         "ppa:mmstick76/alacritty"
+        "ppa:system76/pop"
     )
 
     for ppt in "${PPTS[@]}"; do
@@ -359,6 +344,7 @@ install_apps() {
         brave-browser
         alacritty
         tmux
+        pop-theme
     )
     for pkg in "${APT_APPS[@]}"; do
         execute "sudo apt-get install -y $pkg" "$pkg"
