@@ -356,6 +356,7 @@ install_apps() {
         shfmt
         bitwarden
         shellcheck
+        telegram-desktop
         'go --classic'
         'shotcut --classic'
         'slack --classic'
