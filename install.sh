@@ -125,6 +125,10 @@ create_folders() {
 }
 
 configure_terminal() {
+    if [[ -f "$HOME/.bashrc" ]]; then
+        rm "$HOME/.bashrc"
+    fi
+
     print_info "Configuring terminal"
     for item in "terminal nvim ui"; do
         execute "stow -R ${item}" "Creating ${item} symlink"
@@ -139,15 +143,20 @@ configure_python() {
     sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
                             libreadline-dev libsqlite3-dev llvm libncurses5-dev \
                             libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
-                            python-openssl git
+                            python-openssl  python3-dev libdbus-glib-1-dev libgirepository1.0-dev
 
     if [[ ! -d "$HOME/.pyenv" ]]; then
         execute "curl -fs https://pyenv.run | bash" "Installing pyenv"
     fi
 
-    # reload terminal configs
     # shellcheck source=/dev/null
     source "$HOME/.bashrc"
+
+    if ! cmd_exists "pyenv"; then
+        export PATH="$HOME/.pyenv/bin:$PATH"
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
+    fi
 
     # virtualenvwrapper
     if [[ ! -d  "$(pyenv root)/plugins/pyenv-virtualenvwrapper" ]] ;  then
@@ -174,16 +183,18 @@ configure_python() {
         python-language-server
         vim-vint
         pyls-black
+        dbus-python
+        spotify-cli-linux
     )
 
     print_info "Installing python 3 packages"
     for pkg in "${PY3[@]}"; do
-        pip install "$pkg"
+        pip install "$pkg" --timeout=2
     done
 
     print_info "Installing python 2 packages"
     for pkg in "${PY2[@]}"; do
-        pip2 install "$pkg"
+        pip2 install "$pkg" --timeout=2
     done
 }
 
@@ -216,7 +227,9 @@ configure_rust() {
 }
 
 configure_node() {
-    execute "curl -L https://git.io/n-install | N_PREFIX=~/.local/n bash -s -- -y -n" "Installing n"
+    if ! cmd_exists "n"; then
+        execute "curl -L https://git.io/n-install | N_PREFIX=~/.local/n bash -s -- -y -n" "Installing n"
+    fi
 
     # shellcheck source=/dev/null
     source "$HOME/.bashrc"
@@ -288,7 +301,7 @@ add_ppts() {
     )
 
     for ppt in "${PPTS[@]}"; do
-        yes | sudo add-apt-repository "$ppt"
+        sudo add-apt-repository -y "$ppt"
     done
 
     sudo apt-get update
@@ -344,7 +357,6 @@ install_apps() {
         brave-browser
         alacritty
         tmux
-        pop-theme
     )
     for pkg in "${APT_APPS[@]}"; do
         execute "sudo apt-get install -y $pkg" "$pkg"
@@ -373,7 +385,7 @@ configure_ui() {
     print_info "Configuring UI"
     # changing default font, themes and backgrounds
     gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
-    gsettings set org.gnome.desktop.interface gtk-theme "Pop-dark"
+    gsettings set org.gnome.desktop.interface gtk-theme "Yaru-dark"
     gsettings set org.gnome.desktop.interface show-battery-percentage true
     gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
     gsettings set org.gnome.desktop.interface font-name "Sans 11"
@@ -426,7 +438,7 @@ main() {
 
     configure_ui
 
-    print_in_green "Success! Please restart the terminal to see the changes!"
+    echo "Success! Please restart the terminal to see the changes!"
 }
 
 main

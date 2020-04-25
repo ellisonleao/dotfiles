@@ -37,12 +37,6 @@ fi
 # shellcheck source=/dev/null
 [[ -f "$HOME/.ssh/startgrid/aliases" ]] && source "$HOME/.ssh/startgrid/aliases"
 
-# kitty completion
-# shellcheck source=/dev/null
-if command -v "kitty" &>/dev/null; then
-    source <(kitty + complete setup bash)
-fi
-
 # enable bash completion
 # Use bash-completion, if available
 # shellcheck source=/dev/null
