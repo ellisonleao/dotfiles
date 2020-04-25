@@ -96,6 +96,12 @@ function layer.init_config()
   autocmd.bind("BufReadPost *", function()
     vim.api.nvim_exec("normal! g`\"", false)
   end)
+
+  -- remove trailing spaces
+  autocmd.bind("BufReadPre *", function()
+    vim.api.nvim_exec("%s/\\s\\+$//e", false)
+  end)
+
 end
 
 return layer
