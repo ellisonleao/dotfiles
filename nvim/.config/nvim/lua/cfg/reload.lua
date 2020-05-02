@@ -18,7 +18,7 @@ end
 --- Unloads modules from this user config
 function reload.unload_user_modules()
     reload.unload_modules("cfg") -- Unload config core
-    reload.unload_modules("lang") -- Unload layers
+    reload.unload_modules("modules") -- Unload layers
 end
 
 --- Updates `package.path` from Vim's `runtimepath`

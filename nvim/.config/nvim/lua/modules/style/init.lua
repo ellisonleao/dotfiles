@@ -16,12 +16,9 @@ end
 
 --- Returns plugins required for this layer
 function layer.register_plugins()
-  plug.add_plugin("chriskempson/base16-vim") -- Base16 colors 
-  plug.add_plugin("vim-airline/vim-airline") -- Sweet looking status line
-  plug.add_plugin("vim-airline/vim-airline-themes") -- Sweet looking status line
-  -- plug.add_plugin("itchyny/lightline.vim") -- Sweet looking status line
-  -- plug.add_plugin("critiqjo/vim-bufferline") -- complement for lightline 
-  -- plug.add_plugin("mengelbrecht/lightline-bufferline") -- complement for lightline 
+  plug.add_plugin("chriskempson/base16-vim")
+  plug.add_plugin("vim-airline/vim-airline")
+  plug.add_plugin("vim-airline/vim-airline-themes")
 end
 
 --- Configures vim and plugins for this layer
@@ -29,9 +26,18 @@ function layer.init_config()
   -- Colors
   vim.o.termguicolors = true
   autocmd.bind_colorscheme(function()
+
+    -- Diff highlights
     vim.cmd("highlight DiffAdd ctermfg=193 ctermbg=none guifg=#66CC6C guibg=none")
     vim.cmd("highlight DiffChange ctermfg=189 ctermbg=none guifg=#B166CC guibg=none")
     vim.cmd("highlight DiffDelete ctermfg=167 ctermbg=none guifg=#CC6666 guibg=none")
+
+    -- LSP highlights
+    vim.cmd("highlight LspDiagnosticsError ctermfg=167 ctermbg=none guifg=#EB4917 guibg=none")
+    vim.cmd("highlight LspDiagnosticsWarning ctermfg=167 ctermbg=none guifg=#EBA217 guibg=none")
+    vim.cmd("highlight LspDiagnosticsInformation ctermfg=167 ctermbg=none guifg=#17D6EB guibg=none")
+    vim.cmd("highlight LspDiagnosticsHint ctermfg=167 ctermbg=none guifg=#17EB7A guibg=none")
+
   end)
   vim.api.nvim_command("colorscheme base16-seti")
   vim.g.airline_theme = "base16"
@@ -78,9 +84,6 @@ function layer.init_config()
   -- Show partial commands in the bottom right
   vim.o.showcmd = true
 
-  -- Show line at column 100
-  set_default_win_opt("colorcolumn", "100")
-
   -- Enable mouse support
   vim.o.mouse = "a"
 
@@ -97,20 +100,10 @@ function layer.init_config()
   -- Always show the sign column
   set_default_win_opt("signcolumn", "yes")
 
-  -- Configure lightline
-  --[[
-  vim.g.lightline = {
-    'active' = {
-      'left' = { { 'mode', 'paste' }, {'gitbranch', 'readonly', 'modified' } },
-      'right' = { {'lineinfo'}, },
-    }
-    'tabline' = {'left' = { {'buffers'} } },
-    'component_expand' = { 
-      'buffers' = 'lightline#bufferline#buffers'
-    },
-    'component_function' = { 'gitbranch' = 'FugitiveHead' }
-  }
-  --]]
+  -- Transparency on the popup menus/windows
+  vim.o.pumblend = 10
+  vim.o.winblend = 10
+  
 
 
 end

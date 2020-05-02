@@ -15,7 +15,7 @@ end
 
 --- Configures vim and plugins for this layer
 function layer.init_config()
-  local lsp = require("lang.lsp")
+  local lsp = require("modules.lsp")
   local nvim_lsp = require("nvim_lsp")
 
   lsp.register_server(

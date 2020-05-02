@@ -23,11 +23,10 @@ local modules = {
   "python", -- Python configs
   "js", -- Js, ts, react configs
   "html", -- html configs
-  "sh", -- bash configs
   "rust" -- Rust configs
 }
 for _, item in ipairs(modules) do
-  layer.add_layer("lang."..item)
+  layer.add_layer("modules."..item)
 end
 layer.finish_layer_registration()
 

@@ -16,7 +16,7 @@ local function on_filetype_go()
   keybind.bind_command(edit_mode.NORMAL, "<leader>i", "<Plug>(go-info)")
 
   -- build go files
-  local command = ":lua require('lang.go')._build_go_files()<CR>"
+  local command = ":lua require('modules.go')._build_go_files()<CR>"
   keybind.bind_command(edit_mode.NORMAL, "<leader>b", command)
 end
 
@@ -37,7 +37,7 @@ end
 
 --- Configures vim and plugins for this layer
 function layer.init_config()
-  local lsp = require("lang.lsp")
+  local lsp = require("modules.lsp")
   local nvim_lsp = require("nvim_lsp")
 
   -- vim-go vars

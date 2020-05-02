@@ -7,6 +7,16 @@ local autocmd = require("cfg.autocmd")
 
 local layer = {}
 
+
+-- The startup window doesn't seem to pick up on vim.o changes >.<
+local function set_default_win_opt(name, value)
+  vim.o[name] = value
+  autocmd.bind_vim_enter(function()
+    vim.wo[name] = value
+  end)
+end
+
+
 -- The startup buffer doesn't seem to pick up on vim.o changes >.<
 local function set_default_buf_opt(name, value)
   vim.o[name] = value
@@ -91,6 +101,11 @@ function layer.init_config()
   set_default_buf_opt("autoread", true)
   set_default_buf_opt("smartindent", true)
   set_default_buf_opt("swapfile", false)
+  set_default_win_opt("foldmethod", "marker")
+
+  -- Show line at column 100 and break text at 100
+  set_default_win_opt("colorcolumn", "100")
+  set_default_buf_opt("textwidth", 100)
 
   -- Remeber last cursor position
   autocmd.bind("BufReadPost *", function()
@@ -102,6 +117,8 @@ function layer.init_config()
     vim.api.nvim_exec("%s/\\s\\+$//e", false)
   end)
 
+ -- A shortcut command for :lua print(vim.inspect(...)) (:Li for Lua Inspect)
+ vim.api.nvim_command("command! -nargs=+ Li :lua print(vim.inspect(<args>))")
 end
 
 return layer

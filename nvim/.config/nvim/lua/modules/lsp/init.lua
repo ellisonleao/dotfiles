@@ -55,7 +55,10 @@ end
 
 --- Configures vim and plugins for this layer
 function layer.init_config()
-  vim.api.nvim_set_var("completion_enable_in_comemnt", 1)
+  -- completion confs
+  -- diagnostics confs
+  vim.api.nvim_set_var("diagnostic_enable_virtual_text", 1)
+  -- vim.api.nvim_set_var("diagnostic_set_delay", 1)
 
   -- Bind leader keys
   keybind.set_group_name("<leader>l", "LSP")
@@ -85,7 +88,6 @@ function layer.init_config()
   keybind.bind_command(edit_mode.NORMAL, "<leader>lr", ":lua vim.lsp.buf.references()<CR>", { noremap = true }, "Find references")
   keybind.bind_command(edit_mode.NORMAL, "<leader>lR", ":lua vim.lsp.buf.rename()<CR>", { noremap = true }, "Rename")
   keybind.bind_command(edit_mode.NORMAL, "<leader>ld", ":lua vim.lsp.buf.document_symbol()<CR>", { noremap = true }, "Document symbol list")
-
   -- Show docs when the cursor is held over something
   autocmd.bind_cursor_hold(function()
     vim.cmd("lua vim.lsp.buf.hover()")
@@ -95,7 +97,7 @@ function layer.init_config()
   vim.api.nvim_exec(
     [[
     function! CLspGetAirlinePart()
-    return luaeval("require('lang.lsp')._get_airline_part()")
+    return luaeval("require('modules.lsp')._get_airline_part()")
     endfunction
     ]],
     false

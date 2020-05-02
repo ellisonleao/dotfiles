@@ -1,5 +1,5 @@
 --- The version control layer
--- @module lang.git
+-- @module modules.git
 
 local layer = {}
 
