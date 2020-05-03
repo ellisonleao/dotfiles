@@ -53,7 +53,7 @@ function layer.init_config()
   vim.api.nvim_set_var("go_highlight_generate_tags", 1)
 
   -- configure gotest
-  vim.g["test#go#executable"] = "gotest -v"
+  vim.g["test#go#executable"] = "go test -v"
 
   lsp.register_server(nvim_lsp.gopls)
   autocmd.bind_filetype("go", on_filetype_go)

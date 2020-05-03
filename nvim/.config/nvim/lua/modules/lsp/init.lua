@@ -55,10 +55,8 @@ end
 
 --- Configures vim and plugins for this layer
 function layer.init_config()
-  -- completion confs
   -- diagnostics confs
-  vim.api.nvim_set_var("diagnostic_enable_virtual_text", 1)
-  -- vim.api.nvim_set_var("diagnostic_set_delay", 1)
+  vim.api.nvim_set_var("diagnostic_set_delay", 1)
 
   -- Bind leader keys
   keybind.set_group_name("<leader>l", "LSP")
@@ -91,6 +89,7 @@ function layer.init_config()
   -- Show docs when the cursor is held over something
   autocmd.bind_cursor_hold(function()
     vim.cmd("lua vim.lsp.buf.hover()")
+    vim.cmd("lua vim.lsp.util.show_line_diagnostics()")
   end)
 
   -- Show in vim-airline the attached LSP client
@@ -125,9 +124,9 @@ function layer.register_server(server, config)
   local diagnostic = require("diagnostic") -- From diagnostic-nvim
 
   config = config or {}
-  config.on_attach = function()
-    completion.on_attach()
+  config.on_attach = function(_, _)
     diagnostic.on_attach()
+    completion.on_attach()
   end
   config = vim.tbl_extend("keep", config, server.document_config.default_config)
 
