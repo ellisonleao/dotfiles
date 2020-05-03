@@ -39,18 +39,35 @@ local function user_attach_client()
 end
 
 --- Get the LSP status line part for vim-airline
-function layer._get_airline_part()
+function layer._get_lsp()
   local clients = vim.lsp.buf_get_clients()
   local client_names = {}
   for _, v in pairs(clients) do
     table.insert(client_names, v.name)
   end
 
-  if #client_names > 0 then
-    return "LSP: " .. table.concat(client_names, ", ")
-  else
+  if #client_names == 0 then
     return ""
   end
+
+  local sections = {"LSP:", table.concat(client_names, ",") }
+
+  local error_count = vim.lsp.util.buf_diagnostics_count("Error")
+  if error_count ~= nil and error_count > 0 then table.insert(sections, "E: " .. error_count) end
+
+  local warn_count = vim.lsp.util.buf_diagnostics_count("Warning")
+  if error_count ~= nil and warn_count > 0 then table.insert(sections, "W: " .. warn_count) end
+
+  local info_count = vim.lsp.util.buf_diagnostics_count("Information")
+  if error_count ~= nil and info_count > 0 then table.insert(sections, "I: " .. info_count) end
+
+  local hint_count = vim.lsp.util.buf_diagnostics_count("Hint")
+  if error_count ~= nil and hint_count > 0 then table.insert(sections, "H: " .. hint_count) end
+
+  return table.concat(sections, " ")
+end
+
+function layer._get_errors()
 end
 
 --- Configures vim and plugins for this layer
@@ -95,15 +112,15 @@ function layer.init_config()
   -- Show in vim-airline the attached LSP client
   vim.api.nvim_exec(
     [[
-    function! CLspGetAirlinePart()
-    return luaeval("require('modules.lsp')._get_airline_part()")
+    function! LspGetAirlinePart()
+      return luaeval("require('modules.lsp')._get_lsp()")
     endfunction
     ]],
     false
     )
-  vim.fn["airline#parts#define_function"]("c_lsp", "CLspGetAirlinePart")
-  vim.fn["airline#parts#define_accent"]("c_lsp", "yellow")
-  vim.g.airline_section_y = vim.fn["airline#section#create_right"]{"c_lsp", "ffenc"}
+  vim.fn["airline#parts#define_function"]("nvim_lsp", "LspGetAirlinePart")
+  vim.fn["airline#parts#define_accent"]("nvim_lsp", "bold")
+  vim.g.airline_section_z = vim.fn["airline#section#create_right"]{"nvim_lsp"}
 end
 
 --- Maps filetypes to their server definitions
@@ -120,8 +137,8 @@ layer.filetype_servers = {}
 -- @param server An LSP server definition (in the format expected by `nvim_lsp`)
 -- @param config The config for the server (in the format expected by `nvim_lsp`)
 function layer.register_server(server, config)
-  local completion = require("completion") -- From completion-nvim
-  local diagnostic = require("diagnostic") -- From diagnostic-nvim
+  local completion = require("completion")
+  local diagnostic = require("diagnostic")
 
   config = config or {}
   config.on_attach = function(_, _)

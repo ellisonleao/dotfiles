@@ -103,9 +103,6 @@ function layer.init_config()
   -- Transparency on the popup menus/windows
   vim.o.pumblend = 10
   vim.o.winblend = 10
-  
-
-
 end
 
 return layer
