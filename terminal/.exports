@@ -35,6 +35,9 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 # local folder
 export PATH=$PATH:$HOME/.local/bin
 
+# luarocks
+[[ -d "$HOME/.luarocks" ]] && export PATH=$PATH:$HOME/.luarocks/bin
+
 # visual settings
 #export GDK_SCALE=2
 #export GDK_DPI_SCALE=0.3

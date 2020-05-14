@@ -15,6 +15,8 @@ local function on_filetype_go()
   -- :GoInfo
   keybind.bind_command(edit_mode.NORMAL, "<leader>i", "<Plug>(go-info)")
 
+
+
   -- build go files
   local command = ":lua require('modules.go')._build_go_files()<CR>"
   keybind.bind_command(edit_mode.NORMAL, "<leader>b", command)
@@ -49,8 +51,11 @@ function layer.init_config()
   vim.api.nvim_set_var("go_highlight_fields", 1)
   vim.api.nvim_set_var("go_highlight_buf_opttions", 1)
   vim.api.nvim_set_var("go_highlight_buf_opttion_calls", 1)
+  vim.api.nvim_set_var("go_highlight_build_constraints", 1)
+  vim.api.nvim_set_var("go_highlight_generate_tags", 1)
   vim.api.nvim_set_var("go_highlight_extra_types", 1)
   vim.api.nvim_set_var("go_highlight_generate_tags", 1)
+  vim.api.nvim_set_var("go_metalinter_autosave", 1)
 
   -- configure gotest
   vim.g["test#go#executable"] = "go test -v"

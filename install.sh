@@ -205,6 +205,11 @@ configure_rust() {
     # shellcheck source=/dev/null
     source "$HOME/.bashrc"
 
+    CARGO=$(which cargo)
+    if ! cmd_exists "cargo"; then
+        CARGO="$HOME/.cargo/bin/cargo"
+    fi
+
     print_info "Installing rust crates"
     RUST_CRATES=(
         'bat'
@@ -219,7 +224,7 @@ configure_rust() {
         'bandwhich'
     )
     for pkg in "${RUST_CRATES[@]}"; do
-        cargo install "$pkg"
+        "$CARGO" install "$pkg"
     done
 
     # special case
@@ -227,8 +232,10 @@ configure_rust() {
 }
 
 configure_node() {
+    NPM=$(which npm)
     if ! cmd_exists "n"; then
         execute "curl -L https://git.io/n-install | N_PREFIX=~/.local/n bash -s -- -y -n" "Installing n"
+        NPM="$HOME/.local/n/bin/npm"
     fi
 
     # shellcheck source=/dev/null
@@ -246,7 +253,7 @@ configure_node() {
         '@bitwarden/cli'
     )
     for pkg in "${NODE_PACKAGES[@]}"; do
-        npm install -i "$pkg"
+        "$NPM" install -i "$pkg"
     done
 
 }
@@ -274,7 +281,6 @@ configure_keys() {
 
     # import private keys
     keybase pgp export -s | gpg --allow-secret-key-import --import -
-
     # import ssh configs
     git clone keybase://private/ellison/ssh ~/.ssh
     chmod 0400 ~/.ssh/id_rsa
@@ -284,6 +290,7 @@ configure_keys() {
 
 add_ppts() {
     print_info "adding additional apt sources"
+    sudo apt install apt-transport-https curl
 
     # docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -297,7 +304,6 @@ add_ppts() {
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
         "ppa:papirus/papirus"
         "ppa:mmstick76/alacritty"
-        "ppa:system76/pop"
     )
 
     for ppt in "${PPTS[@]}"; do
@@ -369,6 +375,7 @@ install_apps() {
         bitwarden
         shellcheck
         telegram-desktop
+        exercism
         'go --classic'
         'shotcut --classic'
         'slack --classic'

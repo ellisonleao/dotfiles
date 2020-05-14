@@ -74,7 +74,7 @@ nmap() {
 }
 
 hey() {
-    docker run --rm -t --name=hey ${DOCKER_REPO_PREFIX}/hey "$@"
+    docker run --rm -t --net=host --name=hey ${DOCKER_REPO_PREFIX}/hey "$@"
 }
 
 kafkacat() {

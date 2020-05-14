@@ -29,6 +29,7 @@ end
 function layer.register_plugins()
   plug.add_plugin("tpope/vim-surround") -- Awesome for dealing with surrounding things, like parens
   plug.add_plugin("tpope/vim-commentary") -- Commenting
+  plug.add_plugin("tpope/vim-repeat")
   plug.add_plugin("liuchengxu/vim-clap", {["do"] = ":Clap install-binary"}) -- fuzzy search
   plug.add_plugin("janko-m/vim-test") --test plugin
   plug.add_plugin("sheerun/vim-polyglot") -- language pack
@@ -73,6 +74,7 @@ function layer.init_config()
   keybind.bind_command(edit_mode.NORMAL, ",k", "<C-W><C-K>", { noremap = true}, "Move Split up")
   keybind.bind_command(edit_mode.NORMAL, ",l", "<C-W><C-L>", { noremap = true}, "Move Split right")
   keybind.bind_command(edit_mode.NORMAL, ",h", "<C-W><C-H>", { noremap = true}, "Move Split left")
+
   -- close buffer
   keybind.bind_command(edit_mode.NORMAL, ",d", ":bd!<CR>", { noremap = true}, "Close buffer")
 
@@ -91,6 +93,10 @@ function layer.init_config()
   vim.g["test#strategy"] = "neovim"
   vim.g["test#java#runner"] = "gradletest"
   vim.g["test#java#executable"] = "gradle test -i"
+
+  -- quickfix navigation
+  keybind.bind_command(edit_mode.NORMAL, "<leader>n", ":cn<CR>")
+  keybind.bind_command(edit_mode.NORMAL, "<leader>p", ":cp<CR>")
 
   -- Default global rules
   set_default_buf_opt("tabstop", 4)
