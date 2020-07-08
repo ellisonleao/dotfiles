@@ -1,55 +1,60 @@
 --- Signals
 -- @module cfg.signal
-
 local class = require("cfg.class")
 
 local signal = {}
 
 signal.Signal = class.strict {
-  _connections = class.NULL,
-  _connections_weak = class.NULL,
-  _connections_once = class.NULL,
+  _connections = class.NULL;
+  _connections_weak = class.NULL;
+  _connections_once = class.NULL;
 
   __init = function(self)
     self._connections = {}
     self._connections_weak = {}
     self._connections_once = {}
     setmetatable(self._connections_weak, {__mode = "v"}) -- Weak values
-  end,
+  end;
 
   emit = function(self, ...)
     local results = {}
 
     for _, v in pairs(self._connections) do
       local ret = v(...)
-      if ret ~= nil then table.insert(results, ret) end
+      if ret ~= nil then
+        table.insert(results, ret)
+      end
     end
 
     for _, v in pairs(self._connections_weak) do
       local ret = v(...)
-      if ret ~= nil then table.insert(results, ret) end
+      if ret ~= nil then
+        table.insert(results, ret)
+      end
     end
 
     for _, v in pairs(self._connections_once) do
       local ret = v(...)
-      if ret ~= nil then table.insert(results, ret) end
+      if ret ~= nil then
+        table.insert(results, ret)
+      end
     end
     self._connections_once = {}
 
     return results
-  end,
+  end;
 
   connect = function(self, slot)
     table.insert(self._connections, slot)
-  end,
+  end;
 
   connect_weak = function(self, slot)
     table.insert(self._connections_weak, slot)
-  end,
+  end;
 
   connect_once = function(self, slot)
     table.insert(self._connections_once, slot)
-  end,
+  end;
 
   disconnect = function(self, slot)
     -- Iterate backwards because we remove stuff from the table while iterating
@@ -66,7 +71,7 @@ signal.Signal = class.strict {
         table.remove(self._connections_weak, i)
       end
     end
-  end,
+  end;
 }
 
 return signal

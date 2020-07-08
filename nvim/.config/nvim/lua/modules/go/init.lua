@@ -6,23 +6,15 @@ local edit_mode = require("cfg.edit_mode")
 local layer = {}
 
 local function on_filetype_go()
-  -- " :GoCoverageToggle
   keybind.bind_command(edit_mode.NORMAL, "<leader>c", "<Plug>(go-coverage-toggle)")
-
-    -- :GoRun
   keybind.bind_command(edit_mode.NORMAL, "<leader>r", "<Plug>(go-run)")
-
-  -- :GoInfo
   keybind.bind_command(edit_mode.NORMAL, "<leader>i", "<Plug>(go-info)")
 
-
-
-  -- build go files
-  local command = ":lua require('modules.go')._build_go_files()<CR>"
-  keybind.bind_command(edit_mode.NORMAL, "<leader>b", command)
+  keybind.bind_command(edit_mode.NORMAL, "<leader>b",
+                       ":lua require('modules.go').build_go_files()<CR>")
 end
 
-layer._build_go_files = function()
+local function build_go_files()
   local file = vim.api.nvim_eval("expand('%')")
   local is_test_file = file:sub(-#"_test.go") == "_test.go"
   if is_test_file then
@@ -41,26 +33,27 @@ end
 function layer.init_config()
   local lsp = require("modules.lsp")
   local nvim_lsp = require("nvim_lsp")
+  lsp.register_server(nvim_lsp.gopls)
 
   -- vim-go vars
-  vim.api.nvim_set_var("go_fmt_command", "goimports")
-  vim.api.nvim_set_var("go_autodetect_gopath", 1)
-  vim.api.nvim_set_var("go_list_type", "quickfix")
-  vim.api.nvim_set_var("go_addtags_transform", "camelcase")
-  vim.api.nvim_set_var("go_highlight_types", 1)
-  vim.api.nvim_set_var("go_highlight_fields", 1)
-  vim.api.nvim_set_var("go_highlight_buf_opttions", 1)
-  vim.api.nvim_set_var("go_highlight_buf_opttion_calls", 1)
-  vim.api.nvim_set_var("go_highlight_build_constraints", 1)
-  vim.api.nvim_set_var("go_highlight_generate_tags", 1)
-  vim.api.nvim_set_var("go_highlight_extra_types", 1)
-  vim.api.nvim_set_var("go_highlight_generate_tags", 1)
-  vim.api.nvim_set_var("go_metalinter_autosave", 1)
+  vim.g.go_fmt_command = "goimports"
+  vim.g.go_autodetect_gopath = true
+  vim.g.go_list_type = "quickfix"
+  vim.g.go_addtags_transform = "camelcase"
+  vim.g.go_highlight_types = true
+  vim.g.go_highlight_fields = true
+  vim.g.go_highlight_buf_opttions = true
+  vim.g.go_highlight_buf_opttion_calls = true
+  vim.g.go_highlight_build_constraints = true
+  vim.g.go_highlight_generate_tags = true
+  vim.g.go_highlight_extra_types = true
+  vim.g.go_highlight_generate_tags = true
+  vim.g.go_metalinter_autosave = true
+  vim.g.go_metalinter_autosave_enabled = {"govet"; "golint"; "gosimple"}
 
   -- configure gotest
   vim.g["test#go#executable"] = "go test -v"
 
-  lsp.register_server(nvim_lsp.gopls)
   autocmd.bind_filetype("go", on_filetype_go)
 end
 

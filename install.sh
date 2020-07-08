@@ -163,9 +163,9 @@ configure_python() {
         git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git" "$(pyenv root)/plugins/pyenv-virtualenvwrapper"
     fi
 
-    execute "pyenv install 3.8.0" "Installing Python 3.8"
+    execute "pyenv install 3.8.2" "Installing Python 3.8"
     execute "pyenv install 2.7.17" "Installing Python 2.7.17"
-    execute "pyenv global 3.8.0 2.7.17" "Set global python"
+    execute "pyenv global 3.8.2 2.7.17" "Set global python"
 
     PY2=(
         flake8

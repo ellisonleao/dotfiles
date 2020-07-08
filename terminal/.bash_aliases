@@ -54,7 +54,6 @@ alias la="ls -laF"
 
 # IP addresses
 alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="sudo ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' | grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1'"
 alias ips="sudo ifconfig -a | grep -o 'inet6\\? \\(addr:\\)\\?\\s\\?\\(\\(\\([0-9]\\+\\.\\)\\{3\\}[0-9]\\+\\)\\|[a-fA-F0-9:]\\+\\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # View HTTP traffic
@@ -65,17 +64,13 @@ alias httpdump="sudo tcpdump -i wlp2s0 -n -s 0 -w - | grep -a -o -E \"Host\\: .*
 alias weather="curl http://wttr.in/Curitiba?0F1qn"
 
 # unixtime to human format
-alias humandate="python -c \"import datetime,sys;print(datetime.datetime.utcfromtimestamp(int(sys.argv[1][:10])).strftime('%d/%m/%Y @ %H:%M:%S'));\""
 alias tounixtime="python -c \"import time,datetime,sys;print(time.mktime(datetime.datetime.strptime(sys.argv[1], '%d-%m-%Y').timetuple()));\""
-
-# icat alias
-alias icat="kitty +kitten icat"
 
 # http server
 alias httpserver="python -m http.server"
 
 # youtube-dl
-alias dl="annie"
+alias dl="youtube-dl --socket-timeout=2"
 
 alias xclip="xclip -se c"
 
@@ -88,3 +83,15 @@ alias perm='stat -c "%a %n"'
 # dolar/euro to brl latest quotation
 alias dollar="curl -s 'https://api.cotacoes.uol.com/currency/intraday/list?currency=1&fields=bidvalue,date' | jq .docs[0].bidvalue"
 alias euro="curl -s 'https://api.cotacoes.uol.com/currency/intraday/list?currency=5&fields=bidvalue,date' | jq .docs[0].bidvalue"
+
+# youtube-dl clip
+download-clip() {
+    # $1: url or Youtube video id
+    # $2: starting time, in seconds, or in hh:mm:ss[.xxx] form
+    # $3: duration, in seconds, or in hh:mm:ss[.xxx] form
+    # $4: format, as accepted by youtube-dl (default: best)
+    local fmt=${4:-best}
+    youtube-dl -f $fmt "$1" --postprocessor-args "-ss ${2} -to ${3}" --socket-timeout=2
+}
+
+alias https="http --verify=no"

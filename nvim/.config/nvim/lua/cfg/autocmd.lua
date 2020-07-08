@@ -1,6 +1,5 @@
 --- Autocommand support
 -- @module cfg.autocmd
-
 local signal = require("cfg.signal")
 local Signal = signal.Signal
 
@@ -25,7 +24,9 @@ function autocmd.bind(trigger, func)
     cmd_signal = Signal()
     autocmd._bound_signals[trigger] = cmd_signal
 
-    local cmd = "autocmd " .. trigger .. " lua require('cfg.autocmd')._bound_signals['" .. trigger .."']:emit()"
+    local cmd =
+      "autocmd " .. trigger .. " lua require('cfg.autocmd')._bound_signals['" .. trigger ..
+        "']:emit()"
     vim.api.nvim_command("augroup c_autocmd")
     vim.api.nvim_command(cmd)
     vim.api.nvim_command("augroup END")
@@ -69,39 +70,33 @@ function autocmd.bind_filetype(filetypes, func)
 end
 
 --- Register a callback for when Vim launches
---
--- @tparam function func The function to call when the autocommand fires
 function autocmd.bind_vim_enter(func)
   autocmd.bind("VimEnter *", func)
 end
 
 --- Register a callback for when Vim exits
---
--- @tparam function func The function to call when the autocommand fires
 function autocmd.bind_vim_leave(func)
   autocmd.bind("VimLeave *", func)
 end
 
-
 --- Register a callback for colorscheme changes
---
--- @tparam function func The function to call when the autocommand fires
 function autocmd.bind_colorscheme(func)
   autocmd.bind("Colorscheme *", func)
 end
 
 --- Register a callback for when completion is done
---
--- @tparam function func The function to call when the autocommand fires
 function autocmd.bind_complete_done(func)
   autocmd.bind("CompleteDone *", func)
 end
 
 --- Register a callback for when no key is pressed for `updatetime` in normal mode
---
--- @tparam function func The function to call when the autocommand fires
 function autocmd.bind_cursor_hold(func)
   autocmd.bind("CursorHold *", func)
+end
+
+--- Register a callback before a buffer is saved
+function autocmd.bind_bufwrite_pre(func)
+  autocmd.bind("BufWritePre *", func)
 end
 
 return autocmd

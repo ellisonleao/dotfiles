@@ -1,18 +1,13 @@
---- The version control layer
--- @module modules.git
+local plug = require("cfg.plug")
 
 local layer = {}
 
-local plug = require("cfg.plug")
-
---- Returns plugins required for this layer
 function layer.register_plugins()
-  plug.add_plugin("tpope/vim-fugitive") -- best git plugin for vim
-  plug.add_plugin("tpope/vim-rhubarb") -- integration with hub
-  plug.add_plugin("airblade/vim-gitgutter") -- git gutter
+  plug.add_plugin("tpope/vim-fugitive")
+  plug.add_plugin("tpope/vim-rhubarb")
+  plug.add_plugin("airblade/vim-gitgutter")
 end
 
---- Configures vim and plugins for this layer
 function layer.init_config()
 end
 

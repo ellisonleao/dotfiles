@@ -1,6 +1,5 @@
 --- Layer management
 -- @module c.layer
-
 local plug = require("cfg.plug")
 local reload = require("cfg.reload")
 local log = require("cfg.log")
@@ -13,20 +12,18 @@ layer.layers = {}
 --
 -- @tparam string name The layer module path
 function layer.add_layer(name)
-  table.insert(
-    layer.layers,
-    {
-      name = name,
-      module = require(name),
-    }
-  )
+  table.insert(layer.layers, {name = name; module = require(name)})
+end
+
+function layer.load_modules(modules)
+  for _, item in ipairs(modules) do
+    layer.add_layer("modules." .. item)
+  end
+  layer.finish_layer_registration()
 end
 
 local function err_handler(err)
-  return {
-    err = err,
-    traceback = debug.traceback(),
-  }
+  return {err = err; traceback = debug.traceback()}
 end
 
 local function call_on_layers(func_name)
@@ -36,13 +33,15 @@ local function call_on_layers(func_name)
       log(" ")
       log.set_highlight("WarningMsg")
       log("Error while loading layer " .. v.name .. " / " .. func_name)
-      log("================================================================================")
+      log(
+        "================================================================================")
       log.set_highlight("None")
       log(err.err)
       log(" ")
       log.set_highlight("WarningMsg")
       log("Traceback")
-      log("================================================================================")
+      log(
+        "================================================================================")
       log.set_highlight("None")
       log(err.traceback)
       log(" ")
