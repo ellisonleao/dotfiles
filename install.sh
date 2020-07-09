@@ -399,7 +399,7 @@ configure_ui() {
     gsettings set org.gnome.desktop.interface clock-show-date true
     gsettings set org.gnome.desktop.interface monospace-font-name "Fira Sans 13"
     gsettings set org.gnome.desktop.screensaver picture-uri "file:///home/ellison/Pictures/pathfinder.jpg"
-    gsettings set org.gnome.desktop.background picture-uri "file:///home/ellison/Pictures/pathfinder3.jpg"
+    gsettings set org.gnome.desktop.background picture-uri "file:///home/ellison/Pictures/pathfinder-rambo.jpeg"
 
     # custom keyboard bindings
     gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>c']"
