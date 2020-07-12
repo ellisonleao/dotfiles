@@ -12,7 +12,7 @@ function layer.register_plugins()
   plug.add_plugin("nvim-lua/completion-nvim")
 end
 
-local function user_stop_all_clients()
+local function stop_all_clients()
   local clients = vim.lsp.get_active_clients()
 
   if #clients > 0 then
@@ -25,7 +25,7 @@ local function user_stop_all_clients()
   end
 end
 
-local function user_attach_client()
+local function attach_client()
   local filetype = vim.bo[0].filetype
 
   local server = layer.filetype_servers[filetype]
@@ -37,7 +37,7 @@ local function user_attach_client()
   end
 end
 
---- Get the LSP status line part for vim-airline
+--- Get the LSP status line part for vim-lightline
 function layer._get_lsp()
   local clients = vim.lsp.buf_get_clients()
   local client_names = {}
@@ -77,11 +77,8 @@ end
 --- Configures vim and plugins for this layer
 function layer.init_config()
   -- Bind leader keys
-  keybind.set_group_name("<leader>l", "LSP")
-  keybind.bind_function(edit_mode.NORMAL, "<leader>ls", user_stop_all_clients, nil,
-                        "Stop all LSP clients")
-  keybind.bind_function(edit_mode.NORMAL, "<leader>la", user_attach_client, nil,
-                        "Attach LSP client to buffer")
+  keybind.bind_function(edit_mode.NORMAL, "<leader>ls", stop_all_clients, nil)
+  keybind.bind_function(edit_mode.NORMAL, "<leader>la", attach_client, nil)
 
   -- Tabbing
   keybind.bind_command(edit_mode.INSERT, "<tab>", "pumvisible() ? '<C-n>' : '<tab>'",
@@ -111,13 +108,12 @@ function layer.init_config()
   end)
 
   keybind.bind_command(edit_mode.NORMAL, "<leader>lr",
-                       ":lua vim.lsp.buf.references()<CR>", {noremap = true},
-                       "Find references")
+                       ":lua vim.lsp.buf.references()<CR>", {noremap = true})
   keybind.bind_command(edit_mode.NORMAL, "<leader>lR", ":lua vim.lsp.buf.rename()<CR>",
-                       {noremap = true}, "Rename")
+                       {noremap = true})
   keybind.bind_command(edit_mode.NORMAL, "<leader>ld",
-                       ":lua vim.lsp.buf.document_symbol()<CR>", {noremap = true},
-                       "Document symbol list")
+                       ":lua vim.lsp.buf.document_symbol()<CR>", {noremap = true})
+
   -- Show docs when the cursor is held over something
   autocmd.bind_cursor_hold(function()
     vim.cmd("lua vim.lsp.util.show_line_diagnostics()")
@@ -125,13 +121,11 @@ function layer.init_config()
 
   -- Show in vim-airline the attached LSP client
   vim.api.nvim_exec([[
-    function! LspGetAirlinePart()
+    function! LightlineLsp()
       return luaeval("require('modules.lsp')._get_lsp()")
     endfunction
     ]], false)
-  vim.fn["airline#parts#define_function"]("nvim_lsp", "LspGetAirlinePart")
-  vim.fn["airline#parts#define_accent"]("nvim_lsp", "bold")
-  vim.g.airline_section_z = vim.fn["airline#section#create_right"] {"nvim_lsp"}
+
 end
 
 --- Maps filetypes to their server definitions

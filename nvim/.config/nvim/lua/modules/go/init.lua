@@ -9,7 +9,6 @@ local function on_filetype_go()
   keybind.bind_command(edit_mode.NORMAL, "<leader>c", "<Plug>(go-coverage-toggle)")
   keybind.bind_command(edit_mode.NORMAL, "<leader>r", "<Plug>(go-run)")
   keybind.bind_command(edit_mode.NORMAL, "<leader>i", "<Plug>(go-info)")
-
   keybind.bind_command(edit_mode.NORMAL, "<leader>b",
                        ":lua require('modules.go').build_go_files()<CR>")
 end
