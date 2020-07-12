@@ -104,10 +104,9 @@ function layer.init_config()
   end)
 
   -- remove trailing spaces
-  -- cant make that regex work
-  -- autocmd.bind_bufwrite_pre(function()
-  -- vcmd("%s#\\s\\+$//e")
-  -- end)
+  autocmd.bind_bufwrite_pre(function()
+    vcmd("%s/\\s\\+$//e")
+  end)
 
   -- A shortcut command for :lua print(vim.inspect(...)) (:Li for Lua Inspect)
   vcmd("command! -nargs=+ Li :lua print(vim.inspect(<args>))")

@@ -5,5 +5,4 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-autocmd BufWritePre * %s/\s\+$//e
 lua require('init')
