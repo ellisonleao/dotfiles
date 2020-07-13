@@ -1,3 +1,5 @@
+env:
+  LANG: "en_US.UTF-8"
 window:
   decorations: full
   startup_mode: Maximized
@@ -10,18 +12,18 @@ scrolling:
 # Font configuration
 font:
   normal:
-    family: Fira Code
+    family: FiraCode Nerd Font
     style: Retina
 
   # Bold font face
   bold:
-    family: Fira Code
-
+    family: FiraCode Nerd Font
     style: Bold
 
   # Italic font face
   italic:
-    family: Fira Code
+    family: FiraCode Nerd Font
+    style: Bold
 
   size: 11.5
 
