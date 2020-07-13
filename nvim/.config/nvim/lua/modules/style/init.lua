@@ -7,6 +7,7 @@ function layer.register_plugins()
   plug.add_plugin("chriskempson/base16-vim")
   plug.add_plugin("itchyny/lightline.vim")
   plug.add_plugin("mengelbrecht/lightline-bufferline")
+  plug.add_plugin("ryanoasis/vim-devicons")
 end
 
 local function set_globals()
@@ -24,7 +25,7 @@ local function set_globals()
       right = {{"lineinfo"}; {"lsp"}};
     };
     tabline = {left = {{"buffers"}}; right = {{"close"}}};
-    component_function = {gitbranch = "FugitiveHead"; lsp = "LightlineLsp"};
+    component_function = {gitbranch = "FugitiveHead"; lsp = "LspStatus"};
     component_expand = {buffers = "lightline#bufferline#buffers"};
     component_type = {buffers = "tabsel"};
   }

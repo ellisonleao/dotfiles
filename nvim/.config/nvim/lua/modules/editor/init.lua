@@ -80,8 +80,9 @@ function layer.init_config()
   kbc(edit_mode.NORMAL, ",l", "<C-W><C-L>", {noremap = true})
   kbc(edit_mode.NORMAL, ",h", "<C-W><C-H>", {noremap = true})
 
-  -- close buffer
+  -- close buffer and quickfix
   kbc(edit_mode.NORMAL, ",d", ":bd!<CR>", {noremap = true})
+  kbc(edit_mode.NORMAL, ",c", ":cclose<CR>", {noremap = true})
 
   -- " Vmap for maintain Visual Mode after shifting > and <
   kbc(edit_mode.VISUAL, "<", "<gv")
