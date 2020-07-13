@@ -1,21 +1,22 @@
+local file = require("cfg.file")
 local plug = {}
+local PLUGIN_DIR = file.get_home_dir() .. "/.local/share/nvim/plugged"
 
-local PLUGIN_DIR = "~/.local/share/nvim/plugged"
+-- install vim plug if not installed
+function plug.install()
+  local home = file.get_home_dir()
+  local plug_path = home .. "/.local/share/nvim/site/autoload/plug.vim"
+  local autocmd = require("cfg.autocmd")
+  local url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 
---- Update vim-plug
-function plug.update_manager()
-  vim.api.nvim_command("PlugUpgrade")
-end
+  if file.exists(plug_path) then
+    return
+  end
 
---- Update all plugins and install new ones
-function plug.update_plugins()
-  vim.api.nvim_command("PlugUpdate")
-end
-
---- Update vim-plug, update all plugins, and install new ones
-function plug.update_all()
-  plug.update_manager()
-  plug.update_plugins()
+  vim.api.nvim_exec("!curl -fLo " .. plug_path .. " --create-dirs " .. url, false)
+  autocmd.bind_vim_enter(function()
+    vim.cmd("PlugInstall --sync | source $MYVIMRC")
+  end)
 end
 
 --- Start loading all registered plugins

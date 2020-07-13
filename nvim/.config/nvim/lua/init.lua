@@ -4,9 +4,11 @@ reload.unload_user_modules()
 local log = require("cfg.log")
 local layer = require("cfg.layer")
 local autocmd = require("cfg.autocmd")
+local plug = require("cfg.plug")
 
 autocmd.init()
 log.init()
+plug.install()
 
 local modules = {
   "editor"; -- Mappings, autocmd configs
