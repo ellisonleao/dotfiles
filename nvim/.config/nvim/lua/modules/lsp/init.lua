@@ -100,8 +100,8 @@ function layer.register_server(server, config)
 
   config = config or {}
   config.on_attach = function(client)
-    completion.on_attach(client)
     lsp_status.on_attach(client)
+    completion.on_attach(client)
   end
 
   config.capabilities = vim.tbl_extend("keep", config.capabilities or {},
