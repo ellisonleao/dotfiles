@@ -251,6 +251,7 @@ configure_node() {
         'typescript-language-server'
         'vscode-html-languageserver-bin'
         '@bitwarden/cli'
+	'fast-cli'
     )
     for pkg in "${NODE_PACKAGES[@]}"; do
         "$NPM" install -i "$pkg"
