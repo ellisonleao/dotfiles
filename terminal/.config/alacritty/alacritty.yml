@@ -4,6 +4,7 @@ window:
   decorations: full
   startup_mode: Maximized
   gtk_theme_variant: dark
+  dynamic_title: true
 
 scrolling:
   history: 10000
@@ -75,8 +76,6 @@ colors:
 
 selection:
   save_to_clipboard: true
-
-dynamic_title: true
 
 cursor:
   style: Underline

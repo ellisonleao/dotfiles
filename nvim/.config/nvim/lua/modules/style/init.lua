@@ -19,10 +19,15 @@ local function set_globals()
   vim.g.cursorline = true
   vim.g.timeoutlen = 200
   vim.g.signcolumn = "yes"
+
+  -- lightline config
   vim.g.lightline = {
     active = {
-      left = {{"mode"; "paste"}; {"gitbranch"; "readonly"; "filename"; "modified"}};
-      right = {{"lineinfo"}; {"lsp"}};
+      left = {
+        {"mode"; "paste"};
+        {"gitbranch"; "readonly"; "filename"; "modified"; "lineinfo"};
+      };
+      right = {{"lsp"}};
     };
     tabline = {left = {{"buffers"}}; right = {{"close"}}};
     component_function = {gitbranch = "FugitiveHead"; lsp = "LspStatus"};
@@ -33,7 +38,7 @@ end
 
 local function set_options()
   vim.o.termguicolors = true
-  vim.o.showtabline = 2
+  vim.o.showtabline = 3
   vim.o.lazyredraw = true
   vim.o.splitright = true
   vim.o.updatetime = 1000

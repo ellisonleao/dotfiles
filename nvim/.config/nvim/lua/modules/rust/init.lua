@@ -9,8 +9,7 @@ end
 function layer.init_config()
   local lsp = require("modules.lsp")
   local nvim_lsp = require("nvim_lsp")
-
-  lsp.register_server(nvim_lsp.rls)
+  lsp.register_server(nvim_lsp.rust_analyzer)
 end
 
 return layer

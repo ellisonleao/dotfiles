@@ -5,14 +5,6 @@ local keybind = require("cfg.keybind")
 local edit_mode = require("cfg.edit_mode")
 local layer = {}
 
-local function on_filetype_go()
-  keybind.bind_command(edit_mode.NORMAL, "<leader>c", "<Plug>(go-coverage-toggle)")
-  keybind.bind_command(edit_mode.NORMAL, "<leader>r", "<Plug>(go-run)")
-  keybind.bind_command(edit_mode.NORMAL, "<leader>i", "<Plug>(go-info)")
-  keybind.bind_command(edit_mode.NORMAL, "<leader>b",
-                       ":lua require('modules.go').build_go_files()<CR>")
-end
-
 local function build_go_files()
   local file = vim.api.nvim_eval("expand('%')")
   local is_test_file = file:sub(-#"_test.go") == "_test.go"
@@ -23,16 +15,11 @@ local function build_go_files()
   end
 end
 
---- Returns plugins required for this layer
-function layer.register_plugins()
-  plug.add_plugin("fatih/vim-go", {["do"] = ":GoUpdateBinaries"})
-end
-
---- Configures vim and plugins for this layer
-function layer.init_config()
-  local lsp = require("modules.lsp")
-  local nvim_lsp = require("nvim_lsp")
-  lsp.register_server(nvim_lsp.gopls)
+local function on_filetype_go()
+  keybind.bind_command(edit_mode.NORMAL, "<leader>c", "<Plug>(go-coverage-toggle)")
+  keybind.bind_command(edit_mode.NORMAL, "<leader>r", "<Plug>(go-run)")
+  keybind.bind_command(edit_mode.NORMAL, "<leader>i", "<Plug>(go-info)")
+  keybind.bind_function(edit_mode.NORMAL, "<leader>b", build_go_files)
 
   -- vim-go vars
   vim.g.go_fmt_command = "goimports"
@@ -48,11 +35,25 @@ function layer.init_config()
   vim.g.go_highlight_extra_types = true
   vim.g.go_highlight_generate_tags = true
   vim.g.go_metalinter_autosave = true
+  vim.g["test#go#executable"] = "go test -v"
   vim.g.go_metalinter_autosave_enabled = {"govet"; "golint"; "gosimple"}
 
-  -- configure gotest
-  vim.g["test#go#executable"] = "go test -v"
+  vim.api.nvim_buf_set_option(0, "shiftwidth", 4)
+  vim.api.nvim_buf_set_option(0, "tabstop", 4)
+  vim.api.nvim_buf_set_option(0, "softtabstop", 4)
 
+end
+
+--- Returns plugins required for this layer
+function layer.register_plugins()
+  plug.add_plugin("fatih/vim-go", {["do"] = ":GoUpdateBinaries"; ["for"] = "go"})
+end
+
+--- Configures vim and plugins for this layer
+function layer.init_config()
+  local lsp = require("modules.lsp")
+  local nvim_lsp = require("nvim_lsp")
+  lsp.register_server(nvim_lsp.gopls)
   autocmd.bind_filetype("go", on_filetype_go)
 end
 

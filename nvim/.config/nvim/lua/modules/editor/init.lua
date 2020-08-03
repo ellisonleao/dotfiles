@@ -14,43 +14,45 @@ function layer.register_plugins()
   plug.add_plugin("tpope/vim-repeat")
   plug.add_plugin("janko-m/vim-test")
   plug.add_plugin("sheerun/vim-polyglot")
-  plug.add_plugin("junegunn/fzf", {["do"] = "-> fzf#install()"})
+  plug.add_plugin("junegunn/fzf", {["do"] = "fzf#install()"})
   plug.add_plugin("junegunn/fzf.vim")
 end
 
-local function set_globals()
+function layer.set_globals()
   vim.g.mapleader = "\\"
   vim.g.maplocalleader = ","
   vim.g.python3_host_prog = "~/.pyenv/versions/3.8.2/bin/python"
   vim.g.python_host_prog = "~/.pyenv/versions/2.7.17/bin/python"
-  vim.g.tabstop = 4
-  vim.g.softtabstop = 4
-  vim.g.shiftwidth = 4
-  vim.g.expandtab = true
-  vim.g.autoindent = true
-  vim.g.autoread = true
-  vim.g.smartindent = true
-  vim.g.swapfile = false
-  vim.g.foldmethod = "marker"
-  vim.g.textwidth = 88
   vim.g["test#strategy"] = "neovim"
   vim.g.c_keybind_leader_info = keybind._leader_info
 end
 
-local function set_options()
-  vim.o.undofile = true
+function layer.set_options()
+  vim.api.nvim_buf_set_option(0, "softtabstop", 4)
+  vim.api.nvim_buf_set_option(0, "shiftwidth", 4)
+  vim.api.nvim_buf_set_option(0, "expandtab", true)
+  vim.api.nvim_buf_set_option(0, "autoindent", true)
+  vim.api.nvim_buf_set_option(0, "autoread", true)
+  vim.api.nvim_buf_set_option(0, "smartindent", true)
+  vim.api.nvim_buf_set_option(0, "swapfile", false)
+  vim.api.nvim_buf_set_option(0, "textwidth", 88)
+  vim.api.nvim_buf_set_option(0, "tabstop", 4)
+  vim.api.nvim_buf_set_option(0, "undofile", true)
+
+  vim.o.foldmethod = "marker"
   vim.o.exrc = true
   vim.o.secure = true
   vim.o.wildmode = "list:longest"
   vim.o.inccommand = "split"
   vim.o.ignorecase = true
   vim.o.smartcase = true
+  vim.o.shortmess = vim.o.shortmess .. "c"
 end
 
 --- Configures vim and plugins for this layer
 function layer.init_config()
-  set_globals()
-  set_options()
+  layer.set_globals()
+  layer.set_options()
 
   -- Edit config, reload config, and update plugins
   kbc(edit_mode.NORMAL, "<leader>red", ":edit $HOME/.config/nvim<CR>", {noremap = true})

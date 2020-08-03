@@ -80,7 +80,7 @@ function layer.init_config()
   vim.api.nvim_exec([[
 		function! LspStatus() abort
 			if luaeval('#vim.lsp.buf_get_clients() > 0')
-				return luaeval("require('lsp-status').status()")
+				return luaeval("require('modules.lsp').get_status()")
 			endif
 
 			return ''
@@ -114,6 +114,19 @@ function layer.register_server(server, config)
   for _, v in pairs(config.filetypes) do
     layer.filetype_servers[v] = server
   end
+end
+
+-- return lsp status for lightline
+function layer.get_status()
+  local lsp_status = require("lsp-status")
+  local filetype = vim.bo[0].filetype
+
+  local server = layer.filetype_servers[filetype]
+  if server ~= nil then
+    return "LSP: " .. server.name .. " - " .. lsp_status.status()
+  end
+
+  return lsp_status.status()
 end
 
 return layer

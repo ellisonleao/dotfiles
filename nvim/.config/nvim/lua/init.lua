@@ -21,5 +21,6 @@ local modules = {
   "lua"; -- Lua configs
   "html"; -- html/css
   "js"; -- Js, ts, react configs
+  "yaml"; -- YAML configs
 }
 layer.load_modules(modules)
