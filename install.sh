@@ -296,11 +296,6 @@ add_ppts() {
     # docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-    # brave
-    curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-    echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-
-
     PPTS=(
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
         "ppa:papirus/papirus"
@@ -361,7 +356,6 @@ install_apps() {
         imagemagick
         dconf-editor
         papirus-icon-theme
-        brave-browser
         alacritty
         tmux
     )
