@@ -95,3 +95,4 @@ download-clip() {
 }
 
 alias https="http --verify=no"
+alias restart-wifi="nmcli radio wifi off && nmcli radio wifi on"

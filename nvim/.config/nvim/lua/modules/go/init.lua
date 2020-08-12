@@ -3,6 +3,8 @@ local plug = require("cfg.plug")
 local autocmd = require("cfg.autocmd")
 local keybind = require("cfg.keybind")
 local edit_mode = require("cfg.edit_mode")
+local kbc = keybind.bind_command
+local kbf = keybind.bind_function
 local layer = {}
 
 local function build_go_files()
@@ -16,32 +18,37 @@ local function build_go_files()
 end
 
 local function on_filetype_go()
-  keybind.bind_command(edit_mode.NORMAL, "<leader>c", "<Plug>(go-coverage-toggle)")
-  keybind.bind_command(edit_mode.NORMAL, "<leader>r", "<Plug>(go-run)")
-  keybind.bind_command(edit_mode.NORMAL, "<leader>i", "<Plug>(go-info)")
-  keybind.bind_function(edit_mode.NORMAL, "<leader>b", build_go_files)
+  kbc(edit_mode.NORMAL, "<leader>c", "<Plug>(go-coverage-toggle)")
+  kbc(edit_mode.NORMAL, "<leader>r", "<Plug>(go-run)")
+  kbc(edit_mode.NORMAL, "<leader>i", "<Plug>(go-info)")
+  kbc(edit_mode.NORMAL, "<leader>l", "<Plug>(go-metalinter)")
+  kbf(edit_mode.NORMAL, "<leader>b", build_go_files)
 
   -- vim-go vars
   vim.g.go_fmt_command = "goimports"
-  vim.g.go_autodetect_gopath = true
   vim.g.go_list_type = "quickfix"
   vim.g.go_addtags_transform = "camelcase"
+  vim.g.go_metalinter_command = "golangci-lint"
+  vim.g.go_metalinter_enabled = {}
+  vim.g.go_metalinter_autosave_enabled = {}
+
+  -- highlights
   vim.g.go_highlight_types = true
   vim.g.go_highlight_fields = true
   vim.g.go_highlight_buf_opttions = true
   vim.g.go_highlight_buf_opttion_calls = true
+  vim.g.go_highlight_format_strings = true
   vim.g.go_highlight_build_constraints = true
   vim.g.go_highlight_generate_tags = true
   vim.g.go_highlight_extra_types = true
   vim.g.go_highlight_generate_tags = true
-  vim.g.go_metalinter_autosave = true
+
+  -- vim-test
   vim.g["test#go#executable"] = "go test -v"
-  vim.g.go_metalinter_autosave_enabled = {"govet"; "golint"; "gosimple"}
 
   vim.api.nvim_buf_set_option(0, "shiftwidth", 4)
   vim.api.nvim_buf_set_option(0, "tabstop", 4)
   vim.api.nvim_buf_set_option(0, "softtabstop", 4)
-
 end
 
 --- Returns plugins required for this layer

@@ -1,35 +1,19 @@
 local keybind = {}
 keybind._leader_info = {}
 
---- Split a key sequence string like "fed" into { "f", "e", "d" }
-local function split_keys(keys)
-  local keys_split = {}
-
-  -- TODO: Support <C-f> and <tab> and etc. style syntax
-  for c in string.gmatch(keys, ".") do
-    table.insert(keys_split, c)
-  end
-
-  return keys_split
-end
-
 function keybind.bind_command(mode, keys, command, options)
   options = options or {}
-
   vim.api.nvim_set_keymap(mode.map_prefix, keys, command, options)
-
 end
 
 function keybind.buf_bind_command(mode, keys, command, options)
   options = options or {}
-
   vim.api.nvim_buf_set_keymap(0, mode.map_prefix, keys, command, options)
-
 end
 
 keybind._bound_funcs = {}
 
-function keybind.bind_function(mode, keys, func, options, name)
+function keybind.bind_function(mode, keys, func, options)
   options = options or {}
   options.noremap = true
 
