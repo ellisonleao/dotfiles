@@ -31,7 +31,6 @@ end
 
 local function set_options()
   vim.wo.signcolumn = "yes"
-  vim.o.timeoutlen = 200
   vim.o.termguicolors = true
   vim.o.showtabline = 3
   vim.o.lazyredraw = true

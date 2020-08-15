@@ -41,3 +41,5 @@ fi
 # Use bash-completion, if available
 # shellcheck source=/dev/null
 [[ -f "/usr/share/bash-completion/bash_completion" ]] && source /usr/share/bash-completion/bash_completion
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
