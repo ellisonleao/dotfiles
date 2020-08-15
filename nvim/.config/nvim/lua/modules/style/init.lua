@@ -55,8 +55,10 @@ function layer.init_config()
 
   autocmd.bind_colorscheme(function()
     vcmd("highlight DiffAdd ctermfg=193 ctermbg=none guifg=#66CC6C guibg=none")
-    vcmd("highlight DiffChange ctermfg=189 ctermbg=none guifg=#B166CC guibg=none")
-    vcmd("highlight DiffDelete ctermfg=167 ctermbg=none guifg=#CC6666 guibg=none")
+    vcmd(
+      "highlight DiffChange ctermfg=189 ctermbg=none guifg=#B166CC guibg=none")
+    vcmd(
+      "highlight DiffDelete ctermfg=167 ctermbg=none guifg=#CC6666 guibg=none")
     vcmd(
       "highlight LspDiagnosticsError ctermfg=167 ctermbg=none guifg=#EB4917 guibg=none")
     vcmd(

@@ -28,17 +28,16 @@ function layer.set_globals()
 end
 
 function layer.set_options()
-  vim.api.nvim_buf_set_option(0, "softtabstop", 4)
-  vim.api.nvim_buf_set_option(0, "shiftwidth", 4)
-  vim.api.nvim_buf_set_option(0, "expandtab", true)
-  vim.api.nvim_buf_set_option(0, "autoindent", true)
-  vim.api.nvim_buf_set_option(0, "autoread", true)
-  vim.api.nvim_buf_set_option(0, "smartindent", true)
-  vim.api.nvim_buf_set_option(0, "swapfile", false)
-  vim.api.nvim_buf_set_option(0, "textwidth", 88)
-  vim.api.nvim_buf_set_option(0, "tabstop", 4)
-  vim.api.nvim_buf_set_option(0, "undofile", true)
-
+  vim.o.softtabstop = 4
+  vim.o.expandtab = true
+  vim.o.autoindent = true
+  vim.o.autoread = true
+  vim.o.shiftwidth = 4
+  vim.o.smartindent = true
+  vim.o.swapfile = false
+  vim.o.textwidth = 88
+  vim.o.tabstop = 4
+  vim.o.undofile = true
   vim.o.foldmethod = "marker"
   vim.o.exrc = true
   vim.o.secure = true
@@ -55,7 +54,8 @@ function layer.init_config()
   layer.set_options()
 
   -- Edit config, reload config, and update plugins
-  kbc(edit_mode.NORMAL, "<leader>red", ":edit $HOME/.config/nvim<CR>", {noremap = true})
+  kbc(edit_mode.NORMAL, "<leader>red", ":edit $HOME/.config/nvim<CR>",
+      {noremap = true})
   kbc(edit_mode.NORMAL, "<leader>reR", ":source $MYVIMRC<CR>", {noremap = true})
   kbc(edit_mode.NORMAL, "<leader>reU",
       ":source $MYVIMRC|PlugUpgrade|PlugClean|PlugUpdate|source $MYVIMRC<CR>",
