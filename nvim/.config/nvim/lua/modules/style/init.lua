@@ -12,13 +12,6 @@ end
 
 local function set_globals()
   vim.g.airline_theme = "base16"
-  vim.g.number = true
-  vim.g.relativenumber = true
-  vim.g.list = true
-  vim.g.listchars = "tab:│ ,eol: ,trail:·"
-  vim.g.cursorline = true
-  vim.g.timeoutlen = 200
-  vim.g.signcolumn = "yes"
 
   -- lightline config
   vim.g.lightline = {
@@ -37,6 +30,8 @@ local function set_globals()
 end
 
 local function set_options()
+  vim.wo.signcolumn = "yes"
+  vim.o.timeoutlen = 200
   vim.o.termguicolors = true
   vim.o.showtabline = 3
   vim.o.lazyredraw = true
@@ -44,11 +39,13 @@ local function set_options()
   vim.o.updatetime = 1000
   vim.o.hidden = true
   vim.o.scrolloff = 12
-  vim.o.sidescrolloff = 12
-  vim.o.showcmd = true
-  vim.o.mouse = ""
+  vim.o.mouse = vim.o.mouse .. "a"
   vim.o.pumblend = 10
   vim.o.winblend = 10
+  vim.wo.cursorline = true
+  vim.wo.listchars = "tab:│ ,eol: ,trail:·"
+  vim.wo.list = true
+  vim.wo.relativenumber = true
   vim.wo.colorcolumn = "88"
 end
 
@@ -70,7 +67,7 @@ function layer.init_config()
       "highlight LspDiagnosticsHint ctermfg=167 ctermbg=none guifg=#17EB7A guibg=none")
 
   end)
-  vcmd("colorscheme base16-seti")
+  vcmd("colorscheme base16-gruvbox-dark-hard")
 
 end
 
