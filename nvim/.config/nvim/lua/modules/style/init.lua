@@ -30,7 +30,6 @@ local function set_globals()
 end
 
 local function set_options()
-  vim.wo.signcolumn = "yes"
   vim.o.termguicolors = true
   vim.o.showtabline = 3
   vim.o.lazyredraw = true
@@ -41,7 +40,6 @@ local function set_options()
   vim.o.mouse = vim.o.mouse .. "a"
   vim.o.pumblend = 10
   vim.o.winblend = 10
-  vim.wo.cursorline = true
   vim.wo.listchars = "tab:│ ,eol: ,trail:·"
   vim.wo.list = true
   vim.wo.relativenumber = true
