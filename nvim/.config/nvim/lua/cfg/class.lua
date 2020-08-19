@@ -111,8 +111,9 @@ setmetatable(NULL, {
   -- end,
 
   __newindex = function(t, k, v)
-    error("Tried to write '" .. tostring(v) .. "' to property '" .. tostring(k) ..
-            "' from NULL")
+    error(
+      "Tried to write '" .. tostring(v) .. "' to property '" .. tostring(k) ..
+        "' from NULL")
   end;
 })
 
@@ -193,8 +194,9 @@ local function new_inherited_class(extends, strict)
     if not strict then
       for _, v in pairs(extends) do
         if v.__strict then
-          error("Tried to create a non-strict class with a parent class that is strict",
-                2)
+          error(
+            "Tried to create a non-strict class with a parent class that is strict",
+            2)
         end
       end
     end
@@ -328,7 +330,10 @@ local function new_inherited_class(extends, strict)
       end
     end
 
-    local obj_metatable = {__index = instance_index; __newindex = instance_newindex}
+    local obj_metatable = {
+      __index = instance_index;
+      __newindex = instance_newindex;
+    }
 
     for _, v in pairs(extends) do
       if v.__members.__mt then

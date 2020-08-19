@@ -40,7 +40,7 @@ local function set_options()
   vim.o.mouse = vim.o.mouse .. "a"
   vim.o.pumblend = 10
   vim.o.winblend = 10
-  vim.wo.listchars = "tab:│ ,eol: ,trail:·"
+  vim.o.listchars = "tab:│ ,eol: ,trail:·"
   vim.wo.list = true
   vim.wo.relativenumber = true
   vim.wo.colorcolumn = "88"

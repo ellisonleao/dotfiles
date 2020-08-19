@@ -7,13 +7,15 @@ function plug.install()
   local home = file.get_home_dir()
   local plug_path = home .. "/.local/share/nvim/site/autoload/plug.vim"
   local autocmd = require("cfg.autocmd")
-  local url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+  local url =
+    "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 
   if file.exists(plug_path) then
     return
   end
 
-  vim.api.nvim_exec("!curl -fLo " .. plug_path .. " --create-dirs " .. url, false)
+  vim.api.nvim_exec("!curl -fLo " .. plug_path .. " --create-dirs " .. url,
+                    false)
   autocmd.bind_vim_enter(function()
     vim.cmd("PlugInstall --sync | source $MYVIMRC")
   end)

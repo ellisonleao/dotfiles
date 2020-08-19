@@ -34,8 +34,8 @@ function keybind.bind_function(mode, keys, func, options)
 
   keybind._bound_funcs[func_name] = func
 
-  local lua_command =
-    ":lua require('cfg.keybind')._bound_funcs['" .. func_name_escaped .. "']()<CR>"
+  local lua_command = ":lua require('cfg.keybind')._bound_funcs['" ..
+                        func_name_escaped .. "']()<CR>"
   -- Prefix with <C-o> if this is an insert-mode mapping
   if mode.map_prefix == "i" then
     lua_command = "<C-o>" .. lua_command

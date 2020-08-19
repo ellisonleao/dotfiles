@@ -46,14 +46,13 @@ local function on_filetype_go()
   -- vim-test
   vim.g["test#go#executable"] = "go test -v"
 
-  vim.api.nvim_buf_set_option(0, "shiftwidth", 4)
-  vim.api.nvim_buf_set_option(0, "tabstop", 4)
-  vim.api.nvim_buf_set_option(0, "softtabstop", 4)
+  vim.bo.shiftwidth = 4
+  vim.bo.tabstop = 4
 end
 
 --- Returns plugins required for this layer
 function layer.register_plugins()
-  plug.add_plugin("fatih/vim-go", {["do"] = ":GoUpdateBinaries"; ["for"] = "go"})
+  plug.add_plugin("fatih/vim-go", {["do"] = ":GoUpdateBinaries"})
 end
 
 --- Configures vim and plugins for this layer

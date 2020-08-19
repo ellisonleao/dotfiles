@@ -24,9 +24,9 @@ function autocmd.bind(trigger, func)
     cmd_signal = Signal()
     autocmd._bound_signals[trigger] = cmd_signal
 
-    local cmd =
-      "autocmd " .. trigger .. " lua require('cfg.autocmd')._bound_signals['" .. trigger ..
-        "']:emit()"
+    local cmd = "autocmd " .. trigger ..
+                  " lua require('cfg.autocmd')._bound_signals['" .. trigger ..
+                  "']:emit()"
     vim.api.nvim_command("augroup c_autocmd")
     vim.api.nvim_command(cmd)
     vim.api.nvim_command("augroup END")

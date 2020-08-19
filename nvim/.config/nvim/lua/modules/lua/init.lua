@@ -5,9 +5,9 @@ local plug = require("cfg.plug")
 local layer = {}
 
 local function on_filetype_lua()
-  vim.api.nvim_buf_set_option(0, "shiftwidth", 2)
-  vim.api.nvim_buf_set_option(0, "tabstop", 2)
-  vim.api.nvim_buf_set_option(0, "softtabstop", 2)
+  vim.bo.shiftwidth = 2
+  vim.bo.tabstop = 2
+  vim.bo.softtabstop = 2
 end
 
 --- Returns plugins required for this layer

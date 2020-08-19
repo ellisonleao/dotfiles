@@ -110,7 +110,7 @@ function layer.init_config()
     local skip_filetypes = {
       ['commit'] = true;
       ['gitcommit'] = true;
-      ['commit'] = true;
+      ['fugitive'] = true;
     }
     local ft = vim.bo[0].filetype
     local line_exists = last_line <= 1 or quote_reg_line >= last_line

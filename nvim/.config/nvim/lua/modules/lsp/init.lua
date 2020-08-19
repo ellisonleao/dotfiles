@@ -60,16 +60,19 @@ function layer.init_config()
   autocmd.bind_filetype("*", function()
     local server = layer.filetype_servers[vim.bo.ft]
     if server ~= nil then
-      kbbc(edit_mode.NORMAL, "gd", ":lua vim.lsp.buf.definition()<CR>", {noremap = true})
+      kbbc(edit_mode.NORMAL, "gd", ":lua vim.lsp.buf.definition()<CR>",
+           {noremap = true})
       kbbc(edit_mode.NORMAL, "gD", ":lua vim.lsp.buf.implementation()<CR>",
            {noremap = true})
-      kbbc(edit_mode.NORMAL, "K", ":lua vim.lsp.buf.hover()<CR>", {noremap = true})
+      kbbc(edit_mode.NORMAL, "K", ":lua vim.lsp.buf.hover()<CR>",
+           {noremap = true})
     end
   end)
 
   kbc(edit_mode.NORMAL, "<leader>lr", ":lua vim.lsp.buf.references()<CR>",
       {noremap = true})
-  kbc(edit_mode.NORMAL, "<leader>lR", ":lua vim.lsp.buf.rename()<CR>", {noremap = true})
+  kbc(edit_mode.NORMAL, "<leader>lR", ":lua vim.lsp.buf.rename()<CR>",
+      {noremap = true})
   kbc(edit_mode.NORMAL, "<leader>ld", ":lua vim.lsp.buf.document_symbol()<CR>",
       {noremap = true})
 

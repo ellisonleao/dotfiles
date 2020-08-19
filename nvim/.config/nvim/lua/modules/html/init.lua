@@ -16,9 +16,9 @@ local function activate_emmet()
 end
 
 local function on_filetype_web()
-  vim.api.nvim_buf_set_option(0, "shiftwidth", 2)
-  vim.api.nvim_buf_set_option(0, "tabstop", 2)
-  vim.api.nvim_buf_set_option(0, "softtabstop", 2)
+  vim.bo.shiftwidth = 2
+  vim.bo.tabstop = 2
+  vim.bo.softtabstop = 2
   keybind.bind_command(edit_mode.INSERT, "<tab>",
                        "emmet#expandAbbrIntelligent('<tab>')", {expr = true})
 end
