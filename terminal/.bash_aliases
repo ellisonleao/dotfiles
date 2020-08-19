@@ -96,3 +96,19 @@ download-clip() {
 
 alias https="http --verify=no"
 alias restart-wifi="nmcli radio wifi off && nmcli radio wifi on"
+
+get-neovim() {
+    local filename="nvim-linux64.tar.gz"
+    local folder="nvim-linux64"
+    local url="https://github.com/neovim/neovim/releases/download/nightly/$filename"
+
+    # clean current files
+    [  -f "$HOME/.local/$filename" ] && rm "$filename"
+    [ -f "$HOME/.local/bin/nvim" ] && rm "$HOME/.local/bin/nvim"
+    [ -d "$HOME/.local/$folder" ] && rm -rf "$HOME/.local/$folder"
+
+    wget -q "$url" -P "$HOME/.local"
+    untar $HOME/.local/$filename
+    ln -fs "$HOME/$folder/bin/nvim" "$HOME/.local/bin"
+    echo "NeoVIM updated to latest nightly"
+}
