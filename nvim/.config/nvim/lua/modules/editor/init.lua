@@ -28,17 +28,18 @@ function layer.set_globals()
 end
 
 function layer.set_options()
-  vim.o.softtabstop = 4
-  vim.o.expandtab = true
-  vim.o.autoindent = true
-  vim.o.autoread = true
-  vim.o.shiftwidth = 4
-  vim.o.smartindent = true
-  vim.o.swapfile = false
-  vim.o.textwidth = 88
-  vim.o.tabstop = 4
-  vim.o.undofile = true
-  vim.o.foldmethod = "marker"
+  vim.bo.shiftwidth = 4
+  vim.bo.softtabstop = 4
+  vim.bo.expandtab = true
+  vim.bo.autoindent = true
+  vim.bo.autoread = true
+  vim.bo.smartindent = true
+  vim.bo.swapfile = false
+  vim.bo.textwidth = 88
+  vim.bo.tabstop = 4
+  vim.bo.undofile = true
+  vim.wo.foldmethod = "marker"
+  vim.o.autochdir = true
   vim.o.exrc = true
   vim.o.secure = true
   vim.o.wildmode = "list:longest"
@@ -103,7 +104,23 @@ function layer.init_config()
 
   -- Remeber last cursor position
   autocmd.bind("BufReadPost *", function()
-    vcmd("normal! g`\"")
+    local last_line = vim.api.nvim_call_function("line", {"$"})
+    local quote_reg_line = vim.api.nvim_call_function("line", {"'\""})
+    -- skip check position for the following filetypes
+    local skip_filetypes = {
+      ['commit'] = true;
+      ['gitcommit'] = true;
+      ['commit'] = true;
+    }
+    local ft = vim.bo[0].filetype
+    local line_exists = last_line <= 1 or quote_reg_line >= last_line
+
+    if skip_filetypes[ft] or line_exists then
+      return
+    end
+
+    local last_pos = vim.api.nvim_buf_get_mark(0, '"')
+    vim.api.nvim_win_set_cursor(0, last_pos)
   end)
 
   -- remove trailing spaces
