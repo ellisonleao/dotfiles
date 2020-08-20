@@ -39,7 +39,6 @@ function layer.set_options()
   vim.bo.tabstop = 4
   vim.bo.undofile = true
   vim.wo.foldmethod = "marker"
-  vim.o.autochdir = true
   vim.o.exrc = true
   vim.o.secure = true
   vim.o.wildmode = "list:longest"
