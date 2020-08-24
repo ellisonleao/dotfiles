@@ -1,12 +1,22 @@
 --- Python layer
 local autocmd = require("cfg.autocmd")
+local plug = require("cfg.plug")
 local layer = {}
 
 local function on_filetype_python()
   vim.g["test#python#runner"] = "pytest"
+  autocmd.bind_bufwrite_pre(function()
+    vim.cmd("silent Black")
+  end)
+end
+
+function layer.set_globals()
+  vim.g.black_fast = true
+  vim.g.black_virtualenv = ""
 end
 
 function layer.register_plugins()
+  plug.add_plugin("psf/black", {["branch"] = "stable"})
 end
 
 function layer.init_config()

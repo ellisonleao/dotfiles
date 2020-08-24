@@ -8,6 +8,9 @@ local function on_filetype_lua()
   vim.bo.shiftwidth = 2
   vim.bo.tabstop = 2
   vim.bo.softtabstop = 2
+  autocmd.bind_bufwrite_pre(function()
+    vim.api.nvim_exec("call LuaFormat()", false)
+  end)
 end
 
 --- Returns plugins required for this layer
@@ -24,9 +27,6 @@ function layer.init_config()
                       {settings = {Lua = {diagnostics = {globals = {"vim"}}}}})
 
   autocmd.bind_filetype("lua", on_filetype_lua)
-  autocmd.bind("BufWrite *.lua", function()
-    vim.api.nvim_exec("call LuaFormat()", false)
-  end)
 end
 
 return layer
