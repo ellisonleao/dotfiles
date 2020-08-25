@@ -69,11 +69,7 @@ function layer.init_config()
     end
   end)
 
-  kbc(edit_mode.NORMAL, "<leader>lr", ":lua vim.lsp.buf.references()<CR>",
-      {noremap = true})
   kbc(edit_mode.NORMAL, "<leader>lR", ":lua vim.lsp.buf.rename()<CR>",
-      {noremap = true})
-  kbc(edit_mode.NORMAL, "<leader>ld", ":lua vim.lsp.buf.document_symbol()<CR>",
       {noremap = true})
 
   autocmd.bind_cursor_hold(function()
