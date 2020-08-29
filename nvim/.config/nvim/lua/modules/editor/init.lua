@@ -16,15 +16,17 @@ function layer.register_plugins()
   plug.add_plugin("sheerun/vim-polyglot")
   plug.add_plugin("junegunn/fzf", {["do"] = ":call fzf#install()"})
   plug.add_plugin("junegunn/fzf.vim")
+  plug.add_plugin("npxbr/glow.nvim", {["do"] = ":GlowInstall"})
 end
 
 function layer.set_globals()
   vim.g.mapleader = "\\"
   vim.g.maplocalleader = ","
-  vim.g.python3_host_prog = "~/.pyenv/versions/3.8.2/bin/python"
-  vim.g.python_host_prog = "~/.pyenv/versions/2.7.17/bin/python"
+  vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
+  vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
   vim.g["test#strategy"] = "neovim"
   vim.g.c_keybind_leader_info = keybind._leader_info
+  vim.g.polyglot_disabled = {"lua"}
 end
 
 function layer.set_options()
@@ -100,6 +102,9 @@ function layer.init_config()
   -- quickfix navigation
   kbc(edit_mode.NORMAL, "<leader>n", ":cn<CR>")
   kbc(edit_mode.NORMAL, "<leader>p", ":cp<CR>")
+
+  -- markdown preview
+  kbc(edit_mode.NORMAL, "<leader>m", ":Glow<CR>")
 
   -- Remeber last cursor position
   autocmd.bind("BufReadPost *", function()

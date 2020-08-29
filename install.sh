@@ -319,7 +319,7 @@ install_neovim() {
         "https://github.com/neovim/neovim/releases/download/$VERSION/$FILENAME"
 
     # extract and remove tar
-    tar xvf "$NPATH/$FILENAME"
+    tar xvf "$NPATH/$FILENAME" -C "$NPATH"
     rm "$NPATH/$FILENAME"
 
     # create symlinks for bin and desktop icon

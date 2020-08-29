@@ -10,8 +10,6 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
-
-
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
@@ -91,7 +89,7 @@ download-clip() {
     # $3: duration, in seconds, or in hh:mm:ss[.xxx] form
     # $4: format, as accepted by youtube-dl (default: best)
     local fmt=${4:-best}
-    youtube-dl -f $fmt "$1" --postprocessor-args "-ss ${2} -to ${3}" --socket-timeout=2
+    youtube-dl -f "$fmt" "$1" --postprocessor-args "-ss ${2} -to ${3}" --socket-timeout=2
 }
 
 alias https="http --verify=no"
@@ -103,12 +101,28 @@ get-neovim() {
     local url="https://github.com/neovim/neovim/releases/download/nightly/$filename"
 
     # clean current files
-    [  -f "$HOME/.local/$filename" ] && rm "$filename"
-    [ -f "$HOME/.local/bin/nvim" ] && rm "$HOME/.local/bin/nvim"
-    [ -d "$HOME/.local/$folder" ] && rm -rf "$HOME/.local/$folder"
+    [[  -f "$HOME/.local/$filename" ]] && rm "$HOME/.local/$filename"
+    [[ -L "$HOME/.local/bin/nvim" ]] && rm "$HOME/.local/bin/nvim"
+    [[ -d "$HOME/.local/$folder" ]] && rm -rf "$HOME/.local/$folder"
 
     wget -q "$url" -P "$HOME/.local"
-    untar $HOME/.local/$filename
-    ln -fs "$HOME/$folder/bin/nvim" "$HOME/.local/bin"
+    untar "$HOME/.local/$filename" -C "$HOME/.local"
+    ln -s "$HOME/.local/$folder/bin/nvim" "$HOME/.local/bin"
     echo "NeoVIM updated to latest nightly"
+}
+
+colors() {
+    for i in {0..255}; do
+        printf "\x1b[38;5;%smcolour%s\x1b[0m\n" "$i" "$i"
+    done
+}
+
+license() {
+    local key=$1
+    local url="https://api.github.com/licenses/${key}"
+    local JQ
+    JQ=$(command -v jq)
+    res=$(curl -s "$url" | $JQ .body?)
+
+    echo "${res}"
 }

@@ -28,7 +28,7 @@ local function on_filetype_go()
   vim.g.go_fmt_command = "goimports"
   vim.g.go_list_type = "quickfix"
   vim.g.go_addtags_transform = "camelcase"
-  vim.g.go_metalinter_command = "golangci-lint"
+  vim.g.go_metalinter_command = "golangci-lint run --fix --out-format tab"
   vim.g.go_metalinter_enabled = {}
   vim.g.go_metalinter_autosave_enabled = {}
 
