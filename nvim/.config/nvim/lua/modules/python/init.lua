@@ -1,6 +1,8 @@
 --- Python layer
 local autocmd = require("cfg.autocmd")
 local plug = require("cfg.plug")
+local kb = require("cfg.keybind")
+local edit_mode = require("cfg.edit_mode")
 local layer = {}
 
 local function on_filetype_python()
@@ -8,6 +10,8 @@ local function on_filetype_python()
   autocmd.bind_bufwrite_pre(function()
     vim.cmd("silent Black")
   end)
+
+  kb.bind_command(edit_mode.NORMAL, "<leader>r", ":!python %<CR>", {noremap = true})
 end
 
 function layer.set_globals()

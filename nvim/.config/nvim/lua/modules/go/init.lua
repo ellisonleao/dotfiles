@@ -33,15 +33,15 @@ local function on_filetype_go()
   vim.g.go_metalinter_autosave_enabled = {}
 
   -- highlights
-  vim.g.go_highlight_types = true
-  vim.g.go_highlight_fields = true
-  vim.g.go_highlight_buf_opttions = true
-  vim.g.go_highlight_buf_opttion_calls = true
-  vim.g.go_highlight_format_strings = true
-  vim.g.go_highlight_build_constraints = true
-  vim.g.go_highlight_generate_tags = true
-  vim.g.go_highlight_extra_types = true
-  vim.g.go_highlight_generate_tags = true
+  -- vim.g.go_highlight_types = true
+  -- vim.g.go_highlight_fields = true
+  -- vim.g.go_highlight_buf_opttions = true
+  -- vim.g.go_highlight_buf_opttion_calls = true
+  -- vim.g.go_highlight_format_strings = true
+  -- vim.g.go_highlight_build_constraints = true
+  -- vim.g.go_highlight_generate_tags = true
+  -- vim.g.go_highlight_extra_types = true
+  -- vim.g.go_highlight_generate_tags = true
 
   -- vim-test
   vim.g["test#go#executable"] = "go test -v"

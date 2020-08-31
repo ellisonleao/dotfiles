@@ -13,10 +13,10 @@ function layer.register_plugins()
   plug.add_plugin("tpope/vim-commentary")
   plug.add_plugin("tpope/vim-repeat")
   plug.add_plugin("vim-test/vim-test")
-  plug.add_plugin("sheerun/vim-polyglot")
   plug.add_plugin("junegunn/fzf", {["do"] = ":call fzf#install()"})
   plug.add_plugin("junegunn/fzf.vim")
   plug.add_plugin("npxbr/glow.nvim", {["do"] = ":GlowInstall"})
+  plug.add_plugin("norcalli/snippets.nvim")
 end
 
 function layer.set_globals()
@@ -26,7 +26,6 @@ function layer.set_globals()
   vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
   vim.g["test#strategy"] = "neovim"
   vim.g.c_keybind_leader_info = keybind._leader_info
-  vim.g.polyglot_disabled = {"lua"}
 end
 
 function layer.set_options()

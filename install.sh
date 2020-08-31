@@ -358,6 +358,8 @@ install_apps() {
         papirus-icon-theme
         alacritty
         tmux
+        lua
+        luarocks
     )
     for pkg in "${APT_APPS[@]}"; do
         execute "sudo apt-get install -y $pkg" "$pkg"

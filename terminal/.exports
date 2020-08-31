@@ -36,7 +36,9 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PATH=$PATH:$HOME/.local/bin
 
 # luarocks
-[[ -d "$HOME/.luarocks" ]] && export PATH=$PATH:$HOME/.luarocks/bin
+if command -v "luarocks" &>/dev/null; then
+    eval $(luarocks path)
+fi
 
 # visual settings
 #export GDK_SCALE=2

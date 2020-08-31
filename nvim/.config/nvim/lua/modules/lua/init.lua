@@ -3,17 +3,16 @@ local autocmd = require("cfg.autocmd")
 local plug = require("cfg.plug")
 local keybind = require("cfg.keybind")
 local edit_mode = require("cfg.edit_mode")
+local kbc = keybind.bind_command
 
 local layer = {}
-local kbc = keybind.bind_command
 
 local function on_filetype_lua()
   vim.bo.shiftwidth = 2
   vim.bo.tabstop = 2
   vim.bo.softtabstop = 2
 
-  kbc(edit_mode.NORMAL, "<leader>ld", ":Luadev<CR>")
-  kbc(edit_mode.NORMAL, "<leader>r", "<Plug>(Luadev-RunLine)")
+  kbc(edit_mode.NORMAL, "<leader>r", ":!lua %<CR>", {noremap = true})
 end
 
 --- Returns plugins required for this layer
@@ -21,7 +20,6 @@ function layer.register_plugins()
   plug.add_plugin("andrejlevkovitch/vim-lua-format")
   plug.add_plugin("tjdevries/nlua.nvim")
   plug.add_plugin("euclidianAce/BetterLua.vim")
-  plug.add_plugin("bfredl/nvim-luadev")
 end
 
 --- Configures vim and plugins for this layer

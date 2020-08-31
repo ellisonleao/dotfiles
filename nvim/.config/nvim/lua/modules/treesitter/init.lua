@@ -8,7 +8,10 @@ end
 
 function layer.init_config()
   local treesiter = require('nvim-treesitter.configs')
-  treesiter.setup({highlight = {enable = true}})
+  treesiter.setup({
+    ensure_installed = {"lua"; "python"; "html"; "yaml"; "javascript"; "css"};
+    highlight = {enable = true};
+  })
 end
 
 return layer

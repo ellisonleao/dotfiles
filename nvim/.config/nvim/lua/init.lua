@@ -12,6 +12,8 @@ plug.install()
 
 local modules = {
   "editor"; -- Mappings, autocmd configs
+  "treesitter"; -- treesitter configs
+  "snippets"; -- snippets configs
   "style"; -- color, syntax, configs
   "lsp"; -- Common language server configs
   "git"; -- Git configs
