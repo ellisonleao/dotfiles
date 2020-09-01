@@ -12,6 +12,7 @@ local function on_filetype_lua()
   vim.bo.tabstop = 2
   vim.bo.softtabstop = 2
 
+  -- run *.lua with \r
   kbc(edit_mode.NORMAL, "<leader>r", ":!lua %<CR>", {noremap = true})
 end
 
@@ -26,9 +27,38 @@ end
 function layer.init_config()
   local lsp = require("modules.lsp")
   local nvim_lsp = require("nvim_lsp")
+  local config = {
+    settings = {
+      Lua = {
+        runtime = {
+          version = "LuaJIT";
+          -- TODO: Figure out how to get plugins here.
+          path = vim.split(package.path, ';');
+          -- path = {package.path},
+        };
+        diagnostics = {
+          enable = true;
+          globals = {
+            "vim"; -- Neovim
+            "describe"; "it"; "before_each"; "after_each"; -- Busted
+          };
+        };
 
-  lsp.register_server(nvim_lsp.sumneko_lua,
-                      {settings = {Lua = {diagnostics = {globals = {"vim"}}}}})
+        workspace = {
+          library = {
+            -- This loads the `lua` files from nvim into the runtime.
+            [vim.fn.expand("$VIMRUNTIME/lua")] = true;
+
+            -- TODO: Figure out how to get these to work...
+            --  Maybe we need to ship these instead of putting them in `src`?...
+            [vim.fn.expand("~/.local/neovim/src/nvim/lua")] = true;
+          };
+        };
+      };
+    };
+  }
+
+  lsp.register_server(nvim_lsp.sumneko_lua, config)
 
   autocmd.bind_filetype("lua", on_filetype_lua)
   autocmd.bind("BufWrite *.lua", function()

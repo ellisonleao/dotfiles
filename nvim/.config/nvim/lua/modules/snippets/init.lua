@@ -50,8 +50,6 @@ local function global_snippets()
   return {
     todo = snp_utils.force_comment("TODO(ellisonleao)");
     now = snp_utils.force_comment("${=os.date()}");
-    -- mit = licenses("mit");
-    -- gplv3 = licenses("gplv3");
   }
 end
 

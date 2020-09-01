@@ -19,7 +19,11 @@ function layer.init_config()
   local nvim_lsp = require("nvim_lsp")
 
   lsp.register_server(nvim_lsp.tsserver)
-  autocmd.bind_filetype("javascript", on_filetype_js)
+  autocmd.bind_filetype("javascript,javascriptreact,typescript,typescriptreact",
+                        on_filetype_js)
+  autocmd.bind("BufWrite *.js,*.jsx,*.tsx,*.ts", function()
+    vim.cmd("!prettier % --write")
+  end)
 end
 
 return layer
