@@ -1,4 +1,3 @@
-local plug = require("cfg.plug")
 local keybind = require("cfg.keybind")
 local edit_mode = require("cfg.edit_mode")
 local autocmd = require("cfg.autocmd")
@@ -6,18 +5,6 @@ local kbc = keybind.bind_command
 local vcmd = vim.cmd
 
 local layer = {}
-
---- Returns plugins required for this layer
-function layer.register_plugins()
-  plug.add_plugin("tpope/vim-surround")
-  plug.add_plugin("tpope/vim-commentary")
-  plug.add_plugin("tpope/vim-repeat")
-  plug.add_plugin("vim-test/vim-test")
-  plug.add_plugin("junegunn/fzf", {["do"] = ":call fzf#install()"})
-  plug.add_plugin("junegunn/fzf.vim")
-  plug.add_plugin("npxbr/glow.nvim", {["do"] = ":GlowInstall"})
-  plug.add_plugin("norcalli/snippets.nvim")
-end
 
 function layer.set_globals()
   vim.g.mapleader = "\\"
@@ -50,7 +37,7 @@ function layer.set_options()
 end
 
 --- Configures vim and plugins for this layer
-function layer.init_config()
+function layer.config()
   layer.set_globals()
   layer.set_options()
 
@@ -59,8 +46,7 @@ function layer.init_config()
       {noremap = true})
   kbc(edit_mode.NORMAL, "<leader>reR", ":source $MYVIMRC<CR>", {noremap = true})
   kbc(edit_mode.NORMAL, "<leader>reU",
-      ":source $MYVIMRC|PlugUpgrade|PlugClean|PlugUpdate|source $MYVIMRC<CR>",
-      {noremap = true})
+      ":source $MYVIMRC|PackerSync|source $MYVIMRC<CR>", {noremap = true})
 
   -- search
   local rg_cmd =

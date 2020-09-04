@@ -1,5 +1,4 @@
 --- Go layer
-local plug = require("cfg.plug")
 local autocmd = require("cfg.autocmd")
 local keybind = require("cfg.keybind")
 local edit_mode = require("cfg.edit_mode")
@@ -32,17 +31,6 @@ local function on_filetype_go()
   vim.g.go_metalinter_enabled = {}
   vim.g.go_metalinter_autosave_enabled = {}
 
-  -- highlights
-  -- vim.g.go_highlight_types = true
-  -- vim.g.go_highlight_fields = true
-  -- vim.g.go_highlight_buf_opttions = true
-  -- vim.g.go_highlight_buf_opttion_calls = true
-  -- vim.g.go_highlight_format_strings = true
-  -- vim.g.go_highlight_build_constraints = true
-  -- vim.g.go_highlight_generate_tags = true
-  -- vim.g.go_highlight_extra_types = true
-  -- vim.g.go_highlight_generate_tags = true
-
   -- vim-test
   vim.g["test#go#executable"] = "go test -v"
 
@@ -50,13 +38,8 @@ local function on_filetype_go()
   vim.bo.tabstop = 4
 end
 
---- Returns plugins required for this layer
-function layer.register_plugins()
-  plug.add_plugin("fatih/vim-go", {["do"] = ":GoUpdateBinaries"})
-end
-
 --- Configures vim and plugins for this layer
-function layer.init_config()
+function layer.config()
   local lsp = require("modules.lsp")
   local nvim_lsp = require("nvim_lsp")
   lsp.register_server(nvim_lsp.gopls)

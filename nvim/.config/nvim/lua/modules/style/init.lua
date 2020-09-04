@@ -1,20 +1,13 @@
-local plug = require("cfg.plug")
 local autocmd = require("cfg.autocmd")
-local vcmd = vim.cmd
+
 local layer = {}
 
-function layer.register_plugins()
-  plug.add_plugin("chriskempson/base16-vim")
-  plug.add_plugin("itchyny/lightline.vim")
-  plug.add_plugin("mengelbrecht/lightline-bufferline")
-  plug.add_plugin("ryanoasis/vim-devicons")
-end
-
-local function set_globals()
+function layer.set_globals()
   vim.g.airline_theme = "base16"
 
   -- lightline config
   vim.g.lightline = {
+    colorscheme = "seoul256";
     active = {
       left = {
         {"mode"; "paste"};
@@ -29,7 +22,7 @@ local function set_globals()
   }
 end
 
-local function set_options()
+function layer.set_options()
   vim.o.termguicolors = true
   vim.o.showtabline = 3
   vim.o.lazyredraw = true
@@ -46,28 +39,27 @@ local function set_options()
   vim.wo.colorcolumn = "88"
 end
 
-function layer.init_config()
-  set_globals()
-  set_options()
+function layer.config()
+  local vcmd = vim.cmd
+  layer.set_globals()
+  layer.set_options()
 
-  -- autocmd.bind_colorscheme(function()
-  --   vcmd("highlight DiffAdd ctermfg=193 ctermbg=none guifg=#66CC6C guibg=none")
-  --   vcmd(
-  --     "highlight DiffChange ctermfg=189 ctermbg=none guifg=#B166CC guibg=none")
-  --   vcmd(
-  --     "highlight DiffDelete ctermfg=167 ctermbg=none guifg=#CC6666 guibg=none")
-  --   vcmd(
-  --     "highlight LspDiagnosticsError ctermfg=167 ctermbg=none guifg=#EB4917 guibg=none")
-  --   vcmd(
-  --     "highlight LspDiagnosticsWarning ctermfg=167 ctermbg=none guifg=#EBA217 guibg=none")
-  --   vcmd(
-  --     "highlight LspDiagnosticsInformation ctermfg=167 ctermbg=none guifg=#17D6EB guibg=none")
-  --   vcmd(
-  --     "highlight LspDiagnosticsHint ctermfg=167 ctermbg=none guifg=#17EB7A guibg=none")
-
-  -- end)
+  autocmd.bind_colorscheme(function()
+    vcmd("highlight DiffAdd ctermfg=193 ctermbg=none guifg=#66CC6C guibg=none")
+    vcmd(
+      "highlight DiffChange ctermfg=189 ctermbg=none guifg=#B166CC guibg=none")
+    vcmd(
+      "highlight DiffDelete ctermfg=167 ctermbg=none guifg=#CC6666 guibg=none")
+    vcmd(
+      "highlight LspDiagnosticsError ctermfg=167 ctermbg=none guifg=#EB4917 guibg=none")
+    vcmd(
+      "highlight LspDiagnosticsWarning ctermfg=167 ctermbg=none guifg=#EBA217 guibg=none")
+    vcmd(
+      "highlight LspDiagnosticsInformation ctermfg=167 ctermbg=none guifg=#17D6EB guibg=none")
+    vcmd(
+      "highlight LspDiagnosticsHint ctermfg=167 ctermbg=none guifg=#17EB7A guibg=none")
+  end)
   vcmd("colorscheme base16-gruvbox-dark-hard")
-
 end
 
 return layer

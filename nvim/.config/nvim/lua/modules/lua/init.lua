@@ -1,6 +1,5 @@
 --- Lua layer
 local autocmd = require("cfg.autocmd")
-local plug = require("cfg.plug")
 local keybind = require("cfg.keybind")
 local edit_mode = require("cfg.edit_mode")
 local kbc = keybind.bind_command
@@ -18,13 +17,10 @@ end
 
 --- Returns plugins required for this layer
 function layer.register_plugins()
-  plug.add_plugin("andrejlevkovitch/vim-lua-format")
-  plug.add_plugin("tjdevries/nlua.nvim")
-  plug.add_plugin("euclidianAce/BetterLua.vim")
 end
 
 --- Configures vim and plugins for this layer
-function layer.init_config()
+function layer.config()
   local lsp = require("modules.lsp")
   local nvim_lsp = require("nvim_lsp")
   local config = {

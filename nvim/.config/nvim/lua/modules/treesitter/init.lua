@@ -1,17 +1,13 @@
 -- module treesiter
-local plug = require("cfg.plug")
 local layer = {}
 
-function layer.register_plugins()
-  plug.add_plugin("nvim-treesitter/nvim-treesitter")
-end
-
-function layer.init_config()
-  local treesiter = require('nvim-treesitter.configs')
-  treesiter.setup({
-    ensure_installed = {"lua"; "python"; "html"; "yaml"; "javascript"; "css"};
-    highlight = {enable = true};
-  })
+function layer.config()
+  require("nvim-treesitter.configs").setup(
+    {
+      highlight = {enable = true};
+      ensure_installed = {"lua"; "python"; "html"; "yaml"; "javascript"; "css"};
+      disable = {'lua'; 'typescript.tsx'; 'typescript'; 'tsx'};
+    })
 end
 
 return layer

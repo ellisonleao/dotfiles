@@ -21,9 +21,4 @@ function reload.unload_user_modules()
   reload.unload_modules("modules")
 end
 
---- Updates `package.path` from Vim's `runtimepath`
-function reload.update_package_path()
-  vim._update_package_paths()
-end
-
 return reload

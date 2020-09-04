@@ -1,11 +1,6 @@
-local plug = require("cfg.plug")
 local http = require("cfg.http")
 local autocmd = require("cfg.autocmd")
 local layer = {}
-
-function layer.register_plugins()
-  plug.add_plugin("norcalli/snippets.nvim")
-end
 
 -- grab licenses copy using github's API
 local function licenses(input)
@@ -53,7 +48,7 @@ local function global_snippets()
   }
 end
 
-function layer.init_config()
+function layer.config()
   local snp = require("snippets")
   snp.set_ux(require("snippets.inserters.vim_input"))
   snp.use_suggested_mappings()

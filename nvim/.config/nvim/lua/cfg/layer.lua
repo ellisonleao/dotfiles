@@ -1,26 +1,9 @@
 --- Layer management
--- @module c.layer
-local plug = require("cfg.plug")
-local reload = require("cfg.reload")
 local log = require("cfg.log")
 
 local layer = {}
 
 layer.layers = {}
-
---- Register a layer to be loaded
---
--- @tparam string name The layer module path
-function layer.add_layer(name)
-  table.insert(layer.layers, {name = name; module = require(name)})
-end
-
-function layer.load_modules(modules)
-  for _, item in ipairs(modules) do
-    layer.add_layer("modules." .. item)
-  end
-  layer.finish_layer_registration()
-end
 
 local function err_handler(err)
   return {err = err; traceback = debug.traceback()}
@@ -49,12 +32,23 @@ local function call_on_layers(func_name)
   end
 end
 
---- Start initializing all registered layers
-function layer.finish_layer_registration()
-  call_on_layers("register_plugins")
-  plug.finish_plugin_registration()
-  reload.update_package_path()
-  call_on_layers("init_config")
+--- Register a layer to be loaded
+function layer.add_layer(name)
+  table.insert(layer.layers, {name = name; module = require(name)})
+end
+
+function layer.load_modules(modules)
+  for _, item in ipairs(modules) do
+    layer.add_layer("modules." .. item)
+  end
+  layer.finish_registration()
+end
+
+function layer.finish_registration()
+  vim.schedule(function()
+    require("cfg.plugins")
+    call_on_layers("config")
+  end)
 end
 
 return layer

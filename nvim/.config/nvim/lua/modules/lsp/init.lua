@@ -1,18 +1,11 @@
 local keybind = require("cfg.keybind")
 local edit_mode = require("cfg.edit_mode")
 local autocmd = require("cfg.autocmd")
-local plug = require("cfg.plug")
 local kbc = keybind.bind_command
 local kbbc = keybind.buf_bind_command
+local kbf = keybind.bind_function
 
 local layer = {}
-
---- Returns plugins required for this layer
-function layer.register_plugins()
-  plug.add_plugin("neovim/nvim-lspconfig")
-  plug.add_plugin("nvim-lua/completion-nvim")
-  plug.add_plugin("nvim-lua/lsp-status.nvim")
-end
 
 local function stop_all_clients()
   local clients = vim.lsp.get_active_clients()
@@ -40,9 +33,9 @@ local function attach_client()
 end
 
 --- Configures vim and plugins for this layer
-function layer.init_config()
-  keybind.bind_function(edit_mode.NORMAL, "<leader>ls", stop_all_clients, nil)
-  keybind.bind_function(edit_mode.NORMAL, "<leader>la", attach_client, nil)
+function layer.config()
+  kbf(edit_mode.NORMAL, "<leader>ls", stop_all_clients, nil)
+  kbf(edit_mode.NORMAL, "<leader>la", attach_client, nil)
 
   kbc(edit_mode.INSERT, "<tab>", "pumvisible() ? '<C-n>' : '<tab>'",
       {noremap = true; expr = true})
@@ -81,7 +74,7 @@ function layer.init_config()
 			if luaeval('#vim.lsp.buf_get_clients() > 0')
 				return luaeval("require('modules.lsp').get_status()")
 			endif
-
+			echo("no lsp client available")
 			return ''
 		endfunction
     ]], false)
