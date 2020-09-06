@@ -1,7 +1,7 @@
 -- module treesiter
-local layer = {}
+local treesitter = {}
 
-function layer.config()
+function treesitter.config()
   require("nvim-treesitter.configs").setup(
     {
       highlight = {enable = true};
@@ -10,4 +10,4 @@ function layer.config()
     })
 end
 
-return layer
+return treesitter

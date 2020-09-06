@@ -15,6 +15,12 @@ local plugins = {
     only_setup = false,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/glow.nvim"
   },
+  ["nvim-treesitter"] = {
+    loaded = false,
+    only_sequence = false,
+    only_setup = false,
+    path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/nvim-treesitter"
+  },
   ["packer.nvim"] = {
     loaded = false,
     only_sequence = false,

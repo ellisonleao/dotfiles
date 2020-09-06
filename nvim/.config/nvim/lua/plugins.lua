@@ -1,4 +1,4 @@
-local packer_exists = pcall(vim.cmd, "packadd packer.nvim")
+local packer_exists = pcall(vim.cmd, [[packadd packer.nvim]])
 if not packer_exists then
   local dest = string.format("%s/site/pack/packer/opt/", vim.fn.stdpath("data"))
   local repo_url = "https://github.com/wbthomason/packer.nvim"
@@ -7,13 +7,18 @@ if not packer_exists then
 
   print("Downloading packer")
   vim.fn.system(string.format("git clone %s %s", repo_url,
-                              dest .. "/packer.nvim"))
+  dest .. "packer.nvim"))
   print("packer.nvim installed")
 end
+
 
 -- load plugins
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim"; opt = true}
+
+  -- plugin dev
+  use {"dstein64/vim-startuptime"}
+  use {"norcalli/nvim_utils"}
 
   -- editor
   use {"tpope/vim-surround"}
@@ -30,32 +35,30 @@ return require("packer").startup(function(use)
   use {"airblade/vim-gitgutter"}
 
   -- style
-  use {"chriskempson/base16-vim"}
-  use {"itchyny/lightline.vim"}
-  -- use {"mengelbrecht/lightline-bufferline"}
+  use {"norcalli/nvim-colorizer.lua"}
   use {"ryanoasis/vim-devicons"}
-
-  -- snippets
-  use {"norcalli/snippets.nvim"}
-
-  -- treesiter
-  use {"nvim-treesitter/nvim-treesitter"}
+  use {"norcalli/nvim-base16.lua"}
 
   -- lsp
-  use {"neovim/nvim-lspconfig"}
-  use {"nvim-lua/completion-nvim"}
-  use {"nvim-lua/lsp-status.nvim"}
+  -- Completion and linting
+  use {
+    "neovim/nvim-lspconfig";
+    requires = {
+      {"haorenW1025/completion-nvim"};
+      {"nvim-lua/lsp-status.nvim"};
+      {"nvim-lua/diagnostic-nvim"};
+      {"norcalli/snippets.nvim"};
+    };
+  };
+
+  use {"nvim-treesitter/nvim-treesitter", opt = true };
 
   -- lua
-  use {"andrejlevkovitch/vim-lua-format"}
-  use {"tjdevries/nlua.nvim"}
-  use {"euclidianAce/BetterLua.vim"}
+  use "andrejlevkovitch/vim-lua-format"
+  use "euclidianAce/BetterLua.vim"
 
   -- go
-  use {"fatih/vim-go"; run = "GoUpdateBinaries"}
-
-  -- python
-  use {"psf/black"; branch = "stable"}
+  use {"fatih/vim-go"; run = "GoUpdateBinaries";}
 
   -- html
   use {"mattn/emmet-vim"; ft = {"html"; "css"; "scss"}}

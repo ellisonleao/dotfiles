@@ -1,6 +1,5 @@
-local http = require("cfg.http")
-local autocmd = require("cfg.autocmd")
-local layer = {}
+local http = require("http")
+local snippets = {}
 
 -- grab licenses copy using github's API
 local function licenses(input)
@@ -48,7 +47,7 @@ local function global_snippets()
   }
 end
 
-function layer.config()
+function snippets.config()
   local snp = require("snippets")
   snp.set_ux(require("snippets.inserters.vim_input"))
   snp.use_suggested_mappings()
@@ -63,4 +62,4 @@ function layer.config()
   }
 end
 
-return layer
+return snippets.config()
