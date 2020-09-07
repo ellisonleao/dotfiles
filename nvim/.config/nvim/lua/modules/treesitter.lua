@@ -1,4 +1,5 @@
 -- module treesiter
+vim.cmd [[packadd nvim-treesitter]]
 local treesitter = {}
 
 function treesitter.config()

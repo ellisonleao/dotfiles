@@ -6,19 +6,18 @@ if not packer_exists then
   vim.fn.mkdir(dest, "p")
 
   print("Downloading packer")
-  vim.fn.system(string.format("git clone %s %s", repo_url,
-  dest .. "packer.nvim"))
+  vim.fn.system(
+    string.format("git clone %s %s", repo_url, dest .. "packer.nvim"))
   print("packer.nvim installed")
 end
-
 
 -- load plugins
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim"; opt = true}
 
-  -- plugin dev
+  -- plugin development and utils
   use {"dstein64/vim-startuptime"}
-  use {"norcalli/nvim_utils"}
+  use {"nvim-lua/plenary.nvim"}
 
   -- editor
   use {"tpope/vim-surround"}
@@ -27,7 +26,12 @@ return require("packer").startup(function(use)
   use {"vim-test/vim-test"}
   use {"junegunn/fzf"; run = ":call fzf#install()"}
   use {"junegunn/fzf.vim"}
-  use {"npxbr/glow.nvim"; run = "GlowInstall"; cmd = "Glow"}
+  use {"npxbr/glow.nvim"; run = ":GlowInstall"; cmd = "Glow"}
+  use {"sbdchd/neoformat"}
+
+  -- colors
+  use {"tjdevries/colorbuddy.nvim"}
+  use {"tjdevries/gruvbuddy.nvim"}
 
   -- git
   use {"tpope/vim-fugitive"}
@@ -35,30 +39,26 @@ return require("packer").startup(function(use)
   use {"airblade/vim-gitgutter"}
 
   -- style
-  use {"norcalli/nvim-colorizer.lua"}
   use {"ryanoasis/vim-devicons"}
-  use {"norcalli/nvim-base16.lua"}
+
+  -- statusline
+  use {"tjdevries/express_line.nvim"}
 
   -- lsp
   -- Completion and linting
   use {
     "neovim/nvim-lspconfig";
+    config = require("modules.lsp").config();
     requires = {
-      {"haorenW1025/completion-nvim"};
-      {"nvim-lua/lsp-status.nvim"};
-      {"nvim-lua/diagnostic-nvim"};
-      {"norcalli/snippets.nvim"};
+      {"nvim-lua/completion-nvim"}; {"nvim-lua/lsp-status.nvim"};
+      {"nvim-lua/diagnostic-nvim"}; {"norcalli/snippets.nvim"};
     };
   };
-
-  use {"nvim-treesitter/nvim-treesitter", opt = true };
-
   -- lua
-  use "andrejlevkovitch/vim-lua-format"
   use "euclidianAce/BetterLua.vim"
 
   -- go
-  use {"fatih/vim-go"; run = "GoUpdateBinaries";}
+  use {"fatih/vim-go"; run = ":GoUpdateBinaries"}
 
   -- html
   use {"mattn/emmet-vim"; ft = {"html"; "css"; "scss"}}

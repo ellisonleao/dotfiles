@@ -1,21 +1,22 @@
 local editor = {}
-require("nvim_utils")
+local utils = require("utils")
 
 function editor.set_globals()
-  nvim.g.mapleader = "\\"
-  nvim.g.maplocalleader = ","
-  nvim.g.python3_host_prog = nvim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
-  nvim.g.python_host_prog = nvim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
-  nvim.fn["test#strategy"] = "neovim"
-  nvim.g.fzf_preview_window = "right:60%"
+  vim.g.mapleader = "\\"
+  vim.g.maplocalleader = ","
+  vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
+  vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
+  vim.fn["test#strategy"] = "neovim"
+  vim.g.fzf_preview_window = "right:60%"
+  vim.g.neoformat_basic_format_trim = true
+  vim.g.neoformat_try_formatprg = true
 end
 
 function editor.set_options()
   local options = {
-    path = nvim.o.path .. ',' .. nvim.env.PWD;
+    -- path = vim.o.path .. ',' .. nvim.env.PWD;
     autoread = true;
     background = "dark";
-    cmdheight = 2;
     swapfile = false;
     hidden = true;
     ignorecase = true;
@@ -40,162 +41,134 @@ function editor.set_options()
     wildmenu = true;
     wildmode = "list:longest";
     -- wildmode = "longest:full,full";
-
     tabstop = 4;
     shiftwidth = 4;
     softtabstop = 4;
     expandtab = true;
     autoindent = true;
     smartindent = true;
-    shortmess = nvim.o.shortmess .. "c";
+    shortmess = vim.o.shortmess .. "c";
     scrolloff = 12;
-    mouse = nvim.o.mouse .. "a";
+    mouse = vim.o.mouse .. "a";
     completeopt = "menuone,noinsert,noselect";
     relativenumber = true;
     number = true;
   }
 
   for k, v in pairs(options) do
-    nvim.o[k] = v
+    vim.o[k] = v
   end
 
-end
-
-function editor.set_style()
-  require("colorizer").setup()
-  local base16 = require("base16")
-  base16(base16.themes["gruvbox-dark-hard"], true)
 end
 
 editor.FILETYPE_HOOKS = {
-    sql = function()
-      nvim.bo.commentstring = "-- %s"
-    end;
-    json = function()
-      -- setl formatprg=json_reformat shiftwidth=4 tabstop=4
-      nvim.bo.formatprg = "prettier"
-      nvim.bo.shiftwidth = 4
-      nvim.bo.tabstop = 4
-    end;
-    go = function()
-      local build = function ()
-	local file = nvim.fn.expand('%')
-	local is_test_file = file:sub(-#"_test.go") == "_test.go"
-	if is_test_file then
-	  nvim.call("go#test#Test", {0, 1})
-	else
-	  nvim.call("go#cmd#Build", 0)
-	end
-      end
+  javascriptreact = function()
+    vim.bo.shiftwidth = 4
+    vim.bo.tabstop = 4
+    vim.bo.softtabstop = 4
+  end;
+  go = function()
+    local opts = {silent = true; noremap = true}
+    local mappings = {
+      {"n"; "<leader>c"; "<Plug>(go-coverage-toggle)"; opts};
+      {"n"; "<leader>r"; "<Plug>(go-run)"; opts};
+      {"n"; "<leader>l"; "<Plug>(go-metalinter)"; opts};
+    }
 
-      local mappings = {
-	["n<leader>c"] = {"<Plug>(go-coverage-toggle)", {buffer=true; silent=true;}};
-	["n<leader>r"] = {"<Plug>(go-run)", {buffer=true; silent=true;}};
-	["n<leader>l"] = {"<Plug>(go-metalinter)", {buffer=true; silent=true;}};
-	["n<leader>b"] = {build, {buffer=true; silent=true;}};
-      }
+    vim.bo.shiftwidth = 4
+    vim.bo.tabstop = 4
+    vim.bo.softtabstop = 4
 
-      nvim.bo.shiftwidth = 4
-      nvim.bo.tabstop = 4
+    -- vim-test
+    vim.g["test#go#executable"] = "go test -v"
 
-      -- vim-test
-      nvim.g["test#go#executable"] = "go test -v"
+    -- vim-go vars
+    vim.g.go_fmt_command = "goimports"
+    vim.g.go_list_type = "quickfix"
+    vim.g.go_addtags_transform = "camelcase"
+    vim.g.go_metalinter_command = "golangci-lint run --fix --out-format tab"
+    vim.g.go_metalinter_enabled = {}
+    vim.g.go_metalinter_autosave_enabled = {}
 
-      -- vim-go vars
-      nvim.g.go_fmt_command = "goimports"
-      nvim.g.go_list_type = "quickfix"
-      nvim.g.go_addtags_transform = "camelcase"
-      nvim.g.go_metalinter_command = "golangci-lint run --fix --out-format tab"
-      nvim.g.go_metalinter_enabled = {}
-      nvim.g.go_metalinter_autosave_enabled = {}
+    for _, map in pairs(mappings) do
+      vim.api.nvim_buf_set_keymap(0, unpack(map))
+    end
+  end;
+  python = function()
+    vim.g["test#python#runner"] = "pytest"
+    vim.g.neoformat_enabled_python = {"black"}
+  end;
+  lua = function()
+    vim.bo.shiftwidth = 2
+    vim.bo.tabstop = 2
+    vim.bo.softtabstop = 2
 
-      nvim_apply_mappings(mappings, { buffer = true; silent = true; })
-    end;
-    python = function()
-      nvim.g["test#python#runner"] = "pytest"
-    end;
-  }
+    vim.g.neoformat_lua_luaformat = {
+      exe = "lua-format";
+      args = {"-c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")};
+    }
+    vim.g.neoformat_enabled_lua = {"luaformat"}
 
---- Configures nvim.o for this layer
+    vim.api.nvim_buf_set_keymap(0, "n", "<leader>r", ":luafile %<cr>",
+                                {noremap = true; silent = true})
+  end;
+}
+
 function editor.config()
   editor.set_globals()
   editor.set_options()
-  editor.set_style()
+  require("modules.statusline")
 
   local rg_cmd =
-  "rg --column --line-number --no-heading --color=always --smart-case -- "
+    "rg --column --line-number --no-heading --color=always --smart-case -- "
   vim.cmd("command! -bang -nargs=* Find call fzf#vim#grep('" .. rg_cmd ..
-  "'.shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)")
+            "'.shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)")
 
+  local opts = {noremap = true; silent = true}
   local mappings = {
     -- Edit config, reload config, and update plugins
-    ["n<leader>red"] = {[[:edit $HOME/.config/nvim/lua/init.lua]] , noremap=true};
-    ["n<leader>reR"] = {[[:luafile $HOME/.config/nvim/lua/init.lua<CR>]] , noremap=true};
-    ["n<leader>reU"] = {[[:PackerSync<CR>]] , noremap=true};
-
-    -- search
-    ["n<leader>f"] = {[[:Find<CR>]] , noremap=true};
-    ["n<leader>\\"] = {[[:noh<CR>]] , noremap=true};
-
-    -- Terminal navigation
-    ["n,z"] = {[[:bp<CR>]] , noremap=true};
-    ["n,q"] = {[[:bp<CR>]] , noremap=true};
-    ["n,x"] = {[[:bn<CR>]] , noremap=true};
-    ["n,w"] = {[[:bn<CR>]] , noremap=true};
-
-    -- buffer navigation
-    ["n,j"] = {[[<C-W><C-J>]] , noremap=true};
-    ["n,k"] = {[[<C-W><C-K>]] , noremap=true};
-    ["n,l"] = {[[<C-W><C-L>]] , noremap=true};
-    ["n,h"] = {[[<C-W><C-H>]] , noremap=true};
-
-    -- close buffer and quickfix
-    ["n,d"] = {[[:bd!<CR>]] , noremap=true};
-    ["n,c"] = {[[:cclose<CR>]] , noremap=true};
+    {"n"; "<leader>red"; [[:edit $HOME/.config/nvim/lua/init.lua]]; opts};
+    {"n"; "<leader>reR"; [[:luafile $HOME/.config/nvim/lua/init.lua<CR>]]; opts};
+    {"n"; "<leader>reU"; [[:PackerSync<CR>]]; opts}; -- search
+    {"n"; "<leader>f"; [[:Find<CR>]]; opts};
+    {"n"; "<leader>\\"; [[:noh<CR>]]; opts}; -- Terminal navigation
+    {"n"; ",z"; [[:bp<CR>]]; opts}; {"n"; ",q"; [[:bp<CR>]]; opts};
+    {"n"; ",x"; [[:bn<CR>]]; opts}; {"n"; ",w"; [[:bn<CR>]]; opts}; -- buffer navigation
+    {"n"; ",j"; [[<C-W><C-J>]]; opts}; {"n"; ",k"; [[<C-W><C-K>]]; opts};
+    {"n"; ",l"; [[<C-W><C-L>]]; opts}; {"n"; ",m"; [[<C-W><C-H>]]; opts}; -- close buffer and quickfix
+    {"n"; ",d"; [[:bd!<CR>]]; opts}; {"n"; ",c"; [[:cclose<CR>]]; opts};
 
     -- " Vmap for maintain Visual Mode after shifting > and <
-    ["v<"] = {[[<gv]]};
-    ["v>"] = {[[>gv]]};
-
-    -- vim-test bindings
-    ["n<leader>tt"] = {[[:TestNearest<CR>]]};
-    ["n<leader>tT"] = {[[:TestFile<CR>]]};
-
-    -- quickfix list navigation
-    ["n<leader>n"] = {[[:cn<CR>]]};
-    ["n<leader>p"] = {[[:cp<CR>]]};
-
-    -- md floating preview
-    ["n<leader>m"] = {[[:Glow<CR>]]};
+    {"v"; "<"; [[<gv]]; opts}; {"v"; ">"; [[>gv]]; opts}; -- vim-test bindings
+    {"n"; "<leader>tt"; [[:TestNearest<CR>]]; opts}; -- quickfix list navigation
+    {"n"; "<leader>tT"; [[:TestFile<CR>]]; opts};
+    {"n"; "<leader>n"; [[:cn<CR>]]; opts};
+    {"n"; "<leader>p"; [[:cp<CR>]]; opts}; -- md floating preview
+    {"n"; "<leader>m"; [[:Glow<CR>]]; opts};
   }
 
-  nvim_apply_mappings(mappings)
-
-  vim.cmd [[
-  function! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-  endfunction
-  ]]
-
-  vim.cmd [["command! -nargs=+ Li :lua print(vim.inspect(<args>)) ]]
+  for _, map in pairs(mappings) do
+    vim.api.nvim_buf_set_keymap(0, unpack(map))
+  end
 
   local autocmds = {
     general = {
-      {"BufWritePre", "*", [[silent call DeleteTrailingWS()]]};
+      {"BufWritePre"; "*"; [[undojoin | Neoformat]]};
       {"BufWritePost init.vim nested source $MYVIMRC"};
-    }
+    };
   }
 
   for filetype, _ in pairs(editor.FILETYPE_HOOKS) do
-    -- Escape the name to be compliant with augroup names.
-    autocmds["LuaFileTypeHook_"..filetype] = {
-      {"FileType", filetype, ("lua require('editor').FILETYPE_HOOKS[%q]()"):format(filetype)};
-    };
+    autocmds["LuaFileTypeHook_" .. utils.escape_keymap(filetype)] =
+      {
+        {
+          "FileType"; filetype;
+          ("lua require('editor').FILETYPE_HOOKS[%q]()"):format(filetype);
+        };
+      };
   end
 
-  nvim_create_augroups(autocmds)
+  utils.nvim_create_augroups(autocmds)
 
 end
 
