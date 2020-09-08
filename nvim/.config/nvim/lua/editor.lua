@@ -1,7 +1,9 @@
-local editor = {}
 local utils = require("utils")
+require("modules.statusline")
+require("modules.lsp")
+require("modules.snippets")
 
-function editor.set_globals()
+local function set_globals()
   vim.g.mapleader = "\\"
   vim.g.maplocalleader = ","
   vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
@@ -9,18 +11,18 @@ function editor.set_globals()
   vim.fn["test#strategy"] = "neovim"
   vim.g.fzf_preview_window = "right:60%"
   vim.g.neoformat_basic_format_trim = true
-  vim.g.neoformat_try_formatprg = true
 end
 
-function editor.set_options()
+local function set_options()
   local options = {
-    -- path = vim.o.path .. ',' .. nvim.env.PWD;
+    guifont = "Fira Code Retina Nerd Font 12";
+    path = vim.o.path .. ',' .. vim.env.PWD;
     autoread = true;
     background = "dark";
     swapfile = false;
     hidden = true;
     ignorecase = true;
-    inccommand = "nosplit";
+    inccommand = "split";
     incsearch = true;
     laststatus = 2;
     listchars = [[eol:$,tab:>-,trail:~,extends:>,precedes:<]];
@@ -58,17 +60,16 @@ function editor.set_options()
   for k, v in pairs(options) do
     vim.o[k] = v
   end
-
 end
 
-editor.FILETYPE_HOOKS = {
+FILETYPE_HOOKS = {
   javascriptreact = function()
     vim.bo.shiftwidth = 4
     vim.bo.tabstop = 4
     vim.bo.softtabstop = 4
   end;
   go = function()
-    local opts = {silent = true; noremap = true}
+    local opts = {noremap = true}
     local mappings = {
       {"n"; "<leader>c"; "<Plug>(go-coverage-toggle)"; opts};
       {"n"; "<leader>r"; "<Plug>(go-run)"; opts};
@@ -98,6 +99,11 @@ editor.FILETYPE_HOOKS = {
     vim.g["test#python#runner"] = "pytest"
     vim.g.neoformat_enabled_python = {"black"}
   end;
+  viml = function()
+    vim.bo.shiftwidth = 2
+    vim.bo.tabstop = 2
+    vim.bo.softtabstop = 2
+  end;
   lua = function()
     vim.bo.shiftwidth = 2
     vim.bo.tabstop = 2
@@ -114,62 +120,45 @@ editor.FILETYPE_HOOKS = {
   end;
 }
 
-function editor.config()
-  editor.set_globals()
-  editor.set_options()
-  require("modules.statusline")
+set_globals()
+set_options()
 
-  local rg_cmd =
-    "rg --column --line-number --no-heading --color=always --smart-case -- "
-  vim.cmd("command! -bang -nargs=* Find call fzf#vim#grep('" .. rg_cmd ..
-            "'.shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)")
+local rg_cmd = "rg --column --line-number --no-heading --color=always --smart-case -- "
+vim.cmd("command! -bang -nargs=* Find call fzf#vim#grep('" .. rg_cmd ..
+          "'.shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)")
 
-  local opts = {noremap = true; silent = true}
-  local mappings = {
-    -- Edit config, reload config, and update plugins
-    {"n"; "<leader>red"; [[:edit $HOME/.config/nvim/lua/init.lua]]; opts};
-    {"n"; "<leader>reR"; [[:luafile $HOME/.config/nvim/lua/init.lua<CR>]]; opts};
-    {"n"; "<leader>reU"; [[:PackerSync<CR>]]; opts}; -- search
-    {"n"; "<leader>f"; [[:Find<CR>]]; opts};
-    {"n"; "<leader>\\"; [[:noh<CR>]]; opts}; -- Terminal navigation
-    {"n"; ",z"; [[:bp<CR>]]; opts}; {"n"; ",q"; [[:bp<CR>]]; opts};
-    {"n"; ",x"; [[:bn<CR>]]; opts}; {"n"; ",w"; [[:bn<CR>]]; opts}; -- buffer navigation
-    {"n"; ",j"; [[<C-W><C-J>]]; opts}; {"n"; ",k"; [[<C-W><C-K>]]; opts};
-    {"n"; ",l"; [[<C-W><C-L>]]; opts}; {"n"; ",m"; [[<C-W><C-H>]]; opts}; -- close buffer and quickfix
-    {"n"; ",d"; [[:bd!<CR>]]; opts}; {"n"; ",c"; [[:cclose<CR>]]; opts};
+local opts = {noremap = true}
+local mappings = {
+  {"n"; "<leader>red"; [[:edit $HOME/.config/nvim/lua/init.lua<CR>]]; opts};
+  {"n"; "<leader>reR"; [[:source $MYVIMRC<CR>]]; opts};
+  {"n"; "<leader>reU"; [[:PackerSync<CR>]]; opts}; -- search
+  {"n"; "<leader>f"; [[:Find<CR>]]; opts}; {"n"; "<leader>\\"; [[:noh<CR>]]; opts};
+  {"n"; ",z"; [[:bp<CR>]]; opts}; {"n"; ",q"; [[:bp<CR>]]; opts};
+  {"n"; ",x"; [[:bn<CR>]]; opts}; {"n"; ",w"; [[:bn<CR>]]; opts};
+  {"n"; ",j"; [[<C-W><C-J>]]; opts}; {"n"; ",k"; [[<C-W><C-K>]]; opts};
+  {"n"; ",l"; [[<C-W><C-L>]]; opts}; {"n"; ",m"; [[<C-W><C-H>]]; opts};
+  {"n"; ",d"; [[:bd!<CR>]]; opts}; {"n"; ",c"; [[:cclose<CR>]]; opts};
+  {"v"; "<"; [[<gv]]; opts}; {"v"; ">"; [[>gv]]; opts}; -- vim-test bindings
+  {"n"; "<leader>tt"; [[:TestNearest<CR>]]; opts}; -- quickfix list navigation
+  {"n"; "<leader>tT"; [[:TestFile<CR>]]; opts}; {"n"; "<leader>n"; [[:cn<CR>]]; opts};
+  {"n"; "<leader>p"; [[:cp<CR>]]; opts}; -- md floating preview
+  {"n"; "<leader>m"; [[:Glow<CR>]]; opts};
+}
 
-    -- " Vmap for maintain Visual Mode after shifting > and <
-    {"v"; "<"; [[<gv]]; opts}; {"v"; ">"; [[>gv]]; opts}; -- vim-test bindings
-    {"n"; "<leader>tt"; [[:TestNearest<CR>]]; opts}; -- quickfix list navigation
-    {"n"; "<leader>tT"; [[:TestFile<CR>]]; opts};
-    {"n"; "<leader>n"; [[:cn<CR>]]; opts};
-    {"n"; "<leader>p"; [[:cp<CR>]]; opts}; -- md floating preview
-    {"n"; "<leader>m"; [[:Glow<CR>]]; opts};
-  }
-
-  for _, map in pairs(mappings) do
-    vim.api.nvim_buf_set_keymap(0, unpack(map))
-  end
-
-  local autocmds = {
-    general = {
-      {"BufWritePre"; "*"; [[undojoin | Neoformat]]};
-      {"BufWritePost init.vim nested source $MYVIMRC"};
-    };
-  }
-
-  for filetype, _ in pairs(editor.FILETYPE_HOOKS) do
-    autocmds["LuaFileTypeHook_" .. utils.escape_keymap(filetype)] =
-      {
-        {
-          "FileType"; filetype;
-          ("lua require('editor').FILETYPE_HOOKS[%q]()"):format(filetype);
-        };
-      };
-  end
-
-  utils.nvim_create_augroups(autocmds)
-
+for _, map in pairs(mappings) do
+  vim.api.nvim_set_keymap(unpack(map))
 end
 
-return editor
+local autocmds = {
+  general = {
+    {"BufWritePre"; "*"; [[Neoformat]]};
+    {"BufWritePost init.vim nested source $MYVIMRC"};
+  };
+}
+
+for filetype, _ in pairs(FILETYPE_HOOKS) do
+  autocmds["LuaFileTypeHook_" .. utils.escape_keymap(filetype)] =
+    {{"FileType"; filetype; ("lua FILETYPE_HOOKS[%q]()"):format(filetype)}};
+end
+
+utils.nvim_create_augroups(autocmds)

@@ -143,6 +143,8 @@ end
 
 -- Pre-load configuration
 -- Post-load configuration
+-- Config for: nvim-lspconfig
+loadstring("\27LJ\2\2+\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\16modules.lsp\frequire\0")()
 -- Conditional loads
 vim._update_package_paths()
 END

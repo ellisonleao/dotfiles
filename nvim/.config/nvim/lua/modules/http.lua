@@ -1,6 +1,6 @@
 -- http module
 local http_request = require("http.request")
-local json = require("json")
+local json = require("modules.json")
 
 local M = {}
 

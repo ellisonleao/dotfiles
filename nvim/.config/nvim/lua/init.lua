@@ -1,2 +1,2 @@
 require("plugins")
-require("editor").config()
+require("editor")

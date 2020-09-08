@@ -6,8 +6,7 @@ if not packer_exists then
   vim.fn.mkdir(dest, "p")
 
   print("Downloading packer")
-  vim.fn.system(
-    string.format("git clone %s %s", repo_url, dest .. "packer.nvim"))
+  vim.fn.system(string.format("git clone %s %s", repo_url, dest .. "packer.nvim"))
   print("packer.nvim installed")
 end
 
@@ -32,6 +31,7 @@ return require("packer").startup(function(use)
   -- colors
   use {"tjdevries/colorbuddy.nvim"}
   use {"tjdevries/gruvbuddy.nvim"}
+  use "euclidianAce/BetterLua.vim"
 
   -- git
   use {"tpope/vim-fugitive"}
@@ -44,18 +44,14 @@ return require("packer").startup(function(use)
   -- statusline
   use {"tjdevries/express_line.nvim"}
 
-  -- lsp
-  -- Completion and linting
-  use {
-    "neovim/nvim-lspconfig";
-    config = require("modules.lsp").config();
-    requires = {
-      {"nvim-lua/completion-nvim"}; {"nvim-lua/lsp-status.nvim"};
-      {"nvim-lua/diagnostic-nvim"}; {"norcalli/snippets.nvim"};
-    };
-  };
-  -- lua
-  use "euclidianAce/BetterLua.vim"
+  -- lsp, completion, linting and snippets
+  use {"norcalli/snippets.nvim"}
+  use {"nvim-lua/completion-nvim"}
+  use {"nvim-lua/diagnostic-nvim"}
+  use {"nvim-lua/lsp-status.nvim"}
+  use {"neovim/nvim-lspconfig"; config=function() 
+    require("modules.lsp")
+  end}
 
   -- go
   use {"fatih/vim-go"; run = ":GoUpdateBinaries"}
