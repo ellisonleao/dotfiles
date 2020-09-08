@@ -27,11 +27,13 @@ return require("packer").startup(function(use)
   use {"junegunn/fzf.vim"}
   use {"npxbr/glow.nvim"; run = ":GlowInstall"; cmd = "Glow"}
   use {"sbdchd/neoformat"}
+  use {"ap/vim-buftabline"}
 
-  -- colors
+  -- colors & style
   use {"tjdevries/colorbuddy.nvim"}
   use {"tjdevries/gruvbuddy.nvim"}
-  use "euclidianAce/BetterLua.vim"
+  use {"euclidianAce/BetterLua.vim"}
+  use {"ryanoasis/vim-devicons"}
 
   -- git
   use {"tpope/vim-fugitive"}
@@ -39,7 +41,6 @@ return require("packer").startup(function(use)
   use {"airblade/vim-gitgutter"}
 
   -- style
-  use {"ryanoasis/vim-devicons"}
 
   -- statusline
   use {"tjdevries/express_line.nvim"}
@@ -49,9 +50,12 @@ return require("packer").startup(function(use)
   use {"nvim-lua/completion-nvim"}
   use {"nvim-lua/diagnostic-nvim"}
   use {"nvim-lua/lsp-status.nvim"}
-  use {"neovim/nvim-lspconfig"; config=function() 
-    require("modules.lsp")
-  end}
+  use {
+    "neovim/nvim-lspconfig";
+    config = function()
+      require("modules.lsp")
+    end;
+  }
 
   -- go
   use {"fatih/vim-go"; run = ":GoUpdateBinaries"}

@@ -18,8 +18,8 @@ local function make_on_attach(config)
     end
 
     lsp_status.on_attach(client)
-    diagnostic.on_attach()
-    completion.on_attach()
+    diagnostic.on_attach(client)
+    completion.on_attach(client)
 
     local opts = {silent = true; noremap = true}
     local mappings = {
