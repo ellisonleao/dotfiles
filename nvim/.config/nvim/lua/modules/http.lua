@@ -4,7 +4,7 @@ local json = require("modules.json")
 
 local M = {}
 
-M.http_status = {OK = "200"; BAD_REQUEST = "400"; INTERNAL_SERVER_ERROR = "500"}
+M.http_status = {OK = "200", BAD_REQUEST = "400", INTERNAL_SERVER_ERROR = "500"}
 
 -- http request and json decoding for the body
 local function make_and_parse_request(url)

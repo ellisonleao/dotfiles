@@ -12,7 +12,7 @@ end
 
 -- load plugins
 return require("packer").startup(function(use)
-  use {"wbthomason/packer.nvim"; opt = true}
+  use {"wbthomason/packer.nvim", opt = true}
 
   -- plugin development and utils
   use {"dstein64/vim-startuptime"}
@@ -23,9 +23,9 @@ return require("packer").startup(function(use)
   use {"tpope/vim-commentary"}
   use {"tpope/vim-repeat"}
   use {"vim-test/vim-test"}
-  use {"junegunn/fzf"; run = ":call fzf#install()"}
+  use {"junegunn/fzf", run = ":call fzf#install()"}
   use {"junegunn/fzf.vim"}
-  use {"npxbr/glow.nvim"; run = ":GlowInstall"; cmd = "Glow"}
+  use {"npxbr/glow.nvim", run = ":GlowInstall", cmd = "Glow"}
   use {"sbdchd/neoformat"}
   use {"ap/vim-buftabline"}
 
@@ -51,15 +51,15 @@ return require("packer").startup(function(use)
   use {"nvim-lua/diagnostic-nvim"}
   use {"nvim-lua/lsp-status.nvim"}
   use {
-    "neovim/nvim-lspconfig";
+    "neovim/nvim-lspconfig",
     config = function()
       require("modules.lsp")
-    end;
+    end,
   }
 
   -- go
-  use {"fatih/vim-go"; run = ":GoUpdateBinaries"}
+  use {"fatih/vim-go", run = ":GoUpdateBinaries"}
 
   -- html
-  use {"mattn/emmet-vim"; ft = {"html"; "css"; "scss"}}
+  use {"mattn/emmet-vim", ft = {"html", "css", "scss"}}
 end)
