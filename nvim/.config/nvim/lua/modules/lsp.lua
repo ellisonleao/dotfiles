@@ -1,11 +1,11 @@
 vim.cmd [[ packadd lsp-status.nvim ]]
-vim.cmd [[ packadd diagnostic-nvim ]]
 vim.cmd [[ packadd completion-nvim ]]
+vim.cmd [[ packadd diagnostic-nvim ]]
 vim.cmd [[ packadd nvim-lspconfig ]]
 
 local lsp_status = require("lsp-status")
-local diagnostic = require("diagnostic")
 local completion = require("completion")
+local diagnostic = require("diagnostic")
 local nvim_lsp = require("nvim_lsp")
 local utils = require("utils")
 
@@ -18,8 +18,8 @@ local function make_on_attach(config)
     end
 
     lsp_status.on_attach(client)
-    diagnostic.on_attach(client)
     completion.on_attach(client)
+    diagnostic.on_attach(client)
 
     local opts = {silent = true, noremap = true}
     local mappings = {
@@ -83,7 +83,10 @@ local servers = {
           enable = true,
           globals = {
             "vim", -- Neovim
-            "describe", "it", "before_each", "after_each", -- Busted
+            "describe",
+            "it",
+            "before_each",
+            "after_each", -- Busted
           },
         },
         completion = {keywordSnippet = "Disable"},

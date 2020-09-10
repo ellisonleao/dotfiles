@@ -15,7 +15,6 @@ end
 
 local function set_options()
   local options = {
-    guifont = "Fira Code Retina Nerd Font 12",
     path = vim.o.path .. "," .. vim.env.PWD,
     autoread = true,
     background = "dark",
@@ -42,10 +41,7 @@ local function set_options()
     wildignorecase = true,
     wildmenu = true,
     wildmode = "list:longest",
-    -- wildmode = "longest:full,full";
-    tabstop = 4,
-    shiftwidth = 4,
-    softtabstop = 4,
+    updatetime = 500,
     expandtab = true,
     autoindent = true,
     smartindent = true,
@@ -53,9 +49,13 @@ local function set_options()
     scrolloff = 12,
     mouse = vim.o.mouse .. "a",
     completeopt = "menuone,noinsert,noselect",
-    relativenumber = true,
-    number = true,
   }
+
+  vim.wo.relativenumber = true
+  vim.wo.number = true
+  vim.bo.tabstop = 4
+  vim.bo.shiftwidth = 4
+  vim.bo.softtabstop = 4
 
   for k, v in pairs(options) do
     vim.o[k] = v
@@ -63,11 +63,6 @@ local function set_options()
 end
 
 FILETYPE_HOOKS = {
-  javascriptreact = function()
-    vim.bo.shiftwidth = 4
-    vim.bo.tabstop = 4
-    vim.bo.softtabstop = 4
-  end,
   go = function()
     local opts = {noremap = true}
     local mappings = {
@@ -75,10 +70,6 @@ FILETYPE_HOOKS = {
       {"n", "<leader>r", "<Plug>(go-run)", opts},
       {"n", "<leader>l", "<Plug>(go-metalinter)", opts},
     }
-
-    vim.bo.shiftwidth = 4
-    vim.bo.tabstop = 4
-    vim.bo.softtabstop = 4
 
     -- vim-test
     vim.g["test#go#executable"] = "go test -v"
@@ -132,15 +123,23 @@ local mappings = {
   {"n", "<leader>red", [[:edit $HOME/.config/nvim/lua/init.lua<CR>]], opts},
   {"n", "<leader>reR", [[:luafile $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
   {"n", "<leader>reU", [[:PackerSync<CR>]], opts}, -- search
-  {"n", "<leader>f", [[:Find<CR>]], opts}, {"n", "<leader>\\", [[:noh<CR>]], opts},
-  {"n", ",z", [[:bp<CR>]], opts}, {"n", ",q", [[:bp<CR>]], opts},
-  {"n", ",x", [[:bn<CR>]], opts}, {"n", ",w", [[:bn<CR>]], opts},
-  {"n", ",j", [[<C-W><C-J>]], opts}, {"n", ",k", [[<C-W><C-K>]], opts},
-  {"n", ",l", [[<C-W><C-L>]], opts}, {"n", ",m", [[<C-W><C-H>]], opts},
-  {"n", ",d", [[:bd!<CR>]], opts}, {"n", ",c", [[:cclose<CR>]], opts},
-  {"v", "<", [[<gv]], opts}, {"v", ">", [[>gv]], opts}, -- vim-test bindings
+  {"n", "<leader>f", [[:Find<CR>]], opts},
+  {"n", "<leader>\\", [[:noh<CR>]], opts},
+  {"n", ",z", [[:bp<CR>]], opts},
+  {"n", ",q", [[:bp<CR>]], opts},
+  {"n", ",x", [[:bn<CR>]], opts},
+  {"n", ",w", [[:bn<CR>]], opts},
+  {"n", ",j", [[<C-W><C-J>]], opts},
+  {"n", ",k", [[<C-W><C-K>]], opts},
+  {"n", ",l", [[<C-W><C-L>]], opts},
+  {"n", ",m", [[<C-W><C-H>]], opts},
+  {"n", ",d", [[:bd!<CR>]], opts},
+  {"n", ",c", [[:cclose<CR>]], opts},
+  {"v", "<", [[<gv]], opts},
+  {"v", ">", [[>gv]], opts}, -- vim-test bindings
   {"n", "<leader>tt", [[:TestNearest<CR>]], opts}, -- quickfix list navigation
-  {"n", "<leader>tT", [[:TestFile<CR>]], opts}, {"n", "<leader>n", [[:cn<CR>]], opts},
+  {"n", "<leader>tT", [[:TestFile<CR>]], opts},
+  {"n", "<leader>n", [[:cn<CR>]], opts},
   {"n", "<leader>p", [[:cp<CR>]], opts}, -- md floating preview
   {"n", "<leader>m", [[:Glow<CR>]], opts},
 }

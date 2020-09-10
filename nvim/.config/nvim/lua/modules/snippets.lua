@@ -11,6 +11,11 @@ if err != nil {
 ]],
     fp = "fmt.Println(\"${0}\")",
     fpf = "fmt.Printf(\"${0}\", \"${1:i}\")",
+    ld = "log.Debug(\"${0}\")",
+    lw = "log.Warning(\"${0}\")",
+    lwfd = "log.WithField(\"${0}\", \"\").Debug(\"\")",
+    lwfw = "log.WithField(\"${0}\", \"\").Warning(\"\")",
+    lwfe = "log.WithField(\"${0}\", \"\").Error(\"\")",
   }
 end
 
@@ -19,14 +24,14 @@ local function lua_snippets()
   return {
     ["fun"] = snp_utils.match_indentation [[
 function ${1}()
-
+  ${0}
 end
 ]],
     ["for"] = snp_utils.match_indentation [[
-for ${1:i}, ${2:1} in ipairs(${3:i}) do
+for ${1:k}, ${2:p} in ipairs(${3}) do
   ${0}
 end
-    ]],
+]],
   }
 end
 
@@ -57,7 +62,7 @@ class ${1|vim.trim(S.v):gsub("^%l", string.upper)}:
 end
 
 local snp = require("snippets")
-snp.set_ux(require("snippets.inserters.vim_input"))
+snp.set_ux(require("snippets.inserters.floaty"))
 snp.use_suggested_mappings()
 vim.g.completion_enable_snippet = "snippets.nvim"
 

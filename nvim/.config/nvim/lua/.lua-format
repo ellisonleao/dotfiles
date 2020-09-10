@@ -1,9 +1,9 @@
 align_table_field: true
 column_limit: 88
-single_quote_to_double_quote: true
 continuation_indent_width: 2
 extra_sep_at_table_end: true
 indent_width: 2
-keep_simple_control_block_one_line: false
+chop_down_table: true
 keep_simple_function_one_line: false
+keep_simple_control_block_one_line: false
 tab_width: 2

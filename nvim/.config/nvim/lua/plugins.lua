@@ -33,16 +33,15 @@ return require("packer").startup(function(use)
   use {"tjdevries/colorbuddy.nvim"}
   use {"tjdevries/gruvbuddy.nvim"}
   use {"euclidianAce/BetterLua.vim"}
-  use {"ryanoasis/vim-devicons"}
 
   -- git
   use {"tpope/vim-fugitive"}
   use {"tpope/vim-rhubarb"}
-  use {"airblade/vim-gitgutter"}
-
+  use {"mhinz/vim-signify"}
   -- style
 
   -- statusline
+  use {"kyazdani42/nvim-web-devicons"}
   use {"tjdevries/express_line.nvim"}
 
   -- lsp, completion, linting and snippets
