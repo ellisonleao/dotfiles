@@ -68,6 +68,7 @@ FILETYPE_HOOKS = {
     local mappings = {
       {"n", "<leader>c", "<Plug>(go-coverage-toggle)", opts},
       {"n", "<leader>r", "<Plug>(go-run)", opts},
+      {"n", "<leader>lk", [[<Cmd>call go#lsp#Restart()<CR>]], opts},
       {
         "n",
         "<leader>l",
