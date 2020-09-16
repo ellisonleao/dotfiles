@@ -141,9 +141,9 @@ configure_python() {
     # pyenv prereqs
     # shellcheck disable=SC2033
     sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
-                            libreadline-dev libsqlite3-dev llvm libncurses5-dev \
-                            libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
-                            python-openssl  python3-dev libdbus-glib-1-dev libgirepository1.0-dev
+        libreadline-dev libsqlite3-dev llvm libncurses5-dev \
+        libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
+        python-openssl python3-dev libdbus-glib-1-dev libgirepository1.0-dev
 
     if [[ ! -d "$HOME/.pyenv" ]]; then
         execute "curl -fs https://pyenv.run | bash" "Installing pyenv"
@@ -159,7 +159,7 @@ configure_python() {
     fi
 
     # virtualenvwrapper
-    if [[ ! -d  "$(pyenv root)/plugins/pyenv-virtualenvwrapper" ]] ;  then
+    if [[ ! -d "$(pyenv root)/plugins/pyenv-virtualenvwrapper" ]]; then
         git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git" "$(pyenv root)/plugins/pyenv-virtualenvwrapper"
     fi
 
@@ -251,7 +251,7 @@ configure_node() {
         'typescript-language-server'
         'vscode-html-languageserver-bin'
         '@bitwarden/cli'
-	'fast-cli'
+        'fast-cli'
     )
     for pkg in "${NODE_PACKAGES[@]}"; do
         "$NPM" install -i "$pkg"
@@ -288,7 +288,6 @@ configure_keys() {
     ssh-add
 }
 
-
 add_ppts() {
     print_info "adding additional apt sources"
     sudo apt install apt-transport-https curl
@@ -300,6 +299,7 @@ add_ppts() {
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
         "ppa:papirus/papirus"
         "ppa:mmstick76/alacritty"
+        "ppa:lazygit-team/release"
     )
 
     for ppt in "${PPTS[@]}"; do
@@ -360,6 +360,7 @@ install_apps() {
         tmux
         lua
         luarocks
+        lazygit
     )
     for pkg in "${APT_APPS[@]}"; do
         execute "sudo apt-get install -y $pkg" "$pkg"
