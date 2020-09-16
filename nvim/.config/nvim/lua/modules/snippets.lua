@@ -39,6 +39,27 @@ local function global_snippets()
   return {
     todo = snp_utils.force_comment("TODO(ellisonleao)"),
     now = snp_utils.force_comment("${=os.date()}"),
+    npx = snp_utils.force_comment [[
+      (((((((*           .(( .(((,(((((((((,
+      ((     ((((((((((( ,((    (*         (((((((/        (((((((
+      ((               (((((                ((   *((   ((((    /((
+      ((         ,      ((((      (((((            (((((      (((
+      ((.     (((((     .(((      ((.((.     (      ((*      ((*
+      (((     ((.((      (((      ((.((      ((*           *((
+      *((     ((.((     .(((      ((/((     (((((         (((
+       ((     ((.((     ((((      ((((.    ,(( ,((      *((
+       ((     ((/((     ((((      ((((     ((  ((/      .((
+       ((     ((((/    /((((      *((/    ((/ ((          ((
+       ((/    ((((,    (( ((/            ((( ((     ((     ((
+       *((    ((((    /(( /((     (((((((( .((    ((((((    ((
+        ((   (((((    ((   ((     ((       ((/   ((,  *((,  .((
+        ((((((   ((((((.   ((    .((        ((((((       ((((((
+                           ((    .((
+                           ((.   *((
+                           (((   /((
+                            ((  *((
+                            (((((,
+]],
   }
 end
 
@@ -62,7 +83,6 @@ class ${1|vim.trim(S.v):gsub("^%l", string.upper)}:
 end
 
 local snp = require("snippets")
-snp.set_ux(require("snippets.inserters.floaty"))
 snp.use_suggested_mappings()
 vim.g.completion_enable_snippet = "snippets.nvim"
 

@@ -8,17 +8,17 @@ local function set_globals()
   vim.g.maplocalleader = ","
   vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
   vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
-  vim.fn["test#strategy"] = "neovim"
-  vim.g.fzf_preview_window = "right:60%"
+  vim.g["test#strategy"] = "floaterm"
+  -- vim.g.fzf_preview_window = "right:60%"
   vim.g.neoformat_basic_format_trim = true
+  vim.g.diagnostic_enable_virtual_text = 1
 end
 
 local function set_options()
   local options = {
-    path = vim.o.path .. "," .. vim.env.PWD,
+    -- path = vim.o.path .. "," .. vim.env.PWD,
     autoread = true,
     background = "dark",
-    swapfile = false,
     hidden = true,
     ignorecase = true,
     inccommand = "split",
@@ -49,11 +49,11 @@ local function set_options()
     scrolloff = 12,
     mouse = vim.o.mouse .. "a",
     completeopt = "menuone,noinsert,noselect",
+    swapfile = false,
   }
 
   vim.wo.relativenumber = true
   vim.wo.number = true
-  vim.bo.tabstop = 4
   vim.bo.shiftwidth = 4
   vim.bo.softtabstop = 4
 
@@ -68,17 +68,24 @@ FILETYPE_HOOKS = {
     local mappings = {
       {"n", "<leader>c", "<Plug>(go-coverage-toggle)", opts},
       {"n", "<leader>r", "<Plug>(go-run)", opts},
-      {"n", "<leader>l", "<Plug>(go-metalinter)", opts},
+      {
+        "n",
+        "<leader>l",
+        [[:FloatermNew golangci-lint run --fix --out-format tab<CR>]],
+        opts,
+      },
     }
+    vim.bo.shiftwidth = 4
+    vim.bo.softtabstop = 4
+    vim.bo.tabstop = 4
 
-    -- vim-test
-    vim.g["test#go#executable"] = "go test -v"
+    -- disable vim-go snippet engine
+    vim.g.go_snippet_engine = ""
 
     -- vim-go vars
     vim.g.go_fmt_command = "goimports"
     vim.g.go_list_type = "quickfix"
     vim.g.go_addtags_transform = "camelcase"
-    vim.g.go_metalinter_command = "golangci-lint run --fix --out-format tab"
     vim.g.go_metalinter_enabled = {}
     vim.g.go_metalinter_autosave_enabled = {}
 
@@ -92,12 +99,15 @@ FILETYPE_HOOKS = {
   end,
   viml = function()
     vim.bo.shiftwidth = 2
-    vim.bo.tabstop = 2
     vim.bo.softtabstop = 2
+  end,
+  html = function()
+    vim.g.neoformat_enabled_html = {}
+    vim.bo.shiftwidth = 4
+    vim.bo.softtabstop = 4
   end,
   lua = function()
     vim.bo.shiftwidth = 2
-    vim.bo.tabstop = 2
     vim.bo.softtabstop = 2
 
     vim.g.neoformat_lua_luaformat = {
@@ -108,6 +118,20 @@ FILETYPE_HOOKS = {
 
     vim.api.nvim_buf_set_keymap(0, "n", "<leader>r", ":luafile %<cr>",
                                 {noremap = true, silent = true})
+  end,
+  proto = function()
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+  end,
+  yaml = function()
+    vim.g.neoformat_enabled_yaml = {}
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+  end,
+  sh = function()
+    vim.bo.shiftwidth = 4
+    vim.bo.tabstop = 4
+    vim.bo.softtabstop = 4
   end,
 }
 
@@ -141,7 +165,7 @@ local mappings = {
   {"n", "<leader>tT", [[:TestFile<CR>]], opts},
   {"n", "<leader>n", [[:cn<CR>]], opts},
   {"n", "<leader>p", [[:cp<CR>]], opts}, -- md floating preview
-  {"n", "<leader>m", [[:Glow<CR>]], opts},
+  {"n", "<leader>G", [[:FloatermNew --width=0.8 --height=0.6 lazygit<CR>]], opts},
 }
 
 for _, map in pairs(mappings) do

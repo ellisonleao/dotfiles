@@ -8,7 +8,8 @@ export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 
 # node
-export N_PREFIX="$HOME/.local/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+export N_PREFIX="$HOME/.local/n"
+[[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 
 # dir colors
 export CLICOLOR=1
@@ -40,6 +41,11 @@ if command -v "luarocks" &>/dev/null; then
     eval $(luarocks path)
 fi
 
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Poetry
+export PATH="$HOME/.poetry/bin:$PATH"
 # visual settings
 #export GDK_SCALE=2
 #export GDK_DPI_SCALE=0.3

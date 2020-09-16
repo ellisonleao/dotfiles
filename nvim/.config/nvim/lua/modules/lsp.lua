@@ -7,7 +7,6 @@ local lsp_status = require("lsp-status")
 local completion = require("completion")
 local diagnostic = require("diagnostic")
 local nvim_lsp = require("nvim_lsp")
-local utils = require("utils")
 
 lsp_status.register_progress()
 
@@ -25,12 +24,12 @@ local function make_on_attach(config)
     local mappings = {
       {"i", "<expr> <tab>", [[ pumvisible() ? '<C-n>' : '<tab>' ]], opts},
       {"i", "<expr> <S-tab>", [[ pumvisible() ? '<C-p>' : '<S-tab>' ]], opts},
-      {"n", "gd", [[<cmd>lua vim.lsp.buf.definition()<CR>]], opts},
-      {"n", "K", [[<cmd>lua vim.lsp.buf.hover()<CR>]], opts},
-      {"n", "<leader>lr", [[<cmd>lua vim.lsp.buf.rename()<CR>]], opts},
-      {"i", "<C-x>", [[<cmd>lua vim.lsp.buf.signature_help()<CR>]], opts},
-      {"n", "]e", [[<cmd>NextDiagnosticCycle<CR>]], opts},
-      {"n", "[e", [[<cmd>PrevDiagnosticCycle<CR>]], opts},
+      {"n", "gd", [[:lua vim.lsp.buf.definition()<CR>]], opts},
+      {"n", "K", [[:lua vim.lsp.buf.hover()<CR>]], opts},
+      {"n", "<leader>lr", [[:lua vim.lsp.buf.rename()<CR>]], opts},
+      {"i", "<C-x>", [[:lua vim.lsp.buf.signature_help()<CR>]], opts},
+      {"n", "]e", [[:NextDiagnosticCycle<CR>]], opts},
+      {"n", "[e", [[:PrevDiagnosticCycle<CR>]], opts},
     }
 
     if client.resolved_capabilities.document_formatting then
@@ -105,7 +104,7 @@ local servers = {
 for server, config in pairs(servers) do
   config = config or {}
   config.on_attach = make_on_attach(config)
-  config.capabilities = utils.deep_extend("keep", config.capabilities or {},
-                                          lsp_status.capabilities)
+  config.capabilities = vim.tbl_deep_extend("keep", config.capabilities or {},
+                                            lsp_status.capabilities)
   nvim_lsp[server].setup(config)
 end
