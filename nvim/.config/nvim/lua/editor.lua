@@ -9,7 +9,6 @@ local function set_globals()
   vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
   vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
   vim.g["test#strategy"] = "floaterm"
-  -- vim.g.fzf_preview_window = "right:60%"
   vim.g.neoformat_basic_format_trim = true
   vim.g.diagnostic_enable_virtual_text = 1
 end
@@ -21,7 +20,7 @@ local function set_options()
     background = "dark",
     hidden = true,
     ignorecase = true,
-    inccommand = "split",
+    inccommand = "nosplit",
     incsearch = true,
     laststatus = 2,
     listchars = [[eol:$,tab:>-,trail:~,extends:>,precedes:<]],
@@ -72,7 +71,7 @@ FILETYPE_HOOKS = {
       {
         "n",
         "<leader>l",
-        [[:FloatermNew golangci-lint run --fix --out-format tab<CR>]],
+        [[<Cmd>FloatermNew golangci-lint run --fix --out-format tab<CR>]],
         opts,
       },
     }
@@ -117,7 +116,7 @@ FILETYPE_HOOKS = {
     }
     vim.g.neoformat_enabled_lua = {"luaformat"}
 
-    vim.api.nvim_buf_set_keymap(0, "n", "<leader>r", ":luafile %<cr>",
+    vim.api.nvim_buf_set_keymap(0, "n", "<leader>r", "<Cmd>luafile %<CR>",
                                 {noremap = true, silent = true})
   end,
   proto = function()
@@ -145,28 +144,28 @@ vim.cmd("command! -bang -nargs=* Find call fzf#vim#grep('" .. rg_cmd ..
 
 local opts = {noremap = true}
 local mappings = {
-  {"n", "<leader>red", [[:edit $HOME/.config/nvim/lua/init.lua<CR>]], opts},
-  {"n", "<leader>reR", [[:luafile $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
-  {"n", "<leader>reU", [[:PackerSync<CR>]], opts}, -- search
-  {"n", "<leader>f", [[:Find<CR>]], opts},
-  {"n", "<leader>\\", [[:noh<CR>]], opts},
-  {"n", ",z", [[:bp<CR>]], opts},
-  {"n", ",q", [[:bp<CR>]], opts},
-  {"n", ",x", [[:bn<CR>]], opts},
-  {"n", ",w", [[:bn<CR>]], opts},
+  {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/init.lua<CR>]], opts},
+  {"n", "<leader>reR", [[<Cmd>luafile $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
+  {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts}, -- search
+  {"n", "<leader>f", [[<Cmd>Find<CR>]], opts},
+  {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},
+  {"n", ",z", [[<Cmd>bp<CR>]], opts},
+  {"n", ",q", [[<Cmd>bp<CR>]], opts},
+  {"n", ",x", [[<Cmd>bn<CR>]], opts},
+  {"n", ",w", [[<Cmd>bn<CR>]], opts},
   {"n", ",j", [[<C-W><C-J>]], opts},
   {"n", ",k", [[<C-W><C-K>]], opts},
   {"n", ",l", [[<C-W><C-L>]], opts},
   {"n", ",m", [[<C-W><C-H>]], opts},
-  {"n", ",d", [[:bd!<CR>]], opts},
-  {"n", ",c", [[:cclose<CR>]], opts},
+  {"n", ",d", [[<Cmd>bd!<CR>]], opts},
+  {"n", ",c", [[<Cmd>cclose<CR>]], opts},
   {"v", "<", [[<gv]], opts},
   {"v", ">", [[>gv]], opts}, -- vim-test bindings
-  {"n", "<leader>tt", [[:TestNearest<CR>]], opts}, -- quickfix list navigation
-  {"n", "<leader>tT", [[:TestFile<CR>]], opts},
-  {"n", "<leader>n", [[:cn<CR>]], opts},
-  {"n", "<leader>p", [[:cp<CR>]], opts}, -- md floating preview
-  {"n", "<leader>G", [[:FloatermNew --width=0.8 --height=0.6 lazygit<CR>]], opts},
+  {"n", "<leader>tt", [[<Cmd>TestNearest<CR>]], opts}, -- quickfix list navigation
+  {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts},
+  {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
+  {"n", "<leader>p", [[<Cmd>cp<CR>]], opts}, -- md floating preview
+  {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.6 lazygit<CR>]], opts},
 }
 
 for _, map in pairs(mappings) do
