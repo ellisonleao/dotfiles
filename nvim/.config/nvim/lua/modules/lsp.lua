@@ -1,8 +1,3 @@
-vim.cmd [[ packadd lsp-status.nvim ]]
-vim.cmd [[ packadd completion-nvim ]]
-vim.cmd [[ packadd diagnostic-nvim ]]
-vim.cmd [[ packadd nvim-lspconfig ]]
-
 local lsp_status = require("lsp-status")
 local completion = require("completion")
 local diagnostic = require("diagnostic")

@@ -1,11 +1,9 @@
---- Python layer
-local python = {}
-require("nvim_utils")
+--- Python module
+local M = {}
 
-function python.config()
-  nvim.g["test#python#runner"] = "pytest"
-  nvim.bo.formatprg = "black"
-  print("python configs loaded")
+M.config = function()
+  vim.g["test#python#runner"] = "pytest"
+  vim.g.neoformat_enabled_python = {"black"}
 end
 
-return python
+return M

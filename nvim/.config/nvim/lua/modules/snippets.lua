@@ -1,4 +1,3 @@
-vim.cmd [[ packadd snippets.nvim ]]
 local snp_utils = require("snippets.utils")
 
 -- golang snippets

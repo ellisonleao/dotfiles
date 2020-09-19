@@ -1,7 +1,4 @@
-local utils = require("utils")
-require("modules.statusline")
-require("modules.lsp")
-require("modules.snippets")
+local utils = require("modules.utils")
 
 local function set_globals()
   vim.g.mapleader = "\\"
@@ -53,6 +50,7 @@ local function set_options()
 
   vim.wo.relativenumber = true
   vim.wo.number = true
+  vim.wo.colorcolumn = "88"
   vim.bo.shiftwidth = 4
   vim.bo.softtabstop = 4
 
@@ -62,41 +60,8 @@ local function set_options()
 end
 
 FILETYPE_HOOKS = {
-  go = function()
-    local opts = {noremap = true}
-    local mappings = {
-      {"n", "<leader>c", "<Plug>(go-coverage-toggle)", opts},
-      {"n", "<leader>r", "<Plug>(go-run)", opts},
-      {"n", "<leader>lk", [[<Cmd>call go#lsp#Restart()<CR>]], opts},
-      {
-        "n",
-        "<leader>l",
-        [[<Cmd>FloatermNew golangci-lint run --fix --out-format tab<CR>]],
-        opts,
-      },
-    }
-    vim.bo.shiftwidth = 4
-    vim.bo.softtabstop = 4
-    vim.bo.tabstop = 4
-
-    -- disable vim-go snippet engine
-    vim.g.go_snippet_engine = ""
-
-    -- vim-go vars
-    vim.g.go_fmt_command = "goimports"
-    vim.g.go_list_type = "quickfix"
-    vim.g.go_addtags_transform = "camelcase"
-    vim.g.go_metalinter_enabled = {}
-    vim.g.go_metalinter_autosave_enabled = {}
-
-    for _, map in pairs(mappings) do
-      vim.api.nvim_buf_set_keymap(0, unpack(map))
-    end
-  end,
-  python = function()
-    vim.g["test#python#runner"] = "pytest"
-    vim.g.neoformat_enabled_python = {"black"}
-  end,
+  lua = require("modules.lua").config(),
+  python = require("modules.python").config(),
   viml = function()
     vim.bo.shiftwidth = 2
     vim.bo.softtabstop = 2
@@ -105,19 +70,6 @@ FILETYPE_HOOKS = {
     vim.g.neoformat_enabled_html = {}
     vim.bo.shiftwidth = 4
     vim.bo.softtabstop = 4
-  end,
-  lua = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-
-    vim.g.neoformat_lua_luaformat = {
-      exe = "lua-format",
-      args = {"-c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")},
-    }
-    vim.g.neoformat_enabled_lua = {"luaformat"}
-
-    vim.api.nvim_buf_set_keymap(0, "n", "<leader>r", "<Cmd>luafile %<CR>",
-                                {noremap = true, silent = true})
   end,
   proto = function()
     vim.bo.shiftwidth = 2
@@ -146,7 +98,7 @@ local opts = {noremap = true}
 local mappings = {
   {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/init.lua<CR>]], opts},
   {"n", "<leader>reR", [[<Cmd>luafile $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
-  {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts}, -- search
+  {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts},
   {"n", "<leader>f", [[<Cmd>Find<CR>]], opts},
   {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},
   {"n", ",z", [[<Cmd>bp<CR>]], opts},
@@ -160,11 +112,11 @@ local mappings = {
   {"n", ",d", [[<Cmd>bd!<CR>]], opts},
   {"n", ",c", [[<Cmd>cclose<CR>]], opts},
   {"v", "<", [[<gv]], opts},
-  {"v", ">", [[>gv]], opts}, -- vim-test bindings
-  {"n", "<leader>tt", [[<Cmd>TestNearest<CR>]], opts}, -- quickfix list navigation
+  {"v", ">", [[>gv]], opts},
+  {"n", "<leader>tt", [[<Cmd>TestNearest<CR>]], opts},
   {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts},
   {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
-  {"n", "<leader>p", [[<Cmd>cp<CR>]], opts}, -- md floating preview
+  {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
   {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.6 lazygit<CR>]], opts},
 }
 

@@ -1,13 +1,24 @@
 -- module treesiter
-vim.cmd [[packadd nvim-treesitter]]
-local treesitter = {}
+local M = {}
 
-function treesitter.config()
+function M.config()
   require("nvim-treesitter.configs").setup({
     highlight = {enable = true},
-    ensure_installed = {"lua", "python", "html", "yaml", "javascript", "css"},
-    disable = {"lua", "typescript.tsx", "typescript", "tsx"},
+    ensure_installed = {
+      "go",
+      "python",
+      "lua",
+      "html",
+      "yaml",
+      "json",
+      "javascript",
+      "markdown",
+      "css",
+      "bash",
+      "toml",
+    },
+    disable = {"typescript.tsx", "typescript", "tsx"},
   })
 end
 
-return treesitter
+return M

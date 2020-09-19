@@ -1,8 +1,7 @@
-vim.cmd [[ packadd plenary.nvim ]]
-vim.cmd [[ packadd express_line.nvim ]]
-vim.cmd [[ packadd nvim-web-devicons ]]
-vim.cmd [[ packadd lsp-status.nvim ]]
-
+-- vim.cmd [[ packadd plenary.nvim ]]
+-- vim.cmd [[ packadd express_line.nvim ]]
+-- vim.cmd [[ packadd nvim-web-devicons ]]
+-- vim.cmd [[ packadd lsp-status.nvim ]]
 local builtin = require("el.builtin")
 local extensions = require("el.extensions")
 local subscribe = require("el.subscribe")

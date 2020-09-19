@@ -13,7 +13,7 @@ end
 -- load plugins
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim", opt = true}
-
+  use {"mhinz/vim-startify"}
   use {"voldikss/vim-floaterm"}
 
   -- plugin development and utils
@@ -31,33 +31,72 @@ return require("packer").startup(function(use)
   use {"ap/vim-buftabline"}
 
   -- colors & style
-  use {"tjdevries/colorbuddy.nvim"}
-  use {"tjdevries/gruvbuddy.nvim"}
-  use {"euclidianAce/BetterLua.vim"}
-  use {"cespare/vim-toml"}
+  use {
+    "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("modules.treesitter").config()
+    end,
+  }
+  use {
+    "morhetz/gruvbox",
+    config = function()
+      vim.g.gruvbox_italics = true
+      vim.g.gruvbox_contrast_dark = "hard"
+      vim.cmd("colorscheme gruvbox")
+    end,
+  }
+  -- use {
+  --   "tjdevries/gruvbuddy.nvim",
+  --   requires = {"tjdevries/colorbuddy.nvim"},
+  --   config = function()
+  --     require('colorbuddy').colorscheme('gruvbuddy')
+  --   end,
+  -- }
 
   -- git
   use {"tpope/vim-rhubarb"}
   use {"mhinz/vim-signify"}
 
   -- lsp, completion, linting and snippets
-  use {"norcalli/snippets.nvim"}
-  use {"nvim-lua/completion-nvim"}
-  use {"nvim-lua/diagnostic-nvim"}
-  use {"nvim-lua/lsp-status.nvim"}
   use {
     "neovim/nvim-lspconfig",
     config = function()
       require("modules.lsp")
+      require("modules.snippets")
     end,
+    requires = {
+      "nvim-lua/completion-nvim",
+      "nvim-lua/diagnostic-nvim",
+      "nvim-lua/lsp-status.nvim",
+      "nvim-lua/completion-nvim",
+      "norcalli/snippets.nvim",
+    },
   }
   -- statusline
   use {"kyazdani42/nvim-web-devicons"}
-  use {"tjdevries/express_line.nvim"}
+  use {
+    "tjdevries/express_line.nvim",
+    config = function()
+      require("modules.statusline")
+    end,
+  }
 
   -- go
-  use {"fatih/vim-go", run = ":GoUpdateBinaries"}
+  use {
+    "fatih/vim-go",
+    run = ":GoUpdateBinaries",
+    ft = {"go"},
+    config = function()
+      require("modules.go").config()
+    end,
+  }
 
-  -- html
-  use {"mattn/emmet-vim", ft = {"html", "css", "scss"}}
+  -- html/css
+  use {
+    "mattn/emmet-vim",
+    ft = {"html", "css", "scss"},
+    config = function()
+      require("modules.html")
+    end,
+  }
 end)

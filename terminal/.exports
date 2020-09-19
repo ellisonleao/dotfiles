@@ -46,6 +46,10 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # Poetry
 export PATH="$HOME/.poetry/bin:$PATH"
+
+# cat output
+export BAT_THEME="ansi-dark"
+
 # visual settings
 #export GDK_SCALE=2
 #export GDK_DPI_SCALE=0.3

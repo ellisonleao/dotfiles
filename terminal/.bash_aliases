@@ -101,13 +101,24 @@ get-neovim() {
     local url="https://github.com/neovim/neovim/releases/download/nightly/$filename"
 
     # clean current files
-    [[  -f "$HOME/.local/$filename" ]] && rm "$HOME/.local/$filename"
+    [[ -f "$HOME/.local/$filename" ]] && rm "$HOME/.local/$filename"
     [[ -L "$HOME/.local/bin/nvim" ]] && rm "$HOME/.local/bin/nvim"
     [[ -d "$HOME/.local/$folder" ]] && rm -rf "$HOME/.local/$folder"
 
     wget -q "$url" -P "$HOME/.local"
     untar "$HOME/.local/$filename" -C "$HOME/.local"
     ln -s "$HOME/.local/$folder/bin/nvim" "$HOME/.local/bin"
+
+    pushd "$HOME/.local/"
+    if [[ ! -d "$HOME/.local/neovim" ]]; then
+        git clone neovim/neovim
+    else
+        pushd "$HOME/.local/neovim"
+        git pull
+        popd
+    fi
+    rm "$filename"
+    popd
     echo "NeoVIM updated to latest nightly"
 }
 

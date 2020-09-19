@@ -3,23 +3,24 @@
 lua << END
 local plugins = {
   ["emmet-vim"] = {
+    config = { "\27LJ\2\2,\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\17modules.html\frequire\0" },
     loaded = false,
     only_sequence = false,
     only_setup = false,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/emmet-vim"
-  },
-  ["glow.nvim"] = {
-    commands = { "Glow" },
-    loaded = false,
-    only_sequence = false,
-    only_setup = false,
-    path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/glow.nvim"
   },
   ["packer.nvim"] = {
     loaded = false,
     only_sequence = false,
     only_setup = false,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/packer.nvim"
+  },
+  ["vim-go"] = {
+    config = { "\27LJ\2\0029\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\15modules.go\frequire\0" },
+    loaded = false,
+    only_sequence = false,
+    only_setup = false,
+    path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/vim-go"
   }
 }
 
@@ -143,8 +144,14 @@ end
 
 -- Pre-load configuration
 -- Post-load configuration
+-- Config for: express_line.nvim
+loadstring("\27LJ\2\0022\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0")()
+-- Config for: nvim-treesitter
+loadstring("\27LJ\2\2A\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\23modules.treesitter\frequire\0")()
 -- Config for: nvim-lspconfig
-loadstring("\27LJ\2\2+\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\16modules.lsp\frequire\0")()
+loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\21modules.snippets\16modules.lsp\frequire\0")()
+-- Config for: gruvbox
+loadstring("\27LJ\2\2„\1\0\0\2\0\a\0\r6\0\0\0009\0\1\0+\1\2\0=\1\2\0006\0\0\0009\0\1\0'\1\4\0=\1\3\0006\0\0\0009\0\5\0'\1\6\0B\0\2\1K\0\1\0\24colorscheme gruvbox\bcmd\thard\26gruvbox_contrast_dark\20gruvbox_italics\6g\bvim\0")()
 -- Conditional loads
 vim._update_package_paths()
 END
@@ -158,15 +165,15 @@ endfunction
 " Load plugins in order defined by `after`
 
 " Command lazy-loads
-command! -nargs=* -range -bang -complete=file Glow call s:load(['glow.nvim'], { "cmd": "Glow", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
 
 " Keymap lazy-loads
 
 augroup packer_load_aucmds
   au!
   " Filetype lazy-loads
+  au FileType scss ++once call s:load(['emmet-vim'], { "ft": "scss" })
   au FileType html ++once call s:load(['emmet-vim'], { "ft": "html" })
   au FileType css ++once call s:load(['emmet-vim'], { "ft": "css" })
-  au FileType scss ++once call s:load(['emmet-vim'], { "ft": "scss" })
+  au FileType go ++once call s:load(['vim-go'], { "ft": "go" })
   " Event lazy-loads
 augroup END
