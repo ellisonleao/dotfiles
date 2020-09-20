@@ -83,7 +83,6 @@ end
 
 local snp = require("snippets")
 snp.use_suggested_mappings()
-vim.g.completion_enable_snippet = "snippets.nvim"
 
 -- snippets list
 snp.snippets = {
