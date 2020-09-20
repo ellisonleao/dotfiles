@@ -84,6 +84,9 @@ end
 local snp = require("snippets")
 snp.use_suggested_mappings()
 
+vim.g.completion_enable_snippet = "snippets.nvim"
+vim.g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
+
 -- snippets list
 snp.snippets = {
   _global = global_snippets(),

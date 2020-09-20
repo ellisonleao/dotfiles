@@ -65,22 +65,31 @@ local servers = {
   yamlls = {},
   vimls = {},
   sumneko_lua = {
+    cmd = function()
+      local cache_location = vim.fn.stdpath("cache")
+      return {
+        string.format(
+          "%s/nvim_lsp/sumneko_lua/lua-language-server/bin/Linux/lua-language-server",
+          cache_location),
+        "-E",
+        string.format("%s/nvim/nvim_lsp/sumneko_lua/lua-language-server/main.lua",
+                      cache_location),
+      }
+    end,
     filetypes = {"lua"},
     settings = {
       Lua = {
-        runtime = {
-          version = "LuaJIT",
-          -- TODO: Figure out how to get plugins here.
-          path = vim.split(package.path, ";"),
-        },
+        runtime = {version = "LuaJIT", path = vim.split(package.path, ";")},
         diagnostics = {
           enable = true,
           globals = {
-            "vim", -- Neovim
+            "vim",
             "describe",
             "it",
             "before_each",
-            "after_each", -- Busted
+            "after_each",
+            "teardown",
+            "pending",
           },
         },
         completion = {keywordSnippet = "Disable"},

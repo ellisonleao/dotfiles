@@ -117,7 +117,7 @@ local mappings = {
   {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts},
   {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
   {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
-  {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.6 lazygit<CR>]], opts},
+  {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
 }
 
 for _, map in pairs(mappings) do

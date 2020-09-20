@@ -4,6 +4,8 @@ local M = {}
 function M.config()
   vim.bo.shiftwidth = 2
   vim.bo.softtabstop = 2
+  vim.bo.tabstop = 2
+  vim.bo.softtabstop = 2
 
   vim.g.neoformat_lua_luaformat = {
     exe = "lua-format",
