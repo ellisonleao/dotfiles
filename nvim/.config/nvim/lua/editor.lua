@@ -7,7 +7,6 @@ local function set_globals()
   vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
   vim.g["test#strategy"] = "floaterm"
   vim.g.neoformat_basic_format_trim = true
-  vim.g.diagnostic_enable_virtual_text = 1
 end
 
 local function set_options()
@@ -60,8 +59,52 @@ local function set_options()
 end
 
 FILETYPE_HOOKS = {
-  lua = require("modules.lua").config(),
-  python = require("modules.python").config(),
+  lua = function()
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+    vim.bo.tabstop = 2
+
+    vim.g.neoformat_lua_luaformat = {
+      exe = "lua-format",
+      args = {"-c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")},
+    }
+    vim.g.neoformat_enabled_lua = {"luaformat"}
+  end,
+  go = function()
+    local opts = {noremap = true}
+    local mappings = {
+      {"n", "<leader>c", "<Plug>(go-coverage-toggle)", opts},
+      {"n", "<leader>r", "<Plug>(go-run)", opts},
+      {"n", "<leader>lk", [[<Cmd>call go#lsp#Restart()<CR>]], opts},
+      {
+        "n",
+        "<leader>l",
+        [[<Cmd>FloatermNew golangci-lint run --fix --out-format tab<CR>]],
+        opts,
+      },
+    }
+    vim.bo.shiftwidth = 4
+    vim.bo.softtabstop = 4
+    vim.bo.tabstop = 4
+
+    -- disable vim-go snippet engine
+    vim.g.go_snippet_engine = ""
+
+    -- vim-go vars
+    vim.g.go_fmt_command = "goimports"
+    vim.g.go_list_type = "quickfix"
+    vim.g.go_addtags_transform = "camelcase"
+    vim.g.go_metalinter_enabled = {}
+    vim.g.go_metalinter_autosave_enabled = {}
+
+    for _, map in pairs(mappings) do
+      vim.api.nvim_buf_set_keymap(0, unpack(map))
+    end
+  end,
+  python = function()
+    vim.g["test#python#runner"] = "pytest"
+    vim.g.neoformat_enabled_python = {"black"}
+  end,
   viml = function()
     vim.bo.shiftwidth = 2
     vim.bo.softtabstop = 2
@@ -87,8 +130,29 @@ FILETYPE_HOOKS = {
   end,
 }
 
+local function set_custom_highlights()
+  local items = {
+    "hi! link LspDiagnosticsErrorSign GruvboxRedSign",
+    "hi! link LspDiagnosticsWarningSign GruvboxOrangeSign",
+    "hi! link LspDiagnosticsInformationSign GruvboxYellowSign",
+    "hi! link LspDiagnosticsHintSign GruvboxBlueSign",
+    "hi! link LspDiagnosticsErrorFloating GruvboxRed",
+    "hi! link LspDiagnosticsWarningFloating GruvboxOrange",
+    "hi! link LspDiagnosticsInformationFloating GruvboxYellow",
+    "hi! link LspDiagnosticsHintFloating GruvboxBlue",
+    "hi! link LspDiagnosticsError GruvboxRed",
+    "hi! link LspDiagnosticsWarning GruvboxOrange",
+    "hi! link LspDiagnosticsInformation GruvboxYellow",
+    "hi! link LspDiagnosticsHint GruvboxBlue",
+  }
+  for _, hi in pairs(items) do
+    vim.api.nvim_command(hi)
+  end
+end
+
 set_globals()
 set_options()
+set_custom_highlights()
 
 local rg_cmd = "rg --column --line-number --no-heading --color=always --smart-case -- "
 vim.cmd("command! -bang -nargs=* Find call fzf#vim#grep('" .. rg_cmd ..
@@ -118,6 +182,7 @@ local mappings = {
   {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
   {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
   {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
+  {"n", "<leader>R", [[<Cmd>IronRepl<CR>]], opts},
 }
 
 for _, map in pairs(mappings) do

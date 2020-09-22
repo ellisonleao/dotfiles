@@ -1,4 +1,4 @@
-local packer_exists = pcall(vim.cmd, [[packadd packer.nvim]])
+local packer_exists = pcall(vim.cmd, [[ packadd packer.nvim ]])
 if not packer_exists then
   local dest = string.format("%s/site/pack/packer/opt/", vim.fn.stdpath("data"))
   local repo_url = "https://github.com/wbthomason/packer.nvim"
@@ -19,6 +19,15 @@ return require("packer").startup(function(use)
   -- plugin development and utils
   use {"dstein64/vim-startuptime"}
   use {"nvim-lua/plenary.nvim"}
+
+  -- repl
+  use {
+    "hkupty/iron.nvim",
+    config = function()
+      require("modules.iron").config()
+    end,
+    cmd = {"IronRepl", "IronSend", "IronWatchCurrentFile"},
+  }
 
   -- editor
   use {"tpope/vim-surround"}
@@ -82,14 +91,7 @@ return require("packer").startup(function(use)
   }
 
   -- go
-  use {
-    "fatih/vim-go",
-    run = ":GoUpdateBinaries",
-    ft = {"go"},
-    config = function()
-      require("modules.go").config()
-    end,
-  }
+  use {"fatih/vim-go", run = ":GoUpdateBinaries", ft = {"go"}}
 
   -- html/css
   use {

@@ -9,6 +9,14 @@ local plugins = {
     only_setup = false,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/emmet-vim"
   },
+  ["iron.nvim"] = {
+    commands = { "IronRepl", "IronSend", "IronWatchCurrentFile" },
+    config = { "\27LJ\2\2;\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\17modules.iron\frequire\0" },
+    loaded = false,
+    only_sequence = false,
+    only_setup = false,
+    path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/iron.nvim"
+  },
   ["packer.nvim"] = {
     loaded = false,
     only_sequence = false,
@@ -16,7 +24,6 @@ local plugins = {
     path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/packer.nvim"
   },
   ["vim-go"] = {
-    config = { "\27LJ\2\0029\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\15modules.go\frequire\0" },
     loaded = false,
     only_sequence = false,
     only_setup = false,
@@ -165,6 +172,9 @@ endfunction
 " Load plugins in order defined by `after`
 
 " Command lazy-loads
+command! -nargs=* -range -bang -complete=file IronWatchCurrentFile call s:load(['iron.nvim'], { "cmd": "IronWatchCurrentFile", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
+command! -nargs=* -range -bang -complete=file IronRepl call s:load(['iron.nvim'], { "cmd": "IronRepl", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
+command! -nargs=* -range -bang -complete=file IronSend call s:load(['iron.nvim'], { "cmd": "IronSend", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
 
 " Keymap lazy-loads
 

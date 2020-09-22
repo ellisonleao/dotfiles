@@ -50,6 +50,8 @@ export PATH="$HOME/.poetry/bin:$PATH"
 # cat output
 export BAT_THEME="ansi-dark"
 
+[[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
+
 # visual settings
 #export GDK_SCALE=2
 #export GDK_DPI_SCALE=0.3

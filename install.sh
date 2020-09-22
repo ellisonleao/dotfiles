@@ -178,11 +178,9 @@ configure_python() {
         flake8
         awscli
         neovim
-        ipython
+        ptipython
         docker-compose
-        python-language-server
         vim-vint
-        pyls-black
         dbus-python
         spotify-cli-linux
     )
