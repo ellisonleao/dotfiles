@@ -37,7 +37,12 @@ return require("packer").startup(function(use)
   use {"junegunn/fzf", run = ":call fzf#install()"}
   use {"junegunn/fzf.vim"}
   use {"sbdchd/neoformat"}
-  use {"ap/vim-buftabline"}
+  use {
+    "Akin909/nvim-bufferline.lua",
+    config = function()
+      require("bufferline").setup()
+    end,
+  }
 
   -- colors & style
   use {
@@ -46,6 +51,7 @@ return require("packer").startup(function(use)
       require("modules.treesitter").config()
     end,
   }
+
   use {
     "morhetz/gruvbox",
     config = function()

@@ -151,14 +151,16 @@ end
 
 -- Pre-load configuration
 -- Post-load configuration
--- Config for: express_line.nvim
-loadstring("\27LJ\2\0022\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0")()
+-- Config for: nvim-bufferline.lua
+loadstring("\27LJ\2\0028\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\15bufferline\frequire\0")()
 -- Config for: nvim-treesitter
 loadstring("\27LJ\2\2A\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\23modules.treesitter\frequire\0")()
--- Config for: nvim-lspconfig
-loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\21modules.snippets\16modules.lsp\frequire\0")()
 -- Config for: gruvbox
 loadstring("\27LJ\2\2„\1\0\0\2\0\a\0\r6\0\0\0009\0\1\0+\1\2\0=\1\2\0006\0\0\0009\0\1\0'\1\4\0=\1\3\0006\0\0\0009\0\5\0'\1\6\0B\0\2\1K\0\1\0\24colorscheme gruvbox\bcmd\thard\26gruvbox_contrast_dark\20gruvbox_italics\6g\bvim\0")()
+-- Config for: express_line.nvim
+loadstring("\27LJ\2\0022\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0")()
+-- Config for: nvim-lspconfig
+loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\21modules.snippets\16modules.lsp\frequire\0")()
 -- Conditional loads
 vim._update_package_paths()
 END

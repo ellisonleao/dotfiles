@@ -7,6 +7,7 @@ local function set_globals()
   vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
   vim.g["test#strategy"] = "floaterm"
   vim.g.neoformat_basic_format_trim = true
+  vim.g.diagnostic_enable_virtual_text = true
 end
 
 local function set_options()
@@ -96,6 +97,7 @@ FILETYPE_HOOKS = {
     vim.g.go_addtags_transform = "camelcase"
     vim.g.go_metalinter_enabled = {}
     vim.g.go_metalinter_autosave_enabled = {}
+    vim.g.go_doc_popup_window = true
 
     for _, map in pairs(mappings) do
       vim.api.nvim_buf_set_keymap(0, unpack(map))
