@@ -149,6 +149,8 @@ _packer_load = function(names, cause)
   end
 end
 
+-- Runtimepath customization
+
 -- Pre-load configuration
 -- Post-load configuration
 -- Config for: nvim-bufferline.lua
@@ -162,6 +164,7 @@ loadstring("\27LJ\2\0022\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\23modules.s
 -- Config for: nvim-lspconfig
 loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\21modules.snippets\16modules.lsp\frequire\0")()
 -- Conditional loads
+-- Load plugins in order defined by `after`
 vim._update_package_paths()
 END
 
@@ -169,9 +172,6 @@ function! s:load(names, cause) abort
 call luaeval('_packer_load(_A[1], _A[2])', [a:names, a:cause])
 endfunction
 
-" Runtimepath customization
-
-" Load plugins in order defined by `after`
 
 " Command lazy-loads
 command! -nargs=* -range -bang -complete=file IronWatchCurrentFile call s:load(['iron.nvim'], { "cmd": "IronWatchCurrentFile", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })

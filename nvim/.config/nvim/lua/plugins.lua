@@ -16,6 +16,9 @@ return require("packer").startup(function(use)
   use {"mhinz/vim-startify"}
   use {"voldikss/vim-floaterm"}
 
+  -- local
+  use {"~/code/twitch.nvim"}
+
   -- plugin development and utils
   use {"dstein64/vim-startuptime"}
   use {"nvim-lua/plenary.nvim"}
@@ -53,20 +56,13 @@ return require("packer").startup(function(use)
   }
 
   use {
-    "morhetz/gruvbox",
+    "gruvbox-community/gruvbox",
     config = function()
       vim.g.gruvbox_italics = true
       vim.g.gruvbox_contrast_dark = "hard"
       vim.cmd("colorscheme gruvbox")
     end,
   }
-  -- use {
-  --   "tjdevries/gruvbuddy.nvim",
-  --   requires = {"tjdevries/colorbuddy.nvim"},
-  --   config = function()
-  --     require('colorbuddy').colorscheme('gruvbuddy')
-  --   end,
-  -- }
 
   -- git
   use {"tpope/vim-rhubarb"}

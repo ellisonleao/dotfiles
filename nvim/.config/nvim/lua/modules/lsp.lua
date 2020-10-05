@@ -76,7 +76,6 @@ local servers = {
                       cache_location),
       }
     end,
-    filetypes = {"lua"},
     settings = {
       Lua = {
         runtime = {version = "LuaJIT", path = vim.split(package.path, ";")},

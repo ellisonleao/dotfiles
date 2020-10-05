@@ -6,6 +6,8 @@ local function set_globals()
   vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
   vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
   vim.g["test#strategy"] = "floaterm"
+  vim.g.floaterm_height = 0.8
+  vim.g.floaterm_width = 0.8
   vim.g.neoformat_basic_format_trim = true
   vim.g.diagnostic_enable_virtual_text = true
 end
@@ -50,7 +52,7 @@ local function set_options()
 
   vim.wo.relativenumber = true
   vim.wo.number = true
-  vim.wo.colorcolumn = "88"
+  vim.wo.colorcolumn = "80"
   vim.bo.shiftwidth = 4
   vim.bo.softtabstop = 4
 
@@ -74,15 +76,8 @@ FILETYPE_HOOKS = {
   go = function()
     local opts = {noremap = true}
     local mappings = {
-      {"n", "<leader>c", "<Plug>(go-coverage-toggle)", opts},
-      {"n", "<leader>r", "<Plug>(go-run)", opts},
       {"n", "<leader>lk", [[<Cmd>call go#lsp#Restart()<CR>]], opts},
-      {
-        "n",
-        "<leader>l",
-        [[<Cmd>FloatermNew golangci-lint run --fix --out-format tab<CR>]],
-        opts,
-      },
+      {"n", "<leader>l", [[<Cmd>GoMetaLinter<CR>]], opts},
     }
     vim.bo.shiftwidth = 4
     vim.bo.softtabstop = 4
@@ -132,29 +127,8 @@ FILETYPE_HOOKS = {
   end,
 }
 
-local function set_custom_highlights()
-  local items = {
-    "hi! link LspDiagnosticsErrorSign GruvboxRedSign",
-    "hi! link LspDiagnosticsWarningSign GruvboxOrangeSign",
-    "hi! link LspDiagnosticsInformationSign GruvboxYellowSign",
-    "hi! link LspDiagnosticsHintSign GruvboxBlueSign",
-    "hi! link LspDiagnosticsErrorFloating GruvboxRed",
-    "hi! link LspDiagnosticsWarningFloating GruvboxOrange",
-    "hi! link LspDiagnosticsInformationFloating GruvboxYellow",
-    "hi! link LspDiagnosticsHintFloating GruvboxBlue",
-    "hi! link LspDiagnosticsError GruvboxRed",
-    "hi! link LspDiagnosticsWarning GruvboxOrange",
-    "hi! link LspDiagnosticsInformation GruvboxYellow",
-    "hi! link LspDiagnosticsHint GruvboxBlue",
-  }
-  for _, hi in pairs(items) do
-    vim.api.nvim_command(hi)
-  end
-end
-
 set_globals()
 set_options()
-set_custom_highlights()
 
 local rg_cmd = "rg --column --line-number --no-heading --color=always --smart-case -- "
 vim.cmd("command! -bang -nargs=* Find call fzf#vim#grep('" .. rg_cmd ..
@@ -171,19 +145,20 @@ local mappings = {
   {"n", ",q", [[<Cmd>bp<CR>]], opts},
   {"n", ",x", [[<Cmd>bn<CR>]], opts},
   {"n", ",w", [[<Cmd>bn<CR>]], opts},
+  {"n", ",h", [[<C-W><C-H>]], opts},
   {"n", ",j", [[<C-W><C-J>]], opts},
   {"n", ",k", [[<C-W><C-K>]], opts},
   {"n", ",l", [[<C-W><C-L>]], opts},
-  {"n", ",m", [[<C-W><C-H>]], opts},
   {"n", ",d", [[<Cmd>bd!<CR>]], opts},
   {"n", ",c", [[<Cmd>cclose<CR>]], opts},
   {"v", "<", [[<gv]], opts},
   {"v", ">", [[>gv]], opts},
-  {"n", "<leader>tt", [[<Cmd>TestNearest<CR>]], opts},
+  {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts},
   {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts},
   {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
   {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
   {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
+  {"n", "<leader>M", [[<Cmd>FloatermNew --width=0.8 --height=0.8 glow<CR>]], opts},
   {"n", "<leader>R", [[<Cmd>IronRepl<CR>]], opts},
 }
 
