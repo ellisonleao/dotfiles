@@ -170,6 +170,11 @@ local autocmds = {
   general = {
     {"BufWritePre", "*", [[Neoformat]]},
     {"BufWritePost init.vim nested source $MYVIMRC"},
+    {
+      "BufReadPost",
+      "*",
+      [[if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]],
+    },
   },
 }
 
