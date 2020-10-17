@@ -38,7 +38,6 @@ return require("packer").startup(function(use)
   use {"tpope/vim-repeat"}
   use {"vim-test/vim-test"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
-  use {"junegunn/fzf.vim"}
   use {"sbdchd/neoformat"}
   use {
     "Akin909/nvim-bufferline.lua",
@@ -62,6 +61,15 @@ return require("packer").startup(function(use)
       vim.g.gruvbox_contrast_dark = "hard"
       vim.cmd("colorscheme gruvbox")
     end,
+  }
+
+  -- search
+  use {
+    "nvim-lua/telescope.nvim",
+    config = function()
+      require("modules.search")
+    end,
+    requires = {"nvim-lua/popup.nvim"},
   }
 
   -- git

@@ -130,16 +130,11 @@ FILETYPE_HOOKS = {
 set_globals()
 set_options()
 
-local rg_cmd = "rg --column --line-number --no-heading --color=always --smart-case -- "
-vim.cmd("command! -bang -nargs=* Find call fzf#vim#grep('" .. rg_cmd ..
-          "'.shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)")
-
 local opts = {noremap = true}
 local mappings = {
   {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/init.lua<CR>]], opts},
   {"n", "<leader>reR", [[<Cmd>luafile $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
   {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts},
-  {"n", "<leader>f", [[<Cmd>Find<CR>]], opts},
   {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},
   {"n", ",z", [[<Cmd>bp<CR>]], opts},
   {"n", ",q", [[<Cmd>bp<CR>]], opts},
