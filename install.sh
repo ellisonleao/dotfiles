@@ -220,6 +220,7 @@ configure_rust() {
         'du-dust'
         'hyperfine'
         'bandwhich'
+        'tealdeer'
     )
     for pkg in "${RUST_CRATES[@]}"; do
         "$CARGO" install "$pkg"
