@@ -50,6 +50,7 @@ local function set_options()
     swapfile = false,
   }
 
+  vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
   vim.wo.relativenumber = true
   vim.wo.number = true
   vim.wo.colorcolumn = "80"

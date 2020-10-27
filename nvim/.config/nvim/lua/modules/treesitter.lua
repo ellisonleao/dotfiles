@@ -12,7 +12,6 @@ function M.config()
       "yaml",
       "json",
       "javascript",
-      "markdown",
       "css",
       "bash",
       "toml",
