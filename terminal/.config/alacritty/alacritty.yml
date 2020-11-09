@@ -1,5 +1,6 @@
 env:
   LANG: 'en_US.UTF-8'
+  TERM: 'screen-256color'  # tmux
 window:
   decorations: full
   startup_mode: Maximized
@@ -8,77 +9,31 @@ window:
 
 scrolling:
   history: 10000
-  multiplier: 3
+  multiplier: 4
 
 # Font configuration
 font:
   normal:
-    family: FiraCode Nerd Font
-    style: Retina
+    family: JetBrainsMono Nerd Font
+    style: Regular
 
   # Bold font face
   bold:
-    family: FiraCode Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Bold
 
   # Italic font face
   italic:
-    family: FiraCode Nerd Font
-    style: Bold
+    family: JetBrainsMono Nerd Font
+    style: Italic
 
   size: 11.5
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
-# Base16 Gruvbox dark, hard 256 - alacritty color config
-# Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
-colors:
-  # Default colors
-  primary:
-    background: '0x1d2021'
-    foreground: '0xd5c4a1'
-
-  # Colors the cursor will use if `custom_cursor_colors` is true
-  cursor:
-    text: '0x1d2021'
-    cursor: '0xd5c4a1'
-
-  # Normal colors
-  normal:
-    black: '0x1d2021'
-    red: '0xfb4934'
-    green: '0xb8bb26'
-    yellow: '0xfabd2f'
-    blue: '0x83a598'
-    magenta: '0xd3869b'
-    cyan: '0x8ec07c'
-    white: '0xd5c4a1'
-
-  # Bright colors
-  bright:
-    black: '0x665c54'
-    red: '0xfb4934'
-    green: '0xb8bb26'
-    yellow: '0xfabd2f'
-    blue: '0x83a598'
-    magenta: '0xd3869b'
-    cyan: '0x8ec07c'
-    white: '0xfbf1c7'
-
-  indexed_colors:
-    - { index: 16, color: '0xfe8019' }
-    - { index: 17, color: '0xd65d0e' }
-    - { index: 18, color: '0x3c3836' }
-    - { index: 19, color: '0x504945' }
-    - { index: 20, color: '0xbdae93' }
-    - { index: 21, color: '0xebdbb2' }
-
 selection:
   save_to_clipboard: true
-
-cursor:
-  style: Underline
 
 live_config_reload: true
 

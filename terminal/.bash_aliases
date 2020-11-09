@@ -109,16 +109,7 @@ get-neovim() {
     untar "$HOME/.local/$filename" -C "$HOME/.local"
     ln -s "$HOME/.local/$folder/bin/nvim" "$HOME/.local/bin"
 
-    pushd "$HOME/.local/"
-    if [[ ! -d "$HOME/.local/neovim" ]]; then
-        git clone neovim/neovim
-    else
-        pushd "$HOME/.local/neovim"
-        git pull
-        popd
-    fi
-    rm "$filename"
-    popd
+    rm "$HOME/.local/$filename"
     echo "NeoVIM updated to latest nightly"
 }
 
