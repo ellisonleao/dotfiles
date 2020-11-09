@@ -16,7 +16,6 @@ local function set_options()
   local options = {
     -- path = vim.o.path .. "," .. vim.env.PWD,
     autoread = true,
-    background = "dark",
     hidden = true,
     ignorecase = true,
     inccommand = "nosplit",
@@ -60,6 +59,10 @@ local function set_options()
   for k, v in pairs(options) do
     vim.o[k] = v
   end
+end
+
+local function set_colors()
+  require("colorbuddy").colorscheme("gruvbox")
 end
 
 FILETYPE_HOOKS = {
@@ -130,6 +133,7 @@ FILETYPE_HOOKS = {
 
 set_globals()
 set_options()
+set_colors()
 
 local opts = {noremap = true}
 local mappings = {
@@ -156,6 +160,7 @@ local mappings = {
   {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
   {"n", "<leader>M", [[<Cmd>FloatermNew --width=0.8 --height=0.8 glow<CR>]], opts},
   {"n", "<leader>R", [[<Cmd>IronRepl<CR>]], opts},
+  {"n", "<leader>W", [[<Cmd>Weather<CR>]], opts},
 }
 
 for _, map in pairs(mappings) do

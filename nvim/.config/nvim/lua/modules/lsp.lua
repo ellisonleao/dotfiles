@@ -5,6 +5,26 @@ local nvim_lsp = require("nvim_lsp")
 
 lsp_status.register_progress()
 
+-- not available yet!
+-- local function setup_custom_diagnostics()
+--   Diagnostic = require('vim.lsp.actions').Diagnostic
+--   Location = require('vim.lsp.actions').Location
+--   vim.lsp.callbacks["textDocument/publishDiagnostics"] =
+--     Diagnostic.handle_publish_diagnostics.with {
+--       should_underline = true,
+--       update_in_insert = false,
+--     }
+
+--   local mappings = {
+--     {"n", "[e", "<cmd>lua vim.lsp.structures.Diagnostic.buf_move_next_diagnostic()<CR>"},
+--     {"n", "]e", "<cmd>lua vim.lsp.structures.Diagnostic.buf_move_prev_diagnostic()<CR>"},
+--   }
+
+--   for _, map in pairs(mappings) do
+--     vim.api.nvim_buf_set_keymap(0, unpack(map))
+--   end
+-- end
+
 local function make_on_attach(config)
   return function(client)
     if config.before then
@@ -12,8 +32,10 @@ local function make_on_attach(config)
     end
 
     lsp_status.on_attach(client)
+    diagnostic.on_attach(client)
     completion.on_attach(client)
-    diagnostic.on_attach()
+
+    --       pcall(setup_custom_diagnostics)
 
     local opts = {silent = true, noremap = true}
     local mappings = {
@@ -23,8 +45,8 @@ local function make_on_attach(config)
       {"n", "K", [[<Cmd>lua vim.lsp.buf.hover()<CR>]], opts},
       {"n", "<leader>lr", [[<Cmd>lua vim.lsp.buf.rename()<CR>]], opts},
       {"i", "<C-x>", [[<Cmd>lua vim.lsp.buf.signature_help()<CR>]], opts},
-      {"n", "]e", [[<Cmd>NextDiagnosticCycle<CR>]], opts},
-      {"n", "[e", [[<Cmd>PrevDiagnosticCycle<CR>]], opts},
+      {"n", "[e", [[<Cmd>NextDiagnosticCycle<CR>]], opts},
+      {"n", "]e", [[<Cmd>PrevDiagnosticCycle<CR>]], opts},
     }
 
     if client.resolved_capabilities.document_formatting then
@@ -47,6 +69,8 @@ local function make_on_attach(config)
     if config.after then
       config.after(client)
     end
+
+    -- vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
   end
 end
 
@@ -96,7 +120,7 @@ local servers = {
           library = {
             -- This loads the `lua` files from nvim into the runtime.
             [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-            [vim.fn.expand("~/.local/neovim/src/nvim/lua")] = true,
+            [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
           },
         },
       },

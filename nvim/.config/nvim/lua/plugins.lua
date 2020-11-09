@@ -12,12 +12,36 @@ end
 
 -- load plugins
 return require("packer").startup(function(use)
+  use {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+  }
+  -- colors & style
+  use {
+    "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("modules.treesitter").config()
+    end,
+  }
+
+  use {
+    "~/code/gruvbox.nvim",
+    requires = {"tjdevries/colorbuddy.vim"},
+    config = function()
+      vim.g.gruvbox_italicize_comments = true
+      vim.g.gruvbox_improved_strings = true
+    end,
+  }
+
   use {"wbthomason/packer.nvim", opt = true}
   use {"mhinz/vim-startify"}
   use {"voldikss/vim-floaterm"}
 
   -- local
   use {"~/code/twitch.nvim"}
+  use {"~/code/weather.nvim"}
 
   -- plugin development and utils
   use {"dstein64/vim-startuptime"}
@@ -39,29 +63,6 @@ return require("packer").startup(function(use)
   use {"vim-test/vim-test"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
   use {"sbdchd/neoformat"}
-  use {
-    "Akin909/nvim-bufferline.lua",
-    config = function()
-      require("bufferline").setup()
-    end,
-  }
-
-  -- colors & style
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    config = function()
-      require("modules.treesitter").config()
-    end,
-  }
-
-  use {
-    "gruvbox-community/gruvbox",
-    config = function()
-      vim.g.gruvbox_italics = true
-      vim.g.gruvbox_contrast_dark = "hard"
-      vim.cmd("colorscheme gruvbox")
-    end,
-  }
 
   -- search
   use {
@@ -74,7 +75,15 @@ return require("packer").startup(function(use)
 
   -- git
   use {"tpope/vim-rhubarb"}
-  use {"mhinz/vim-signify"}
+  use {"tpope/vim-fugitive"}
+  use {
+    "mhinz/vim-signify",
+    config = function()
+      vim.g.signify_sign_add = " "
+      vim.g.signify_sign_change = " "
+      vim.g.signify_sign_delete_first_line = " "
+    end,
+  }
 
   -- lsp, completion, linting and snippets
   use {
@@ -94,10 +103,11 @@ return require("packer").startup(function(use)
   -- statusline
   use {"kyazdani42/nvim-web-devicons"}
   use {
-    "tjdevries/express_line.nvim",
+    "~/code/galaxyline.nvim",
     config = function()
       require("modules.statusline")
     end,
+    requires = {"~/code/gruvbox.nvim"},
   }
 
   -- go
@@ -109,6 +119,14 @@ return require("packer").startup(function(use)
     ft = {"html", "css", "scss"},
     config = function()
       require("modules.html")
+    end,
+  }
+
+  -- bufferline tabs
+  use {
+    "akinsho/nvim-bufferline.lua",
+    config = function()
+      require("bufferline").setup()
     end,
   }
 
