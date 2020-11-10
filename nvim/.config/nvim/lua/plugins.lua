@@ -18,6 +18,10 @@ return require("packer").startup(function(use)
       require("colorizer").setup()
     end,
   }
+
+  -- better directory viewer
+  use {"justinmk/vim-dirvish"}
+
   -- colors & style
   use {
     "nvim-treesitter/nvim-treesitter",

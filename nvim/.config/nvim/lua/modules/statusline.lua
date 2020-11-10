@@ -11,10 +11,12 @@ local checkwidth = function()
 end
 
 local mode_highlights = {
-  n = colors.bright_green,
-  v = colors.bright_orange,
-  i = colors.light0,
-  c = colors.bright_aqua,
+  n = colors.light4,
+  v = colors.faded_orange,
+  i = colors.faded_blue,
+  c = colors.faded_aqua,
+  R = colors.faded_yellow,
+  t = colors.faded_green,
 }
 
 gls.left[1] = {
@@ -25,16 +27,16 @@ gls.left[1] = {
         i = '  INSERT ',
         c = '  COMMAND ',
         v = '  VISUAL ',
+        R = '  REPLACE ',
+        t = '  TERMINAL  ',
       }
+      -- dirty hack to get bg updates for vi mode
+      local bg, fg = mode_highlights[vim.fn.mode()]
+      vim.api.nvim_command(string.format('hi GalaxyViMode guifg=%s guibg=%s gui=bold',
+                                         fg, bg))
       return alias[vim.fn.mode()]
     end,
-    highlight = {
-      colors.dark0,
-      function()
-        return mode_highlights[string.lower(vim.fn.mode())]
-      end,
-      "bold",
-    },
+    highlight = {colors.light4, colors.dark0, "bold"},
   },
 }
 
@@ -50,7 +52,7 @@ gls.left[2] = {
       local vcs = require("galaxyline.provider_vcs")
       return vcs.get_git_branch() ~= nil
     end,
-    highlight = {colors.light0, colors.faded_orange, "bold"},
+    highlight = {colors.light0, colors.faded_blue, "bold"},
   },
 }
 gls.left[3] = {
