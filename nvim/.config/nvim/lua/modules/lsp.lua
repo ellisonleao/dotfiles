@@ -5,26 +5,6 @@ local nvim_lsp = require("nvim_lsp")
 
 lsp_status.register_progress()
 
--- not available yet!
--- local function setup_custom_diagnostics()
---   Diagnostic = require('vim.lsp.actions').Diagnostic
---   Location = require('vim.lsp.actions').Location
---   vim.lsp.callbacks["textDocument/publishDiagnostics"] =
---     Diagnostic.handle_publish_diagnostics.with {
---       should_underline = true,
---       update_in_insert = false,
---     }
-
---   local mappings = {
---     {"n", "[e", "<cmd>lua vim.lsp.structures.Diagnostic.buf_move_next_diagnostic()<CR>"},
---     {"n", "]e", "<cmd>lua vim.lsp.structures.Diagnostic.buf_move_prev_diagnostic()<CR>"},
---   }
-
---   for _, map in pairs(mappings) do
---     vim.api.nvim_buf_set_keymap(0, unpack(map))
---   end
--- end
-
 local function make_on_attach(config)
   return function(client)
     if config.before then
@@ -34,8 +14,6 @@ local function make_on_attach(config)
     lsp_status.on_attach(client)
     diagnostic.on_attach(client)
     completion.on_attach(client)
-
-    --       pcall(setup_custom_diagnostics)
 
     local opts = {silent = true, noremap = true}
     local mappings = {
@@ -70,7 +48,6 @@ local function make_on_attach(config)
       config.after(client)
     end
 
-    -- vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
   end
 end
 
@@ -88,45 +65,23 @@ local servers = {
   },
   yamlls = {},
   vimls = {},
-  sumneko_lua = {
-    cmd = function()
-      local cache_location = vim.fn.stdpath("cache")
-      return {
-        string.format(
-          "%s/nvim_lsp/sumneko_lua/lua-language-server/bin/Linux/lua-language-server",
-          cache_location),
-        "-E",
-        string.format("%s/nvim/nvim_lsp/sumneko_lua/lua-language-server/main.lua",
-                      cache_location),
-      }
-    end,
-    settings = {
-      Lua = {
-        runtime = {version = "LuaJIT", path = vim.split(package.path, ";")},
-        diagnostics = {
-          enable = true,
-          globals = {
-            "vim",
-            "describe",
-            "it",
-            "before_each",
-            "after_each",
-            "teardown",
-            "pending",
-          },
-        },
-        completion = {keywordSnippet = "Disable"},
-        workspace = {
-          library = {
-            -- This loads the `lua` files from nvim into the runtime.
-            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-            [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-          },
-        },
-      },
-    },
-  },
 }
+
+-- lua special case
+require("nlua.lsp.nvim").setup(nvim_lsp, {
+  on_attach = make_on_attach({}),
+  globals = {
+    -- Colorbuddy
+    "Color",
+    "c",
+    "Group",
+    "g",
+    "s",
+    "RELOAD",
+    "R",
+    "P",
+  },
+})
 
 for server, config in pairs(servers) do
   config = config or {}

@@ -166,10 +166,10 @@ loadstring("\27LJ\2\2”\1\0\0\2\0\b\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009
 loadstring("\27LJ\2\0027\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0")()
 -- Config for: gruvbox.nvim
 loadstring("\27LJ\2\2e\0\0\2\0\4\0\t6\0\0\0009\0\1\0+\1\2\0=\1\2\0006\0\0\0009\0\1\0+\1\2\0=\1\3\0K\0\1\0\29gruvbox_improved_strings\31gruvbox_italicize_comments\6g\bvim\0")()
--- Config for: telescope.nvim
-loadstring("\27LJ\2\2.\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\19modules.search\frequire\0")()
 -- Config for: galaxyline.nvim
 loadstring("\27LJ\2\0022\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0")()
+-- Config for: telescope.nvim
+loadstring("\27LJ\2\2.\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\19modules.search\frequire\0")()
 -- Config for: nvim-lspconfig
 loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\21modules.snippets\16modules.lsp\frequire\0")()
 -- Conditional loads

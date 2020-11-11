@@ -100,8 +100,9 @@ return require("packer").startup(function(use)
       "nvim-lua/completion-nvim",
       "nvim-lua/diagnostic-nvim",
       "nvim-lua/lsp-status.nvim",
-      "nvim-lua/completion-nvim",
       "norcalli/snippets.nvim",
+      "tjdevries/nlua.nvim",
+      "euclidianAce/BetterLua.vim",
     },
   }
   -- statusline

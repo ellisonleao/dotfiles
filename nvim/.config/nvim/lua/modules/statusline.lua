@@ -81,8 +81,20 @@ gls.left[5] = {
 }
 
 -- LSP
-gls.left[6] = {DiagnosticError = {provider = 'DiagnosticError', icon = '  '}}
-gls.left[7] = {DiagnosticWarn = {provider = 'DiagnosticWarn', icon = '  '}}
+gls.left[6] = {
+  DiagnosticError = {
+    provider = 'DiagnosticError',
+    icon = '  ',
+    highlight = {colors.faded_red, colors.dark0_hard, "bold"},
+  },
+}
+gls.left[7] = {
+  DiagnosticWarn = {
+    provider = 'DiagnosticWarn',
+    icon = '  ',
+    highlight = {colors.faded_yellow, colors.dark0_hard, "bold"},
+  },
+}
 
 gls.right[1] = {
   FileName = {

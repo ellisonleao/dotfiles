@@ -138,7 +138,7 @@ set_colors()
 local opts = {noremap = true}
 local mappings = {
   {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/init.lua<CR>]], opts},
-  {"n", "<leader>reR", [[<Cmd>luafile $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
+  {"n", "<leader>reR", [[<Cmd>lua R("init")<CR>]], opts},
   {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts},
   {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},
   {"n", ",z", [[<Cmd>bp<CR>]], opts},
