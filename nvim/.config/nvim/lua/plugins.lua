@@ -7,6 +7,7 @@ if not packer_exists then
 
   print("Downloading packer")
   vim.fn.system(string.format("git clone %s %s", repo_url, dest .. "packer.nvim"))
+  vim.cmd("PackerSync")
   print("packer.nvim installed")
 end
 
@@ -98,8 +99,6 @@ return require("packer").startup(function(use)
     end,
     requires = {
       "nvim-lua/completion-nvim",
-      "nvim-lua/diagnostic-nvim",
-      "nvim-lua/lsp-status.nvim",
       "norcalli/snippets.nvim",
       "tjdevries/nlua.nvim",
       "euclidianAce/BetterLua.vim",

@@ -151,6 +151,7 @@ local mappings = {
   {"n", ",l", [[<C-W><C-L>]], opts},
   {"n", ",d", [[<Cmd>bd!<CR>]], opts},
   {"n", ",c", [[<Cmd>cclose<CR>]], opts},
+  {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts},
   {"v", "<", [[<gv]], opts},
   {"v", ">", [[>gv]], opts},
   {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts},
