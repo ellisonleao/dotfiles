@@ -54,11 +54,10 @@ relies_on() {
 
 # CLI
 
-ctop() {
-    docker run --rm -ti \
-        --name=ctop \
-        -v /var/run/docker.sock:/var/run/docker.sock:ro \
-        quay.io/vektorlab/ctop:latest
+lazydocker() {
+    docker run --rm -it -v \
+        /var/run/docker.sock:/var/run/docker.sock \
+        lazyteam/lazydocker
 }
 
 howdoi() {
