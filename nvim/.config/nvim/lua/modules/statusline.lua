@@ -1,4 +1,4 @@
-local gl = require('galaxyline')
+local gl = require("galaxyline")
 local colors = require("gruvbox.palette")
 local gls = gl.section
 
@@ -23,16 +23,16 @@ gls.left[1] = {
   ViMode = {
     provider = function()
       local alias = {
-        n = '  NORMAL  ',
-        i = '  INSERT ',
-        c = '  COMMAND ',
-        v = '  VISUAL ',
-        R = '  REPLACE ',
-        t = '  TERMINAL  ',
+        n = "NORMAL",
+        i = "INSERT",
+        c = "COMMAND",
+        v = "VISUAL",
+        R = "REPLACE",
+        t = "TERMINAL",
       }
       -- dirty hack to get bg updates for vi mode
       local bg, fg = mode_highlights[vim.fn.mode()]
-      vim.api.nvim_command(string.format('hi GalaxyViMode guifg=%s guibg=%s gui=bold',
+      vim.api.nvim_command(string.format("hi GalaxyViMode guifg=%s guibg=%s gui=bold",
                                          fg, bg))
       return alias[vim.fn.mode()]
     end,
@@ -57,25 +57,25 @@ gls.left[2] = {
 }
 gls.left[3] = {
   DiffAdd = {
-    provider = 'DiffAdd',
+    provider = "DiffAdd",
     condition = checkwidth,
-    icon = ' ',
+    icon = " ",
     highlight = {colors.faded_green, colors.dark0_hard, "bold"},
   },
 }
 gls.left[4] = {
   DiffModified = {
-    provider = 'DiffModified',
+    provider = "DiffModified",
     condition = checkwidth,
-    icon = ' ',
+    icon = " ",
     highlight = {colors.faded_aqua, colors.dark0_hard, "bold"},
   },
 }
 gls.left[5] = {
   DiffRemove = {
-    provider = 'DiffRemove',
+    provider = "DiffRemove",
     condition = checkwidth,
-    icon = ' ',
+    icon = " ",
     highlight = {colors.faded_red, colors.dark0_hard, "bold"},
   },
 }
@@ -83,15 +83,15 @@ gls.left[5] = {
 -- LSP
 gls.left[6] = {
   DiagnosticError = {
-    provider = 'DiagnosticError',
-    icon = '  ',
+    provider = "DiagnosticError",
+    icon = "  ",
     highlight = {colors.faded_red, colors.dark0_hard, "bold"},
   },
 }
 gls.left[7] = {
   DiagnosticWarn = {
-    provider = 'DiagnosticWarn',
-    icon = '  ',
+    provider = "DiagnosticWarn",
+    icon = "  ",
     highlight = {colors.faded_yellow, colors.dark0_hard, "bold"},
   },
 }
@@ -107,9 +107,9 @@ gls.right[1] = {
     condition = function()
       return vim.bo.filetype ~= "help"
     end,
-    highlight = {colors.light0, colors.dark2, "bold"},
+    highlight = {colors.light0, colors.dark0_hard, "bold"},
   },
 }
 gls.right[2] = {
-  ScrollBar = {provider = 'ScrollBar', highlight = {colors.faded_yellow, colors.dark0}},
+  ScrollBar = {provider = "ScrollBar", highlight = {colors.faded_green, colors.dark0}},
 }

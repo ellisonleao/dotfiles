@@ -348,7 +348,6 @@ install_apps() {
         docker-ce
         docker-ce-cli
         containerd.io
-        vlc
         transmission
         gnome-tweaks
         chrome-gnome-shell
@@ -376,6 +375,7 @@ install_apps() {
         'go --classic'
         'shotcut --classic'
         'slack --classic'
+        vlc
     )
 
     for pkg in "${SNAPS[@]}"; do
