@@ -19,16 +19,35 @@ local mode_highlights = {
   t = colors.faded_green,
 }
 
+local separator = {symbol = "|", highlight = {colors.bright_yellow, colors.dark0, nil}}
+
+local get_lsp_by_ft = function(buf, clients)
+  if buf == nil then
+    return ""
+  end
+
+  local ft = vim.bo[buf].ft
+  for _, val in ipairs(clients) do
+    local filetypes = val.config.filetypes
+    for _, ftype in pairs(filetypes) do
+      if ftype == ft then
+        return val.name
+      end
+    end
+  end
+  return ""
+end
+
 gls.left[1] = {
   ViMode = {
     provider = function()
       local alias = {
-        n = "NORMAL",
-        i = "INSERT",
-        c = "COMMAND",
-        v = "VISUAL",
-        R = "REPLACE",
-        t = "TERMINAL",
+        n = "  NORMAL ",
+        i = "  INSERT ",
+        c = "  COMMAND ",
+        v = "  VISUAL ",
+        R = "  REPLACE ",
+        t = "  TERMINAL ",
       }
       -- dirty hack to get bg updates for vi mode
       local bg, fg = mode_highlights[vim.fn.mode()]
@@ -37,6 +56,8 @@ gls.left[1] = {
       return alias[vim.fn.mode()]
     end,
     highlight = {colors.light4, colors.dark0, "bold"},
+    separator = separator.symbol,
+    separator_highlight = separator.highlight,
   },
 }
 
@@ -52,18 +73,37 @@ gls.left[2] = {
       local vcs = require("galaxyline.provider_vcs")
       return vcs.get_git_branch() ~= nil
     end,
-    highlight = {colors.light0, colors.faded_blue, "bold"},
+    separator = separator.symbol,
+    separator_highlight = separator.highlight,
   },
 }
+
 gls.left[3] = {
+  LspInfo = {
+    condition = function()
+      return #vim.lsp.get_active_clients() > 0
+    end,
+    provider = function()
+      local active_clients = vim.lsp.get_active_clients()
+      local buf = vim.api.nvim_get_current_buf()
+      local lsp_name = get_lsp_by_ft(buf, active_clients)
+      return " " .. lsp_name
+    end,
+    separator = separator.symbol,
+    separator_highlight = separator.highlight,
+  },
+}
+
+gls.left[4] = {
   DiffAdd = {
     provider = "DiffAdd",
     condition = checkwidth,
     icon = " ",
-    highlight = {colors.faded_green, colors.dark0_hard, "bold"},
+    --    highlight = {colors.faded_green, colors.dark0_hard, "bold"},
   },
 }
-gls.left[4] = {
+
+gls.left[5] = {
   DiffModified = {
     provider = "DiffModified",
     condition = checkwidth,
@@ -71,7 +111,8 @@ gls.left[4] = {
     highlight = {colors.faded_aqua, colors.dark0_hard, "bold"},
   },
 }
-gls.left[5] = {
+
+gls.left[6] = {
   DiffRemove = {
     provider = "DiffRemove",
     condition = checkwidth,
@@ -81,14 +122,14 @@ gls.left[5] = {
 }
 
 -- LSP
-gls.left[6] = {
+gls.left[7] = {
   DiagnosticError = {
     provider = "DiagnosticError",
     icon = "  ",
     highlight = {colors.faded_red, colors.dark0_hard, "bold"},
   },
 }
-gls.left[7] = {
+gls.left[8] = {
   DiagnosticWarn = {
     provider = "DiagnosticWarn",
     icon = "  ",
@@ -110,6 +151,5 @@ gls.right[1] = {
     highlight = {colors.light0, colors.dark0_hard, "bold"},
   },
 }
-gls.right[2] = {
-  ScrollBar = {provider = "ScrollBar", highlight = {colors.faded_green, colors.dark0}},
-}
+gls.right[2] = {LinePercent = {provider = "LinePercent"}}
+gls.right[3] = {ScrollBar = {provider = "ScrollBar"}}

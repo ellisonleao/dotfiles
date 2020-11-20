@@ -1,5 +1,5 @@
 local completion = require("completion")
-local nvim_lsp = require("nvim_lsp")
+local nvim_lsp = require("lspconfig")
 
 local function make_on_attach(config)
   return function(client)
@@ -34,20 +34,7 @@ local function make_on_attach(config)
   end
 end
 
-local servers = {
-  gopls = {},
-  tsserver = {},
-  pyls_ms = {
-    root_dir = function(fname)
-      return nvim_lsp.util.root_pattern("pyproject.toml", "setup.py", "setup.cfg",
-                                        "requirements.txt", "mypy.ini", ".pylintrc",
-                                        ".flake8rc", ".gitignore")(fname) or
-               nvim_lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
-    end,
-  },
-  yamlls = {},
-  vimls = {},
-}
+local servers = {gopls = {}, tsserver = {}, yamlls = {}, vimls = {}, pyright = {}}
 
 -- lua special case
 require("nlua.lsp.nvim").setup(nvim_lsp, {
