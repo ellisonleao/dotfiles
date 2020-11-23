@@ -2,7 +2,7 @@ local gl = require("galaxyline")
 local colors = require("gruvbox.palette")
 local gls = gl.section
 
-local checkwidth = function()
+local function checkwidth()
   local squeeze_width = vim.fn.winwidth(0) / 2
   if squeeze_width > 40 then
     return true
@@ -10,16 +10,33 @@ local checkwidth = function()
   return false
 end
 
-local mode_highlights = {
-  n = colors.light4,
-  v = colors.faded_orange,
-  i = colors.faded_blue,
-  c = colors.faded_aqua,
-  R = colors.faded_yellow,
-  t = colors.faded_green,
-}
+local function get_mode_highlights(mode, bg)
+  local guibg
+  local dark_colors = {
+    n = colors.light4,
+    v = colors.bright_orange,
+    i = colors.bright_blue,
+    c = colors.bright_aqua,
+    R = colors.bright_yellow,
+    t = colors.bright_green,
+  }
+  local light_colors = {
+    n = colors.dark4,
+    v = colors.faded_orange,
+    i = colors.faded_blue,
+    c = colors.faded_aqua,
+    R = colors.faded_yellow,
+    t = colors.faded_green,
+  }
+  if bg == "dark" then
+    guibg = dark_colors[mode]
+  else
+    guibg = light_colors[mode]
+  end
+  return colors.dark0, guibg
+end
 
-local separator = {symbol = "|", highlight = {colors.bright_yellow, colors.dark0, nil}}
+local separator = {symbol = " ", highlight = {colors.dark0, colors.dark0, nil}}
 
 local get_lsp_by_ft = function(buf, clients)
   if buf == nil then
@@ -50,12 +67,12 @@ gls.left[1] = {
         t = "  TERMINAL ",
       }
       -- dirty hack to get bg updates for vi mode
-      local bg, fg = mode_highlights[vim.fn.mode()]
+      local bg = vim.o.background
+      local guifg, guibg = get_mode_highlights(vim.fn.mode(), bg)
       vim.api.nvim_command(string.format("hi GalaxyViMode guifg=%s guibg=%s gui=bold",
-                                         fg, bg))
+                                         guifg, guibg))
       return alias[vim.fn.mode()]
     end,
-    highlight = {colors.light4, colors.dark0, "bold"},
     separator = separator.symbol,
     separator_highlight = separator.highlight,
   },
@@ -94,31 +111,19 @@ gls.left[3] = {
   },
 }
 
-gls.left[4] = {
-  DiffAdd = {
-    provider = "DiffAdd",
-    condition = checkwidth,
-    icon = " ",
-    --    highlight = {colors.faded_green, colors.dark0_hard, "bold"},
-  },
-}
+gls.left[4] = {DiffAdd = {provider = "DiffAdd", condition = checkwidth, icon = " "}}
 
 gls.left[5] = {
   DiffModified = {
     provider = "DiffModified",
     condition = checkwidth,
     icon = " ",
-    highlight = {colors.faded_aqua, colors.dark0_hard, "bold"},
+    separator_highlight = separator.highlight,
   },
 }
 
 gls.left[6] = {
-  DiffRemove = {
-    provider = "DiffRemove",
-    condition = checkwidth,
-    icon = " ",
-    highlight = {colors.faded_red, colors.dark0_hard, "bold"},
-  },
+  DiffRemove = {provider = "DiffRemove", condition = checkwidth, icon = " "},
 }
 
 -- LSP
@@ -146,9 +151,14 @@ gls.right[1] = {
       return icon .. string.gsub(output, "/home/ellison", "~")
     end,
     condition = function()
-      return vim.bo.filetype ~= "help"
+      local skip_filetypes = {"help", "gitcommit", "fugitive", "telescope", "packer"}
+      for _, ft in pairs(skip_filetypes) do
+        if vim.bo.filetype == ft then
+          return false
+        end
+      end
+      return true
     end,
-    highlight = {colors.light0, colors.dark0_hard, "bold"},
   },
 }
 gls.right[2] = {LinePercent = {provider = "LinePercent"}}

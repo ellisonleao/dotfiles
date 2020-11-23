@@ -111,7 +111,7 @@ get-neovim() {
 
     # build it
     pushd "$folder"
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
+    make CMAKE_BUILD_TYPE=RelWithDebInfo USE_BUNDLED=OFF
     sudo make install
     ln -fs "$folder/build/bin/nvim" "$HOME/.local/bin"
     popd

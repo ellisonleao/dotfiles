@@ -49,7 +49,7 @@ local function set_options()
     swapfile = false,
   }
 
-  vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
+  vim.o.clipboard = "unnamedplus"
   vim.wo.relativenumber = true
   vim.wo.number = true
   vim.wo.colorcolumn = "80"
@@ -62,6 +62,7 @@ local function set_options()
 end
 
 local function set_colors()
+  vim.g.gruvbox_italic_strings = true
   require("colorbuddy").colorscheme("gruvbox")
 end
 

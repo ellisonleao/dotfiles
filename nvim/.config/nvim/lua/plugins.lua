@@ -13,6 +13,7 @@ end
 
 -- load plugins
 return require("packer").startup(function(use)
+  use {"wbthomason/packer.nvim", opt = true}
   use {
     "norcalli/nvim-colorizer.lua",
     config = function()
@@ -23,24 +24,16 @@ return require("packer").startup(function(use)
   -- better directory viewer
   use {"justinmk/vim-dirvish"}
 
-  -- colors & style
+  -- colors, style, icons
+  use {"kyazdani42/nvim-web-devicons"}
   use {
     "nvim-treesitter/nvim-treesitter",
     config = function()
       require("modules.treesitter").config()
     end,
   }
+  use {"~/code/gruvbox.nvim", requires = {"tjdevries/colorbuddy.vim"}}
 
-  use {
-    "~/code/gruvbox.nvim",
-    requires = {"tjdevries/colorbuddy.vim"},
-    config = function()
-      vim.g.gruvbox_italicize_comments = true
-      vim.g.gruvbox_improved_strings = true
-    end,
-  }
-
-  use {"wbthomason/packer.nvim", opt = true}
   use {"mhinz/vim-startify"}
   use {"voldikss/vim-floaterm"}
 
@@ -101,11 +94,10 @@ return require("packer").startup(function(use)
       "nvim-lua/completion-nvim",
       "norcalli/snippets.nvim",
       "tjdevries/nlua.nvim",
-      "euclidianAce/BetterLua.vim",
     },
   }
+
   -- statusline
-  use {"kyazdani42/nvim-web-devicons"}
   use {
     "~/code/galaxyline.nvim",
     config = function()
