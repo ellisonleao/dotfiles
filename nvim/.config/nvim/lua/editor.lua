@@ -52,7 +52,7 @@ local function set_options()
   vim.o.clipboard = "unnamedplus"
   vim.wo.relativenumber = true
   vim.wo.number = true
-  vim.wo.colorcolumn = "80"
+  vim.wo.colorcolumn = "80,120"
   vim.bo.shiftwidth = 4
   vim.bo.softtabstop = 4
 
@@ -63,6 +63,7 @@ end
 
 local function set_colors()
   vim.g.gruvbox_italic_strings = true
+  vim.g.gruvbox_invert_selection = false
   require("colorbuddy").colorscheme("gruvbox")
 end
 
