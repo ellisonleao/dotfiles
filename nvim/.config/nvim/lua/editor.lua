@@ -139,8 +139,8 @@ set_colors()
 
 local opts = {noremap = true}
 local mappings = {
-  {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/init.lua<CR>]], opts},
-  {"n", "<leader>reR", [[<Cmd>lua R("init")<CR>]], opts},
+  {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/editor.lua<CR>]], opts},
+  {"n", "<leader>reR", [[<Cmd>lua R("editor")<CR>]], opts},
   {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts},
   {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},
   {"n", ",z", [[<Cmd>bp<CR>]], opts},
@@ -161,7 +161,6 @@ local mappings = {
   {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
   {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
   {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
-  {"n", "<leader>M", [[<Cmd>FloatermNew --width=0.8 --height=0.8 glow<CR>]], opts},
   {"n", "<leader>R", [[<Cmd>IronRepl<CR>]], opts},
   {"n", "<leader>W", [[<Cmd>Weather<CR>]], opts},
 }

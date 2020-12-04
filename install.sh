@@ -164,16 +164,9 @@ configure_python() {
     fi
 
     execute "pyenv install 3.8.2" "Installing Python 3.8"
-    execute "pyenv install 2.7.17" "Installing Python 2.7.17"
-    execute "pyenv global 3.8.2 2.7.17" "Set global python"
+    execute "pyenv global 3.8.2" "Set global python"
 
-    PY2=(
-        flake8
-        neovim
-        ansible
-    )
-
-    PY3=(
+    PKGS=(
         black
         flake8
         awscli
@@ -186,14 +179,10 @@ configure_python() {
     )
 
     print_info "Installing python 3 packages"
-    for pkg in "${PY3[@]}"; do
+    for pkg in "${PKGS[@]}"; do
         pip install "$pkg" --timeout=2
     done
 
-    print_info "Installing python 2 packages"
-    for pkg in "${PY2[@]}"; do
-        pip2 install "$pkg" --timeout=2
-    done
 }
 
 configure_rust() {
@@ -210,24 +199,24 @@ configure_rust() {
 
     print_info "Installing rust crates"
     RUST_CRATES=(
-        'bat'
-        'exa'
-        'ripgrep'
-        'fd-find'
-        'hx'
-        'licensor'
-        'procs'
-        'du-dust'
-        'hyperfine'
-        'bandwhich'
-        'tealdeer'
+        bat
+        exa
+        ripgrep
+        fd-find
+        hx
+        licensor
+        procs
+        du-dust
+        hyperfine
+        bandwhich
+        tealdeer
     )
     for pkg in "${RUST_CRATES[@]}"; do
         "$CARGO" install "$pkg"
     done
 
     # special case
-    cargo install -f --git https://github.com/cjbassi/ytop ytop
+    "$CARGO" install --git https://github.com/ClementTsang/bottom
 }
 
 configure_node() {
@@ -242,15 +231,16 @@ configure_node() {
 
     print_info "Installing node packages"
     NODE_PACKAGES=(
-        'npm'
-        'eslint'
-        'prettier'
-        'bash-language-server'
-        'typescript'
-        'typescript-language-server'
-        'vscode-html-languageserver-bin'
+        npm
+        eslint
+        prettier
+        bash-language-server
+        typescript
+        typescript-language-server
+        vscode-html-languageserver-bin
+        pyright
+        fast-cli
         '@bitwarden/cli'
-        'fast-cli'
     )
     for pkg in "${NODE_PACKAGES[@]}"; do
         "$NPM" install -i "$pkg"

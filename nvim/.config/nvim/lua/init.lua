@@ -14,3 +14,10 @@ P = function(v)
   print(vim.inspect(v))
   return v
 end
+
+RLSP = function()
+  vim.schedule_wrap(function()
+    vim.lsp.stop_client(vim.lsp.get_active_clients())
+    vim.api.nvim_command("edit")
+  end)
+end

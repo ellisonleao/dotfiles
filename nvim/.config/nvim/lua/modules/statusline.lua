@@ -1,6 +1,21 @@
 local gl = require("galaxyline")
 local colors = require("gruvbox.palette")
 local gls = gl.section
+local vcs = require("galaxyline.provider_vcs")
+
+local function skip_filetypes(ft)
+  if ft == nil then
+    return false
+  end
+
+  local fts = {"help", "gitcommit", "fugitive", "telescope", "packer"}
+  for _, filetype in pairs(fts) do
+    if ft == filetype then
+      return false
+    end
+  end
+  return true
+end
 
 local function checkwidth()
   local squeeze_width = vim.fn.winwidth(0) / 2
@@ -42,8 +57,8 @@ local get_lsp_by_ft = function(buf, clients)
   if buf == nil then
     return ""
   end
-
   local ft = vim.bo[buf].ft
+
   for _, val in ipairs(clients) do
     local filetypes = val.config.filetypes
     for _, ftype in pairs(filetypes) do
@@ -81,13 +96,11 @@ gls.left[1] = {
 gls.left[2] = {
   GitBranch = {
     provider = function()
-      local vcs = require("galaxyline.provider_vcs")
       local branch = vcs.get_git_branch()
       local icon = "  "
       return icon .. branch
     end,
     condition = function()
-      local vcs = require("galaxyline.provider_vcs")
       return vcs.get_git_branch() ~= nil
     end,
     separator = separator.symbol,
@@ -98,13 +111,14 @@ gls.left[2] = {
 gls.left[3] = {
   LspInfo = {
     condition = function()
-      return #vim.lsp.get_active_clients() > 0
+      local buf = vim.api.nvim_get_current_buf()
+      return skip_filetypes(vim.bo[buf].ft)
     end,
     provider = function()
       local active_clients = vim.lsp.get_active_clients()
       local buf = vim.api.nvim_get_current_buf()
       local lsp_name = get_lsp_by_ft(buf, active_clients)
-      return " " .. lsp_name
+      return lsp_name ~= "" and " " .. lsp_name or ""
     end,
     separator = separator.symbol,
     separator_highlight = separator.highlight,
@@ -144,20 +158,16 @@ gls.left[8] = {
 
 gls.right[1] = {
   FileName = {
+    condition = function()
+      local buf = vim.api.nvim_get_current_buf()
+      local ft = vim.bo[buf].ft
+      return skip_filetypes(ft)
+    end,
     provider = function()
       local fileinfo = require("galaxyline.provider_fileinfo")
       local icon = fileinfo.get_file_icon()
       local output = fileinfo.get_current_file_name()
       return icon .. string.gsub(output, "/home/ellison", "~")
-    end,
-    condition = function()
-      local skip_filetypes = {"help", "gitcommit", "fugitive", "telescope", "packer"}
-      for _, ft in pairs(skip_filetypes) do
-        if vim.bo.filetype == ft then
-          return false
-        end
-      end
-      return true
     end,
   },
 }

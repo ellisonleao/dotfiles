@@ -7,6 +7,7 @@ if not packer_exists then
 
   print("Downloading packer")
   vim.fn.system(string.format("git clone %s %s", repo_url, dest .. "packer.nvim"))
+  vim.cmd([[packadd packer.nvim]])
   vim.cmd("PackerSync")
   print("packer.nvim installed")
 end
@@ -21,6 +22,10 @@ return require("packer").startup(function(use)
     end,
   }
 
+  -- loading page and float terminals for general usage
+  use {"mhinz/vim-startify"}
+  use {"voldikss/vim-floaterm"}
+
   -- better directory viewer
   use {"justinmk/vim-dirvish"}
 
@@ -32,17 +37,14 @@ return require("packer").startup(function(use)
       require("modules.treesitter").config()
     end,
   }
-  use {"~/code/gruvbox.nvim", requires = {"tjdevries/colorbuddy.vim"}}
-
-  use {"mhinz/vim-startify"}
-  use {"voldikss/vim-floaterm"}
-
   -- local
+  use {"~/code/gruvbox.nvim", requires = {"tjdevries/colorbuddy.vim"}}
   use {"~/code/twitch.nvim"}
   use {"~/code/weather.nvim"}
+  use {"~/code/glow.nvim"}
 
   -- plugin development and utils
-  use {"dstein64/vim-startuptime"}
+  use {"vim-test/vim-test"}
   use {"nvim-lua/plenary.nvim"}
 
   -- repl
@@ -58,7 +60,6 @@ return require("packer").startup(function(use)
   use {"tpope/vim-surround"}
   use {"tpope/vim-commentary"}
   use {"tpope/vim-repeat"}
-  use {"vim-test/vim-test"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
   use {"sbdchd/neoformat"}
 
@@ -108,6 +109,9 @@ return require("packer").startup(function(use)
 
   -- go
   use {"fatih/vim-go", run = ":GoUpdateBinaries", ft = {"go"}}
+
+  -- zig
+  use {"ziglang/zig.vim", ft = {"zig"}}
 
   -- html/css
   use {

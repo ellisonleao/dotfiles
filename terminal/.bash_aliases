@@ -41,13 +41,11 @@ alias cat='bat -p'
 alias less='bat -p'
 alias grep='rg'
 alias find='fd'
-alias ps='procs'
 alias hexdump='hx'
 alias time='hyperfine'
 alias du='dust'
-alias top='ytop'
+alias top='btm'
 alias iftop='sudo ~/.cargo/bin/bandwhich'
-alias ls="exa"
 alias la="ls -laF"
 
 # IP addresses
@@ -111,7 +109,7 @@ get-neovim() {
 
     # build it
     pushd "$folder"
-    make CMAKE_BUILD_TYPE=RelWithDebInfo USE_BUNDLED=OFF
+    make CMAKE_BUILD_TYPE=RelWithDebInfo
     sudo make install
     ln -fs "$folder/build/bin/nvim" "$HOME/.local/bin"
     popd

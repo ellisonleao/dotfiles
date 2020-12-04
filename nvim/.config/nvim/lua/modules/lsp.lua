@@ -16,12 +16,16 @@ local function make_on_attach(config)
       {"n", "gd", [[<Cmd>lua vim.lsp.buf.definition()<CR>]], opts},
       {"n", "gD", [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], opts},
       {"n", "gr", [[<Cmd>lua vim.lsp.buf.references()<CR>]], opts},
-      {"n", "K", [[<Cmd>lua vim.lsp.buf.hover()<CR>]], opts},
       {"n", "<leader>lr", [[<Cmd>lua vim.lsp.buf.rename()<CR>]], opts},
       {"i", "<C-x>", [[<Cmd>lua vim.lsp.buf.signature_help()<CR>]], opts},
       {"n", "[e", [[<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>]], opts},
       {"n", "]e", [[<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>]], opts},
     }
+
+    if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'lua' then
+      vim.api.nvim_buf_set_keymap(0, "n", "K", [[<Cmd>lua vim.lsp.buf.hover()<CR>]],
+                                  opts)
+    end
 
     for _, map in pairs(mappings) do
       vim.api.nvim_buf_set_keymap(0, unpack(map))
@@ -34,7 +38,14 @@ local function make_on_attach(config)
   end
 end
 
-local servers = {gopls = {}, tsserver = {}, yamlls = {}, vimls = {}, pyright = {}}
+local servers = {
+  gopls = {},
+  tsserver = {},
+  yamlls = {},
+  vimls = {},
+  pyright = {},
+  -- zls = {cmd = {string.format("%s/zls/zig-cache/bin/zls", vim.fn.stdpath("cache"))}},
+}
 
 -- lua special case
 require("nlua.lsp.nvim").setup(nvim_lsp, {
@@ -42,10 +53,8 @@ require("nlua.lsp.nvim").setup(nvim_lsp, {
   globals = {
     -- Colorbuddy
     "Color",
-    "c",
     "Group",
-    "g",
-    "s",
+    -- Custom global funcs
     "RELOAD",
     "R",
     "P",

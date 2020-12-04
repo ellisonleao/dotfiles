@@ -32,6 +32,12 @@ local plugins = {
     only_sequence = false,
     only_setup = false,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/vim-go"
+  },
+  ["zig.vim"] = {
+    loaded = false,
+    only_sequence = false,
+    only_setup = false,
+    path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/zig.vim"
   }
 }
 
@@ -166,10 +172,10 @@ loadstring("\27LJ\2\0027\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0
 loadstring("\27LJ\2\0022\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0")()
 -- Config for: vim-signify
 loadstring("\27LJ\2\2�\1\0\0\2\0\b\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009\0\1\0'\1\5\0=\1\4\0006\0\0\0009\0\1\0'\1\a\0=\1\6\0K\0\1\0\t #signify_sign_delete_first_line\t \24signify_sign_change\t \21signify_sign_add\6g\bvim\0")()
--- Config for: nvim-lspconfig
-loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\21modules.snippets\16modules.lsp\frequire\0")()
 -- Config for: telescope.nvim
 loadstring("\27LJ\2\2.\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\19modules.search\frequire\0")()
+-- Config for: nvim-lspconfig
+loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\21modules.snippets\16modules.lsp\frequire\0")()
 -- Conditional loads
 -- Load plugins in order defined by `after`
 END
@@ -189,9 +195,10 @@ command! -nargs=* -range -bang -complete=file IronSend call s:load(['iron.nvim']
 augroup packer_load_aucmds
   au!
   " Filetype lazy-loads
-  au FileType scss ++once call s:load(['emmet-vim'], { "ft": "scss" })
   au FileType html ++once call s:load(['emmet-vim'], { "ft": "html" })
   au FileType css ++once call s:load(['emmet-vim'], { "ft": "css" })
   au FileType go ++once call s:load(['vim-go'], { "ft": "go" })
+  au FileType scss ++once call s:load(['emmet-vim'], { "ft": "scss" })
+  au FileType zig ++once call s:load(['zig.vim'], { "ft": "zig" })
   " Event lazy-loads
 augroup END
