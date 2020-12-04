@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-CURL=$(which curl)
-CITY='Curitiba'
-
-OUT=$(${CURL} -s "wttr.in/${CITY}?format=3")
-echo $OUT
