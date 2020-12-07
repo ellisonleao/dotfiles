@@ -47,21 +47,13 @@ return require("packer").startup(function(use)
   use {"vim-test/vim-test"}
   use {"nvim-lua/plenary.nvim"}
 
-  -- repl
-  use {
-    "hkupty/iron.nvim",
-    config = function()
-      require("modules.iron").config()
-    end,
-    cmd = {"IronRepl", "IronSend", "IronWatchCurrentFile"},
-  }
-
   -- editor
   use {"tpope/vim-surround"}
   use {"tpope/vim-commentary"}
   use {"tpope/vim-repeat"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
   use {"sbdchd/neoformat"}
+  use {"mhartington/formatter.nvim"}
 
   -- search
   use {
@@ -86,10 +78,10 @@ return require("packer").startup(function(use)
 
   -- lsp, completion, linting and snippets
   use {
-    "neovim/nvim-lspconfig",
+    "~/code/nvim-lspconfig",
     config = function()
-      require("modules.lsp")
       require("modules.snippets")
+      require("modules.lsp")
     end,
     requires = {
       "nvim-lua/completion-nvim",
@@ -111,16 +103,10 @@ return require("packer").startup(function(use)
   use {"fatih/vim-go", run = ":GoUpdateBinaries", ft = {"go"}}
 
   -- zig
-  use {"ziglang/zig.vim", ft = {"zig"}}
+  use {"ziglang/zig.vim"}
 
   -- html/css
-  use {
-    "mattn/emmet-vim",
-    ft = {"html", "css", "scss"},
-    config = function()
-      require("modules.html")
-    end,
-  }
+  use {"mattn/emmet-vim", ft = {"html", "css", "scss", "gohtml", "jinja"}}
 
   -- bufferline tabs
   use {

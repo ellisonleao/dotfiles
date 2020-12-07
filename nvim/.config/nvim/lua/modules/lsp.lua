@@ -14,8 +14,9 @@ local function make_on_attach(config)
       {"i", "<expr> <tab>", [[ pumvisible() ? '<C-n>' : '<tab>' ]], opts},
       {"i", "<expr> <S-tab>", [[ pumvisible() ? '<C-p>' : '<S-tab>' ]], opts},
       {"n", "gd", [[<Cmd>lua vim.lsp.buf.definition()<CR>]], opts},
-      {"n", "gD", [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], opts},
-      {"n", "gr", [[<Cmd>lua vim.lsp.buf.references()<CR>]], opts},
+      {"n", "gD", [[<Cmd>lua vim.lsp.buf.declaration()<CR>]], opts},
+      {"n", "gi", [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], opts},
+      {"n", "gr", [[<Cmd>lua require('telescope.builtin').lsp_references()<CR>]], opts},
       {"n", "<leader>lr", [[<Cmd>lua vim.lsp.buf.rename()<CR>]], opts},
       {"i", "<C-x>", [[<Cmd>lua vim.lsp.buf.signature_help()<CR>]], opts},
       {"n", "[e", [[<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>]], opts},
@@ -35,6 +36,12 @@ local function make_on_attach(config)
       config.after(client)
     end
 
+    vim.api.nvim_command(
+      [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]])
+
+    vim.api.nvim_command(
+      [[autocmd CursorMoved <buffer> lua vim.lsp.util.buf_clear_references()]])
+
   end
 end
 
@@ -44,7 +51,7 @@ local servers = {
   yamlls = {},
   vimls = {},
   pyright = {},
-  -- zls = {cmd = {string.format("%s/zls/zig-cache/bin/zls", vim.fn.stdpath("cache"))}},
+  zls = {cmd = {string.format("%s/zls/zig-cache/bin/zls", vim.fn.stdpath("cache"))}},
 }
 
 -- lua special case

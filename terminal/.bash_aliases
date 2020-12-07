@@ -94,24 +94,15 @@ alias https="http --verify=no"
 alias restart-wifi="nmcli radio wifi off && nmcli radio wifi on"
 
 get-neovim() {
-    local folder="$HOME/.local/neovim"
-    local url="https://github.com/neovim/neovim"
+    local folder="$HOME/.local"
+    local filename="nvim-linux64.tar.gz"
+    local url="https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
 
-    # clean current files
-    if [[ -d "$folder" ]]; then
-        pushd "$folder"
-        git up
-        make distclean
-        popd
-    else
-        git clone $url "$HOME/.local"
-    fi
-
-    # build it
     pushd "$folder"
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
-    sudo make install
-    ln -fs "$folder/build/bin/nvim" "$HOME/.local/bin"
+    wget -q "$url"
+    untar "$filename"
+    ln -fs "$folder/nvim-linux64/bin/nvim" "$folder/bin"
+    rm "$filename"
     popd
 
     echo "NeoVIM updated to latest master"

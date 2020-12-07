@@ -1,25 +1,19 @@
 " Automatically generated packer.nvim plugin loader code
 
-if !has('nvim')
+if !has('nvim-0.5')
+  echohl WarningMsg
+  echom "Invalid Neovim version for packer.nvim!"
+  echohl None
   finish
 endif
 
 lua << END
 local plugins = {
   ["emmet-vim"] = {
-    config = { "\27LJ\2\2,\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\17modules.html\frequire\0" },
     loaded = false,
     only_sequence = false,
     only_setup = false,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/emmet-vim"
-  },
-  ["iron.nvim"] = {
-    commands = { "IronRepl", "IronSend", "IronWatchCurrentFile" },
-    config = { "\27LJ\2\2;\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\17modules.iron\frequire\0" },
-    loaded = false,
-    only_sequence = false,
-    only_setup = false,
-    path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/iron.nvim"
   },
   ["packer.nvim"] = {
     loaded = false,
@@ -32,12 +26,6 @@ local plugins = {
     only_sequence = false,
     only_setup = false,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/vim-go"
-  },
-  ["zig.vim"] = {
-    loaded = false,
-    only_sequence = false,
-    only_setup = false,
-    path = "/home/ellison/.local/share/nvim/site/pack/packer/opt/zig.vim"
   }
 }
 
@@ -175,7 +163,7 @@ loadstring("\27LJ\2\2”\1\0\0\2\0\b\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009
 -- Config for: telescope.nvim
 loadstring("\27LJ\2\2.\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\19modules.search\frequire\0")()
 -- Config for: nvim-lspconfig
-loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\21modules.snippets\16modules.lsp\frequire\0")()
+loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\16modules.lsp\21modules.snippets\frequire\0")()
 -- Conditional loads
 -- Load plugins in order defined by `after`
 END
@@ -186,9 +174,6 @@ endfunction
 
 
 " Command lazy-loads
-command! -nargs=* -range -bang -complete=file IronWatchCurrentFile call s:load(['iron.nvim'], { "cmd": "IronWatchCurrentFile", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
-command! -nargs=* -range -bang -complete=file IronRepl call s:load(['iron.nvim'], { "cmd": "IronRepl", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
-command! -nargs=* -range -bang -complete=file IronSend call s:load(['iron.nvim'], { "cmd": "IronSend", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
 
 " Keymap lazy-loads
 
@@ -199,6 +184,7 @@ augroup packer_load_aucmds
   au FileType css ++once call s:load(['emmet-vim'], { "ft": "css" })
   au FileType go ++once call s:load(['vim-go'], { "ft": "go" })
   au FileType scss ++once call s:load(['emmet-vim'], { "ft": "scss" })
-  au FileType zig ++once call s:load(['zig.vim'], { "ft": "zig" })
+  au FileType jinja ++once call s:load(['emmet-vim'], { "ft": "jinja" })
+  au FileType gohtml ++once call s:load(['emmet-vim'], { "ft": "gohtml" })
   " Event lazy-loads
 augroup END

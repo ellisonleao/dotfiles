@@ -39,25 +39,27 @@ local function global_snippets()
     todo = snp_utils.force_comment("TODO(ellisonleao)"),
     now = snp_utils.force_comment("${=os.date()}"),
     npx = snp_utils.force_comment [[
-      (((((((*           .(( .(((,(((((((((,                          
-      ((     ((((((((((( ,((    (*         (((((((/        (((((((    
-      ((               (((((                ((   *((   ((((    /((    
-      ((         ,      ((((      (((((            (((((      (((     
-      ((.     (((((     .(((      ((.((.     (      ((*      ((*      
-      (((     ((.((      (((      ((.((      ((*           *((        
-      *((     ((.((     .(((      ((/((     (((((         (((         
-       ((     ((.((     ((((      ((((.    ,(( ,((      *((           
-       ((     ((/((     ((((      ((((     ((  ((/      .((           
-       ((     ((((/    /((((      *((/    ((/ ((          ((          
-       ((/    ((((,    (( ((/            ((( ((     ((     ((         
-       *((    ((((    /(( /((     (((((((( .((    ((((((    ((        
-        ((   (((((    ((   ((     ((       ((/   ((,  *((,  .((       
-        ((((((   ((((((.   ((    .((        ((((((       ((((((       
-                           ((    .((                                  
-                           ((.   *((                                  
-                           (((   /((                                  
-                            ((  *((                                   
-                            (((((,                                    
+		     .:::.           `oyyo:`  `.--.`
+    `ys/+sy+.-:///:` :y/.:syoysoo+oss:  ``          ```
+    .yo```-yso/::/oy//y:```:-.``````/ysysys-    -/oyssys`
+    .yo````.```````/yyy:`````-:/.````++.``oy/ /ys/-``.ys`
+    `yo`````.//.````oyy/````/yoys.```.:````+ysy/````-ys.
+    `ys````.ysys````-yy/````/y/+y:````s:````oy:````-ys`
+     yy````-y+sy````.yy+````:y/sy.```.yy:````-````:yo`
+     oy.```:y+yy````-yy+````:y+ys````/yyy:```````/y+
+     +y-```:yoys````/yyo````:ysy+````sy`oy/`````oy/
+     /y:```:ysyo````syys````:yyy-```/y/`oy:````.yy`
+     -y+```:ysy+```.yoyy````.sys```.ys`oy:``````-ys`
+     .yo```:yyy/```/y:sy``````..```oy:oy/```:+```:yo
+      yy```/yyy:```sy`oy.```-////+sy/+y/```+yyo.``/y/
+      oy.``+yyy:``:y+ +y-```/y+::-. -yo``.sy:-ys-``oy-
+      /y/-oy+:ys//sy. /y/```/y-     `sy:/ys.  `+yo:-ys
+      `+oo/.  `-:::`  -y+```+y-      `:++:      `:+ss/
+                      .yo```+y.
+                       ys```oy.
+                       sy.``sy`
+                       /y:.oy/
+                       `oys+.
 ]],
   }
 end
@@ -81,6 +83,18 @@ class ${1|vim.trim(S.v):gsub("^%l", string.upper)}:
   }
 end
 
+local function zig_snippets()
+  return {
+    main = snp_utils.match_indentation [[
+const std = @import("std");
+
+pub fn main() void {
+    std.debug.print("Hello, {}!\n", .{"World"});
+}
+]],
+  }
+end
+
 local snp = require("snippets")
 snp.use_suggested_mappings()
 
@@ -95,4 +109,5 @@ snp.snippets = {
   lua = lua_snippets(),
   go = go_snippets(),
   python = python_snippets(),
+  zig = zig_snippets(),
 }

@@ -13,26 +13,27 @@ local function set_globals()
 
   vim.g.startify_custom_header = vim.fn.split(
                                    [[
-	       (((((((*           .(( .(((,(((((((((,                          
-       ((     ((((((((((( ,((    (*         (((((((/        (((((((    
-       ((               (((((                ((   *((   ((((    /((    
-       ((         ,      ((((      (((((            (((((      (((     
-       ((.     (((((     .(((      ((.((.     (      ((*      ((*      
-       (((     ((.((      (((      ((.((      ((*           *((        
-       *((     ((.((     .(((      ((/((     (((((         (((         
-        ((     ((.((     ((((      ((((.    ,(( ,((      *((           
-        ((     ((/((     ((((      ((((     ((  ((/      .((           
-        ((     ((((/    /((((      *((/    ((/ ((          ((          
-        ((/    ((((,    (( ((/            ((( ((     ((     ((         
-        *((    ((((    /(( /((     (((((((( .((    ((((((    ((        
-         ((   (((((    ((   ((     ((       ((/   ((,  *((,  .((       
-         ((((((   ((((((.   ((    .((        ((((((       ((((((       
-                            ((    .((                                  
-                            ((.   *((                                  
-                            (((   /((                                  
-                             ((  *((                                   
-                             (((((,                                    
-														 ]], "\n")
+     .:::.           `oyyo:`  `.--.`
+    `ys/+sy+.-:///:` :y/.:syoysoo+oss:  ``          ```
+    .yo```-yso/::/oy//y:```:-.``````/ysysys-    -/oyssys`
+    .yo````.```````/yyy:`````-:/.````++.``oy/ /ys/-``.ys`
+    `yo`````.//.````oyy/````/yoys.```.:````+ysy/````-ys.
+    `ys````.ysys````-yy/````/y/+y:````s:````oy:````-ys`
+     yy````-y+sy````.yy+````:y/sy.```.yy:````-````:yo`
+     oy.```:y+yy````-yy+````:y+ys````/yyy:```````/y+
+     +y-```:yoys````/yyo````:ysy+````sy`oy/`````oy/
+     /y:```:ysyo````syys````:yyy-```/y/`oy:````.yy`
+     -y+```:ysy+```.yoyy````.sys```.ys`oy:``````-ys`
+     .yo```:yyy/```/y:sy``````..```oy:oy/```:+```:yo
+      yy```/yyy:```sy`oy.```-////+sy/+y/```+yyo.``/y/
+      oy.``+yyy:``:y+ +y-```/y+::-. -yo``.sy:-ys-``oy-
+      /y/-oy+:ys//sy. /y/```/y-     `sy:/ys.  `+yo:-ys
+      `+oo/.  `-:::`  -y+```+y-      `:++:      `:+ss/
+                      .yo```+y.
+                       ys```oy.
+                       sy.``sy`
+                       /y:.oy/
+                       `oys+.]], "\n")
 
 end
 
@@ -70,7 +71,6 @@ local function set_options()
     scrolloff = 12,
     mouse = vim.o.mouse .. "a",
     completeopt = "menuone,noinsert,noselect",
-    swapfile = false,
   }
 
   vim.o.clipboard = "unnamedplus"
@@ -79,6 +79,7 @@ local function set_options()
   vim.wo.colorcolumn = "80,120"
   vim.bo.shiftwidth = 4
   vim.bo.softtabstop = 4
+  vim.bo.swapfile = false
 
   for k, v in pairs(options) do
     vim.o[k] = v
@@ -97,17 +98,20 @@ FILETYPE_HOOKS = {
     vim.bo.softtabstop = 2
     vim.bo.tabstop = 2
 
-    vim.g.neoformat_lua_luaformat = {
-      exe = "lua-format",
-      args = {"-c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")},
-    }
-    vim.g.neoformat_enabled_lua = {"luaformat"}
+    --     vim.g.neoformat_lua_luaformat = {
+    --       exe = "lua-format",
+    --       args = {"-c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")},
+    --     }
+    --     vim.g.neoformat_enabled_lua = {"luaformat"}
+
   end,
   go = function()
     local opts = {noremap = true}
     local mappings = {
       {"n", "<leader>lk", [[<Cmd>call go#lsp#Restart()<CR>]], opts},
       {"n", "<leader>l", [[<Cmd>GoMetaLinter<CR>]], opts},
+      {"n", "<leader>ga", [[<Cmd>GoAlternate<CR>]], opts},
+      {"n", "<leader>gc", [[<Cmd>GoCoverageToggle<CR>]], opts},
     }
     vim.bo.shiftwidth = 4
     vim.bo.softtabstop = 4
@@ -140,6 +144,10 @@ FILETYPE_HOOKS = {
     vim.g.neoformat_enabled_html = {}
     vim.bo.shiftwidth = 4
     vim.bo.softtabstop = 4
+    vim.api.nvim_set_keymap("i", "<tab>", "emmet#expandAbbrIntelligent('<tab>')",
+                            {expr = true})
+    vim.cmd("EmmetInstall")
+    vim.g.user_emmet_install_global = 0
   end,
   proto = function()
     vim.bo.shiftwidth = 2
@@ -185,7 +193,6 @@ local mappings = {
   {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
   {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
   {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
-  {"n", "<leader>R", [[<Cmd>IronRepl<CR>]], opts},
   {"n", "<leader>W", [[<Cmd>Weather<CR>]], opts},
 }
 
