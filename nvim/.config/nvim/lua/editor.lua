@@ -13,26 +13,26 @@ local function set_globals()
 
   vim.g.startify_custom_header = vim.fn.split(
                                    [[
-     .:::.           `oyyo:`  `.--.`
-    `ys/+sy+.-:///:` :y/.:syoysoo+oss:  ``          ```
-    .yo```-yso/::/oy//y:```:-.``````/ysysys-    -/oyssys`
-    .yo````.```````/yyy:`````-:/.````++.``oy/ /ys/-``.ys`
-    `yo`````.//.````oyy/````/yoys.```.:````+ysy/````-ys.
-    `ys````.ysys````-yy/````/y/+y:````s:````oy:````-ys`
-     yy````-y+sy````.yy+````:y/sy.```.yy:````-````:yo`
-     oy.```:y+yy````-yy+````:y+ys````/yyy:```````/y+
-     +y-```:yoys````/yyo````:ysy+````sy`oy/`````oy/
-     /y:```:ysyo````syys````:yyy-```/y/`oy:````.yy`
-     -y+```:ysy+```.yoyy````.sys```.ys`oy:``````-ys`
-     .yo```:yyy/```/y:sy``````..```oy:oy/```:+```:yo
-      yy```/yyy:```sy`oy.```-////+sy/+y/```+yyo.``/y/
-      oy.``+yyy:``:y+ +y-```/y+::-. -yo``.sy:-ys-``oy-
-      /y/-oy+:ys//sy. /y/```/y-     `sy:/ys.  `+yo:-ys
-      `+oo/.  `-:::`  -y+```+y-      `:++:      `:+ss/
-                      .yo```+y.
-                       ys```oy.
-                       sy.``sy`
-                       /y:.oy/
+     .:::.           `oyyo:`  `.--.`                        
+    `ys/+sy+.-:///:` :y/.:syoysoo+oss:  ``          ```     
+    .yo```-yso/::/oy//y:```:-.``````/ysysys-    -/oyssys`   
+    .yo````.```````/yyy:`````-:/.````++.``oy/ /ys/-``.ys`   
+    `yo`````.//.````oyy/````/yoys.```.:````+ysy/````-ys.    
+    `ys````.ysys````-yy/````/y/+y:````s:````oy:````-ys`     
+     yy````-y+sy````.yy+````:y/sy.```.yy:````-````:yo`      
+     oy.```:y+yy````-yy+````:y+ys````/yyy:```````/y+        
+     +y-```:yoys````/yyo````:ysy+````sy`oy/`````oy/         
+     /y:```:ysyo````syys````:yyy-```/y/`oy:````.yy`         
+     -y+```:ysy+```.yoyy````.sys```.ys`oy:``````-ys`        
+     .yo```:yyy/```/y:sy``````..```oy:oy/```:+```:yo        
+      yy```/yyy:```sy`oy.```-////+sy/+y/```+yyo.``/y/       
+      oy.``+yyy:``:y+ +y-```/y+::-. -yo``.sy:-ys-``oy-      
+      /y/-oy+:ys//sy. /y/```/y-     `sy:/ys.  `+yo:-ys      
+      `+oo/.  `-:::`  -y+```+y-      `:++:      `:+ss/      
+                      .yo```+y.                             
+                       ys```oy.                             
+                       sy.``sy`                             
+                       /y:.oy/                              
                        `oys+.]], "\n")
 
 end
