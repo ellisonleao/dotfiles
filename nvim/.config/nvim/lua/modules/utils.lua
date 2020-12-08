@@ -19,11 +19,4 @@ function utils.nvim_create_augroups(definitions)
   end
 end
 
--- keymap creation helper
-function utils.mapper(mappings)
-  for _, map in pairs(mappings) do
-    vim.api.nvim_buf_set_keymap(0, unpack(map))
-  end
-end
-
 return utils
