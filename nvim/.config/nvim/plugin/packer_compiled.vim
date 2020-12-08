@@ -150,18 +150,20 @@ end
 
 -- Pre-load configuration
 -- Post-load configuration
--- Config for: nvim-bufferline.lua
-loadstring("\27LJ\2\0028\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\15bufferline\frequire\0")()
+-- Config for: formatter.nvim
+loadstring("\27LJ\2\0021\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\22modules.formatter\frequire\0")()
 -- Config for: nvim-treesitter
 loadstring("\27LJ\2\2A\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\23modules.treesitter\frequire\0")()
+-- Config for: vim-signify
+loadstring("\27LJ\2\2�\1\0\0\2\0\b\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009\0\1\0'\1\5\0=\1\4\0006\0\0\0009\0\1\0'\1\a\0=\1\6\0K\0\1\0\t #signify_sign_delete_first_line\t \24signify_sign_change\t \21signify_sign_add\6g\bvim\0")()
 -- Config for: nvim-colorizer.lua
 loadstring("\27LJ\2\0027\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0")()
 -- Config for: galaxyline.nvim
 loadstring("\27LJ\2\0022\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0")()
--- Config for: vim-signify
-loadstring("\27LJ\2\2�\1\0\0\2\0\b\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009\0\1\0'\1\5\0=\1\4\0006\0\0\0009\0\1\0'\1\a\0=\1\6\0K\0\1\0\t #signify_sign_delete_first_line\t \24signify_sign_change\t \21signify_sign_add\6g\bvim\0")()
 -- Config for: telescope.nvim
 loadstring("\27LJ\2\2.\0\0\2\0\2\0\0046\0\0\0'\1\1\0B\0\2\1K\0\1\0\19modules.search\frequire\0")()
+-- Config for: nvim-bufferline.lua
+loadstring("\27LJ\2\0028\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\15bufferline\frequire\0")()
 -- Config for: nvim-lspconfig
 loadstring("\27LJ\2\2H\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0016\0\0\0'\1\2\0B\0\2\1K\0\1\0\16modules.lsp\21modules.snippets\frequire\0")()
 -- Conditional loads

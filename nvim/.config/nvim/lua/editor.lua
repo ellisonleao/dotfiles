@@ -8,9 +8,7 @@ local function set_globals()
   vim.g["test#strategy"] = "floaterm"
   vim.g.floaterm_height = 0.8
   vim.g.floaterm_width = 0.8
-  vim.g.neoformat_basic_format_trim = true
   vim.g.diagnostic_enable_virtual_text = true
-
   vim.g.startify_custom_header = vim.fn.split(
                                    [[
      .:::.           `oyyo:`  `.--.`                        
@@ -39,7 +37,6 @@ end
 
 local function set_options()
   local options = {
-    -- path = vim.o.path .. "," .. vim.env.PWD,
     autoread = true,
     hidden = true,
     ignorecase = true,
@@ -92,18 +89,47 @@ local function set_colors()
   require("colorbuddy").colorscheme("gruvbox")
 end
 
+local function set_mappings()
+  local opts = {noremap = true}
+  local mappings = {
+    {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/editor.lua<CR>]], opts},
+    {"n", "<leader>reR", [[<Cmd>lua R("init")<CR>]], opts},
+    {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts},
+    {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},
+    {"n", ",z", [[<Cmd>bp<CR>]], opts},
+    {"n", ",q", [[<Cmd>bp<CR>]], opts},
+    {"n", ",x", [[<Cmd>bn<CR>]], opts},
+    {"n", ",w", [[<Cmd>bn<CR>]], opts},
+    {"n", ",h", [[<C-W><C-H>]], opts},
+    {"n", ",j", [[<C-W><C-J>]], opts},
+    {"n", ",k", [[<C-W><C-K>]], opts},
+    {"n", ",l", [[<C-W><C-L>]], opts},
+    {"n", ",d", [[<Cmd>bd!<CR>]], opts},
+    {"n", ",c", [[<Cmd>cclose<CR>]], opts},
+    {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts},
+    {"v", "<", [[<gv]], opts},
+    {"v", ">", [[>gv]], opts},
+    {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts},
+    {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts},
+    {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
+    {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
+    {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
+    {"n", "<leader>W", [[<Cmd>Weather<CR>]], opts},
+  }
+  utils.mapper(mappings)
+end
+
+set_globals()
+set_options()
+set_colors()
+set_mappings()
+
+local autocmds = {}
 FILETYPE_HOOKS = {
   lua = function()
     vim.bo.shiftwidth = 2
     vim.bo.softtabstop = 2
     vim.bo.tabstop = 2
-
-    --     vim.g.neoformat_lua_luaformat = {
-    --       exe = "lua-format",
-    --       args = {"-c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")},
-    --     }
-    --     vim.g.neoformat_enabled_lua = {"luaformat"}
-
   end,
   go = function()
     local opts = {noremap = true}
@@ -121,27 +147,23 @@ FILETYPE_HOOKS = {
     vim.g.go_snippet_engine = ""
 
     -- vim-go vars
-    vim.g.go_fmt_command = "goimports"
     vim.g.go_list_type = "quickfix"
     vim.g.go_addtags_transform = "camelcase"
     vim.g.go_metalinter_enabled = {}
     vim.g.go_metalinter_autosave_enabled = {}
     vim.g.go_doc_popup_window = true
+    vim.g.go_fmt_autosave = false
 
-    for _, map in pairs(mappings) do
-      vim.api.nvim_buf_set_keymap(0, unpack(map))
-    end
+    utils.mapper(mappings)
   end,
   python = function()
     vim.g["test#python#runner"] = "pytest"
-    vim.g.neoformat_enabled_python = {"black"}
   end,
   viml = function()
     vim.bo.shiftwidth = 2
     vim.bo.softtabstop = 2
   end,
   html = function()
-    vim.g.neoformat_enabled_html = {}
     vim.bo.shiftwidth = 4
     vim.bo.softtabstop = 4
     vim.api.nvim_set_keymap("i", "<tab>", "emmet#expandAbbrIntelligent('<tab>')",
@@ -154,7 +176,6 @@ FILETYPE_HOOKS = {
     vim.bo.softtabstop = 2
   end,
   yaml = function()
-    vim.g.neoformat_enabled_yaml = {}
     vim.bo.shiftwidth = 2
     vim.bo.softtabstop = 2
   end,
@@ -163,53 +184,6 @@ FILETYPE_HOOKS = {
     vim.bo.tabstop = 4
     vim.bo.softtabstop = 4
   end,
-}
-
-set_globals()
-set_options()
-set_colors()
-
-local opts = {noremap = true}
-local mappings = {
-  {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/editor.lua<CR>]], opts},
-  {"n", "<leader>reR", [[<Cmd>lua R("editor")<CR>]], opts},
-  {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts},
-  {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},
-  {"n", ",z", [[<Cmd>bp<CR>]], opts},
-  {"n", ",q", [[<Cmd>bp<CR>]], opts},
-  {"n", ",x", [[<Cmd>bn<CR>]], opts},
-  {"n", ",w", [[<Cmd>bn<CR>]], opts},
-  {"n", ",h", [[<C-W><C-H>]], opts},
-  {"n", ",j", [[<C-W><C-J>]], opts},
-  {"n", ",k", [[<C-W><C-K>]], opts},
-  {"n", ",l", [[<C-W><C-L>]], opts},
-  {"n", ",d", [[<Cmd>bd!<CR>]], opts},
-  {"n", ",c", [[<Cmd>cclose<CR>]], opts},
-  {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts},
-  {"v", "<", [[<gv]], opts},
-  {"v", ">", [[>gv]], opts},
-  {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts},
-  {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts},
-  {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
-  {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
-  {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
-  {"n", "<leader>W", [[<Cmd>Weather<CR>]], opts},
-}
-
-for _, map in pairs(mappings) do
-  vim.api.nvim_set_keymap(unpack(map))
-end
-
-local autocmds = {
-  general = {
-    {"BufWritePre", "*", [[Neoformat]]},
-    {"BufWritePost init.vim nested source $MYVIMRC"},
-    {
-      "BufReadPost",
-      "*",
-      [[if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]],
-    },
-  },
 }
 
 for filetype, _ in pairs(FILETYPE_HOOKS) do

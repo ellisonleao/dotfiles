@@ -15,21 +15,13 @@ end
 -- load plugins
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim", opt = true}
+  -- colors, style, icons
   use {
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup()
     end,
   }
-
-  -- loading page and float terminals for general usage
-  use {"mhinz/vim-startify"}
-  use {"voldikss/vim-floaterm"}
-
-  -- better directory viewer
-  use {"justinmk/vim-dirvish"}
-
-  -- colors, style, icons
   use {"kyazdani42/nvim-web-devicons"}
   use {
     "nvim-treesitter/nvim-treesitter",
@@ -37,6 +29,15 @@ return require("packer").startup(function(use)
       require("modules.treesitter").config()
     end,
   }
+
+  -- landing page and float terminals for general usage
+  use {"mhinz/vim-startify"}
+  use {"voldikss/vim-floaterm"}
+
+  -- better directory viewer
+  use {"justinmk/vim-dirvish"}
+
+
   -- local
   use {"~/code/gruvbox.nvim", requires = {"tjdevries/colorbuddy.vim"}}
   use {"~/code/twitch.nvim"}
@@ -52,10 +53,12 @@ return require("packer").startup(function(use)
   use {"tpope/vim-commentary"}
   use {"tpope/vim-repeat"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
-  use {"sbdchd/neoformat"}
-  use {"mhartington/formatter.nvim"}
-
-  -- search
+  use {
+    "mhartington/formatter.nvim",
+    config = function()
+      require("modules.formatter")
+    end,
+  }
   use {
     "nvim-lua/telescope.nvim",
     config = function()
