@@ -46,6 +46,7 @@ alias time='hyperfine'
 alias du='dust'
 alias top='btm'
 alias iftop='sudo ~/.cargo/bin/bandwhich'
+alias ls="ls --color=auto"
 alias la="ls -laF"
 
 # IP addresses
