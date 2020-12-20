@@ -37,7 +37,6 @@ return require("packer").startup(function(use)
   -- better directory viewer
   use {"justinmk/vim-dirvish"}
 
-
   -- local
   use {"~/code/gruvbox.nvim", requires = {"tjdevries/colorbuddy.vim"}}
   use {"~/code/twitch.nvim"}
@@ -81,7 +80,7 @@ return require("packer").startup(function(use)
 
   -- lsp, completion, linting and snippets
   use {
-    "~/code/nvim-lspconfig",
+    "neovim/nvim-lspconfig",
     config = function()
       require("modules.snippets")
       require("modules.lsp")

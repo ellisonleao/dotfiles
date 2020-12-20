@@ -19,9 +19,9 @@ require("formatter").setup({
         return {exe = "black", args = {"-q", "-"}}
       end,
     },
-    javascript = {prettier()},
-    javascriptreact = {prettier()},
-    markdown = {prettier()},
+    javascript = {prettier},
+    javascriptreact = {prettier},
+    markdown = {prettier},
     json = {
       function()
         return {

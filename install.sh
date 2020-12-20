@@ -130,7 +130,7 @@ configure_terminal() {
     fi
 
     print_info "Configuring terminal"
-    for item in "terminal nvim ui"; do
+    for item in "configs terminal ui"; do
         execute "stow -R ${item}" "Creating ${item} symlink"
     done
 }
