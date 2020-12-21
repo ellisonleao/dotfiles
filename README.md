@@ -4,7 +4,7 @@ Personal configuration files. All symlinks are created with [stow](https://www.g
 
 The main configs are for:
 
-- Neovim configs and plugins
+- Neovim configs and plugins (almost entirely using Lua)
 - Visual settings and keyboard shorcuts for GNOME3
 - Terminal settings (for Alacritty terminal + tmux)
 
