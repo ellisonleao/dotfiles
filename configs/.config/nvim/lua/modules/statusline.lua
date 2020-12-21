@@ -97,6 +97,9 @@ gls.left[2] = {
   GitBranch = {
     provider = function()
       local branch = vcs.get_git_branch()
+      if branch == nil then
+        return ""
+      end
       local icon = "  "
       return icon .. branch
     end,
