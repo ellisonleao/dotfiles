@@ -108,7 +108,7 @@ return require("packer").startup(function(use)
   use {"ziglang/zig.vim"}
 
   -- html/css
-  use {"mattn/emmet-vim", ft = {"html", "css", "scss", "gohtml", "jinja"}}
+  use {"mattn/emmet-vim"}
 
   -- bufferline tabs
   use {

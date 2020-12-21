@@ -6,6 +6,7 @@ local function set_globals()
   vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
   vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
   vim.g["test#strategy"] = "floaterm"
+  vim.g["test#python#runner"] = "pytest"
   vim.g.floaterm_height = 0.8
   vim.g.floaterm_width = 0.8
   vim.g.diagnostic_enable_virtual_text = true
@@ -32,7 +33,6 @@ local function set_globals()
                        sy.``sy`                             
                        /y:.oy/                              
                        `oys+.]], "\n")
-
 end
 
 local function set_options()
@@ -68,19 +68,19 @@ local function set_options()
     scrolloff = 12,
     mouse = vim.o.mouse .. "a",
     completeopt = "menuone,noinsert,noselect",
+    clipboard = "unnamedplus",
   }
-
-  vim.o.clipboard = "unnamedplus"
-  vim.wo.relativenumber = true
-  vim.wo.number = true
-  vim.wo.colorcolumn = "80,120"
-  vim.bo.shiftwidth = 4
-  vim.bo.softtabstop = 4
-  vim.bo.swapfile = false
-
   for k, v in pairs(options) do
     vim.o[k] = v
   end
+
+  vim.wo.relativenumber = true
+  vim.wo.number = true
+
+  vim.bo.shiftwidth = 2
+  vim.bo.softtabstop = 2
+  vim.bo.tabstop = 2
+  vim.bo.swapfile = false
 end
 
 local function set_colors()
@@ -88,68 +88,6 @@ local function set_colors()
   vim.g.gruvbox_invert_selection = false
   require("colorbuddy").colorscheme("gruvbox")
 end
-
-FILETYPE_HOOKS = {
-  lua = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-    vim.bo.tabstop = 2
-  end,
-  go = function()
-    local opts = {noremap = true}
-    local mappings = {
-      {"n", "<leader>lk", [[<Cmd>call go#lsp#Restart()<CR>]], opts},
-      {"n", "<leader>l", [[<Cmd>GoMetaLinter<CR>]], opts},
-      {"n", "<leader>ga", [[<Cmd>GoAlternate<CR>]], opts},
-      {"n", "<leader>gc", [[<Cmd>GoCoverageToggle<CR>]], opts},
-    }
-    vim.bo.shiftwidth = 4
-    vim.bo.softtabstop = 4
-    vim.bo.tabstop = 4
-
-    -- disable vim-go snippet engine
-    vim.g.go_snippet_engine = ""
-
-    -- vim-go vars
-    vim.g.go_list_type = "quickfix"
-    vim.g.go_addtags_transform = "camelcase"
-    vim.g.go_metalinter_enabled = {}
-    vim.g.go_metalinter_autosave_enabled = {}
-    vim.g.go_doc_popup_window = true
-
-    for _, map in pairs(mappings) do
-      vim.api.nvim_buf_set_keymap(0, unpack(map))
-    end
-  end,
-  python = function()
-    vim.g["test#python#runner"] = "pytest"
-  end,
-  viml = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-  html = function()
-    vim.bo.shiftwidth = 4
-    vim.bo.softtabstop = 4
-    vim.api.nvim_set_keymap("i", "<tab>", "emmet#expandAbbrIntelligent('<tab>')",
-                            {expr = true})
-    vim.cmd("EmmetInstall")
-    vim.g.user_emmet_install_global = 0
-  end,
-  proto = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-  yaml = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-  sh = function()
-    vim.bo.shiftwidth = 4
-    vim.bo.tabstop = 4
-    vim.bo.softtabstop = 4
-  end,
-}
 
 set_globals()
 set_options()
@@ -196,10 +134,5 @@ local autocmds = {
     },
   },
 }
-
-for filetype, _ in pairs(FILETYPE_HOOKS) do
-  autocmds["LuaFileTypeHook_" .. utils.escape_keymap(filetype)] =
-    {{"FileType", filetype, ("lua FILETYPE_HOOKS[%q]()"):format(filetype)}};
-end
 
 utils.nvim_create_augroups(autocmds)

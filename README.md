@@ -1,5 +1,4 @@
-dotfiles
-========
+# dotfiles
 
 Personal configuration files. All symlinks are created with [stow](https://www.gnu.org/software/stow/)
 
@@ -9,10 +8,12 @@ The main configs are for:
 - Visual settings and keyboard shorcuts for GNOME3
 - Terminal settings (for Alacritty terminal + tmux)
 
+![](./.github/terminal.png)
+
 ## Installing
 
-*P.S: Only working on Ubuntu and related distros for now*
+_P.S: Only working on Ubuntu and related distros for now_
 
 1. `git clone https://github.com/ellisonleao/dotfiles --recursive`
 2. `cd dotfiles`
-3. `./install.sh`
+3. `make install`
