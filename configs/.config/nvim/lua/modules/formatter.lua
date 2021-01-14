@@ -45,8 +45,8 @@ require("formatter").setup({
 
 -- adding format on save autocmd
 vim.api.nvim_exec([[
-augroup Format
+augroup FormatAu
     autocmd!
-    autocmd BufWritePost * FormatWrite
+    autocmd BufWritePost *.go,*.lua,*.json,*.py,*.js,*.jsx,*.md FormatWrite
 augroup END
 ]], true)

@@ -45,14 +45,7 @@ local function make_on_attach(config)
   end
 end
 
-local servers = {
-  gopls = {},
-  tsserver = {},
-  yamlls = {},
-  vimls = {},
-  pyright = {},
-  zls = {cmd = {string.format("%s/zls/zig-cache/bin/zls", vim.fn.stdpath("cache"))}},
-}
+local servers = {gopls = {}, tsserver = {}, yamlls = {}, vimls = {}, pyright = {}}
 
 -- lua special case
 require("nlua.lsp.nvim").setup(nvim_lsp, {

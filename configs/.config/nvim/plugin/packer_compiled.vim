@@ -116,7 +116,7 @@ _packer_load = function(names, cause)
     end
 
     if cause.prefix then
-      local prefix = vim.v.count and vim.v.count or ''
+      local prefix = vim.v.count ~= 0 and vim.v.count or ''
       prefix = prefix .. '"' .. vim.v.register .. cause.prefix
       if vim.fn.mode('full') == 'no' then
         if vim.v.operator == 'c' then
@@ -129,9 +129,8 @@ _packer_load = function(names, cause)
       vim.fn.feedkeys(prefix, 'n')
     end
 
-    -- NOTE: I'm not sure if the below substitution is correct; it might correspond to the literal
-    -- characters \<Plug> rather than the special <Plug> key.
-    vim.fn.feedkeys(string.gsub(string.gsub(cause.keys, '^<Plug>', '\\<Plug>') .. extra, '<[cC][rR]>', '\r'))
+    local escaped_keys = vim.api.nvim_replace_termcodes(cause.keys .. extra, true, true, true)
+    vim.api.nvim_feedkeys(escaped_keys, 'm', true)
   elseif cause.event then
     vim.cmd(fmt('doautocmd <nomodeline> %s', cause.event))
   elseif cause.ft then
@@ -144,22 +143,22 @@ end
 
 -- Pre-load configuration
 -- Post-load configuration
--- Config for: nvim-lspconfig
-loadstring("\27LJ\2\nH\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0016\0\0\0'\2\2\0B\0\2\1K\0\1\0\16modules.lsp\21modules.snippets\frequire\0")()
 -- Config for: formatter.nvim
 loadstring("\27LJ\2\n1\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\22modules.formatter\frequire\0")()
 -- Config for: nvim-treesitter
 loadstring("\27LJ\2\nA\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\23modules.treesitter\frequire\0")()
--- Config for: nvim-colorizer.lua
-loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0")()
 -- Config for: vim-signify
 loadstring("\27LJ\2\n�\1\0\0\2\0\b\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009\0\1\0'\1\5\0=\1\4\0006\0\0\0009\0\1\0'\1\a\0=\1\6\0K\0\1\0\t #signify_sign_delete_first_line\t \24signify_sign_change\t \21signify_sign_add\6g\bvim\0")()
 -- Config for: telescope.nvim
 loadstring("\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19modules.search\frequire\0")()
--- Config for: nvim-bufferline.lua
-loadstring("\27LJ\2\n8\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\15bufferline\frequire\0")()
+-- Config for: nvim-lspconfig
+loadstring("\27LJ\2\nH\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0016\0\0\0'\2\2\0B\0\2\1K\0\1\0\16modules.lsp\21modules.snippets\frequire\0")()
 -- Config for: galaxyline.nvim
 loadstring("\27LJ\2\n2\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0")()
+-- Config for: nvim-bufferline.lua
+loadstring("\27LJ\2\n8\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\15bufferline\frequire\0")()
+-- Config for: nvim-colorizer.lua
+loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0")()
 -- Conditional loads
 -- Load plugins in order defined by `after`
 END
@@ -178,4 +177,5 @@ augroup packer_load_aucmds
   " Filetype lazy-loads
   au FileType go ++once call s:load(['vim-go'], { "ft": "go" })
   " Event lazy-loads
+  " Function lazy-loads
 augroup END

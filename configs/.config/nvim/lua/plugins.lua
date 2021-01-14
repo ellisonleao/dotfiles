@@ -12,6 +12,8 @@ if not packer_exists then
   print("packer.nvim installed")
 end
 
+vim.cmd([[autocmd BufWritePost plugins.lua PackerCompile ]])
+
 -- load plugins
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim", opt = true}
@@ -22,6 +24,7 @@ return require("packer").startup(function(use)
       require("colorizer").setup()
     end,
   }
+  use {"NLKNguyen/papercolor-theme"}
   use {"kyazdani42/nvim-web-devicons"}
   use {
     "nvim-treesitter/nvim-treesitter",

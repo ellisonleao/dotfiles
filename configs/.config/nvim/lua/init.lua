@@ -15,6 +15,11 @@ P = function(v)
   return v
 end
 
+PP = function(...)
+  local vars = vim.tbl_map(vim.inspect, {...})
+  print(unpack(vars))
+end
+
 RLSP = function()
   vim.schedule_wrap(function()
     vim.lsp.stop_client(vim.lsp.get_active_clients())
