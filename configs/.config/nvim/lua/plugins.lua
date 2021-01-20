@@ -24,7 +24,7 @@ return require("packer").startup(function(use)
       require("colorizer").setup()
     end,
   }
-  use {"NLKNguyen/papercolor-theme"}
+  -- use {"NLKNguyen/papercolor-theme"}
   use {"kyazdani42/nvim-web-devicons"}
   use {
     "nvim-treesitter/nvim-treesitter",

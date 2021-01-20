@@ -84,11 +84,11 @@ local function set_options()
 end
 
 local function set_colors()
-  -- vim.g.gruvbox_italic_strings = true
-  -- vim.g.gruvbox_invert_selection = false
-  -- require("colorbuddy").colorscheme("gruvbox")
-  vim.o.background = "dark"
-  vim.cmd("colorscheme PaperColor")
+  vim.g.gruvbox_italic_strings = true
+  vim.g.gruvbox_invert_selection = false
+  require("colorbuddy").colorscheme("gruvbox")
+  -- vim.o.background = "dark"
+  -- vim.cmd("colorscheme PaperColor")
 end
 
 FILETYPE_HOOKS = {
