@@ -17,6 +17,7 @@ vim.cmd([[autocmd BufWritePost plugins.lua PackerCompile ]])
 -- load plugins
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim", opt = true}
+  use {"alexaandru/nvim-lspupdate"}
   -- colors, style, icons
   use {
     "norcalli/nvim-colorizer.lua",
@@ -79,16 +80,15 @@ return require("packer").startup(function(use)
   }
 
   -- git
-  use {"tpope/vim-rhubarb"}
-  use {"tpope/vim-fugitive"}
   use {
-    "mhinz/vim-signify",
+    "lewis6991/gitsigns.nvim",
+    requires = {"nvim-lua/plenary.nvim"},
     config = function()
-      vim.g.signify_sign_add = " "
-      vim.g.signify_sign_change = " "
-      vim.g.signify_sign_delete_first_line = " "
+      require("gitsigns").setup()
     end,
   }
+  use {"tpope/vim-rhubarb"}
+  use {"tpope/vim-fugitive"}
 
   -- lsp, completion, linting and snippets
   use {
@@ -106,11 +106,10 @@ return require("packer").startup(function(use)
 
   -- statusline
   use {
-    "~/code/galaxyline.nvim",
+    "hoob3rt/lualine.nvim",
     config = function()
       require("modules.statusline")
     end,
-    requires = {"~/code/gruvbox.nvim"},
   }
 
   -- go
