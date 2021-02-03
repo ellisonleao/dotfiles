@@ -33,6 +33,15 @@ return require("packer").startup(function(use)
     end,
   }
 
+  -- debugging
+  use {
+    "mfussenegger/nvim-dap",
+    "mfussenegger/nvim-dap-python",
+    setup = function()
+      require("modules.dap")
+    end,
+  }
+
   -- landing page and float terminals for general usage
   use {"mhinz/vim-startify"}
   use {"voldikss/vim-floaterm"}
