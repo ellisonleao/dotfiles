@@ -39,3 +39,8 @@ fi
 [[ -f "/usr/share/bash-completion/bash_completion" ]] && source /usr/share/bash-completion/bash_completion
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# gvm
+[[ -f ~/.gvm/scripts/gvm ]] && source ~/.gvm/scripts/gvm
+
+[[ -s "/home/ellison/.gvm/scripts/gvm" ]] && source "/home/ellison/.gvm/scripts/gvm"
