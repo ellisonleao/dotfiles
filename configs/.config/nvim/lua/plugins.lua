@@ -61,8 +61,8 @@ return require("packer").startup(function(use)
   use {"nvim-lua/plenary.nvim"}
 
   -- editor
+  use {"b3nj5m1n/kommentary"}
   use {"tpope/vim-surround"}
-  use {"tpope/vim-commentary"}
   use {"tpope/vim-repeat"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
   use {
