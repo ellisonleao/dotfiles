@@ -82,9 +82,8 @@ return require("packer").startup(function(use)
   -- git
   use {
     "lewis6991/gitsigns.nvim",
-    requires = {"nvim-lua/plenary.nvim"},
     config = function()
-      require("gitsigns").setup()
+      require("gitsigns").setup {numhl = true}
     end,
   }
   use {"tpope/vim-rhubarb"}
@@ -98,7 +97,8 @@ return require("packer").startup(function(use)
       require("modules.lsp")
     end,
     requires = {
-      "nvim-lua/completion-nvim",
+      "glepnir/lspsaga.nvim",
+      "hrsh7th/nvim-compe",
       "norcalli/snippets.nvim",
       "tjdevries/nlua.nvim",
     },
@@ -116,10 +116,10 @@ return require("packer").startup(function(use)
   use {"fatih/vim-go", run = ":GoUpdateBinaries", ft = {"go"}}
 
   -- zig
-  use {"ziglang/zig.vim"}
+  use {"ziglang/zig.vim", ft = {"zig"}}
 
   -- html/css
-  use {"mattn/emmet-vim"}
+  use {"mattn/emmet-vim", ft = {"html", "css", "jsx", "gohtml"}}
 
   -- bufferline tabs
   use {

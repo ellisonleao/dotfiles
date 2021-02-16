@@ -67,7 +67,7 @@ local function set_options()
     shortmess = vim.o.shortmess .. "c",
     scrolloff = 12,
     mouse = vim.o.mouse .. "a",
-    completeopt = "menuone,noinsert,noselect",
+    completeopt = "menu,menuone,noselect",
     clipboard = "unnamedplus",
   }
   for k, v in pairs(options) do
@@ -102,6 +102,7 @@ FILETYPE_HOOKS = {
       {"n", "<leader>l", [[<Cmd>GoMetaLinter<CR>]], opts},
       {"n", "<leader>ga", [[<Cmd>GoAlternate<CR>]], opts},
       {"n", "<leader>gc", [[<Cmd>GoCoverageToggle<CR>]], opts},
+      {"n", "<leader>gg", [[<Cmd>GoGenerate<CR>]], opts},
     }
     vim.bo.shiftwidth = 4
     vim.bo.softtabstop = 4

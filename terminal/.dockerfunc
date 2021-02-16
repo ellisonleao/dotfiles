@@ -108,3 +108,10 @@ subfinder() {
 dnsperf() {
     docker run --rm --net=host ${DOCKER_REPO_PREFIX}/dnsperf:latest
 }
+
+kindlegen() {
+  docker run -it --rm \
+    --volume "$PWD:/home/kindlegen" \
+    --name kindlegen \
+    koenrh/kindlegen "$@"
+}

@@ -1,5 +1,4 @@
 local snp_utils = require("snippets.utils")
-
 -- golang snippets
 local function go_snippets()
   return {
@@ -17,7 +16,6 @@ if err != nil {
     lwfe = "log.WithField(\"${0}\", \"\").Error(\"\")",
   }
 end
-
 -- lua snippets
 local function lua_snippets()
   return {
@@ -33,7 +31,6 @@ end
 ]],
   }
 end
-
 local function global_snippets()
   return {
     todo = snp_utils.force_comment("TODO(ellisonleao)"),
@@ -63,14 +60,11 @@ local function global_snippets()
 ]],
   }
 end
-
 local function python_snippets()
   return {
     ifmain = snp_utils.match_indentation [[ 
 def main():
     pass
-
-
 if __name__ == "__main__":
     main()
 ]],
@@ -82,27 +76,22 @@ class ${1|vim.trim(S.v):gsub("^%l", string.upper)}:
 ]],
   }
 end
-
 local function zig_snippets()
   return {
     main = snp_utils.match_indentation [[ 
 const std = @import("std");
-
 pub fn main() void {
     std.debug.print("Hello, {}!\n", .{"World"});
 }
 ]],
   }
 end
-
 local snp = require("snippets")
 snp.use_suggested_mappings()
-
 vim.g.completion_enable_snippet = "snippets.nvim"
 vim.g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
 vim.g.completion_trigger_keyword_length = 2
 snp.set_ux(require("snippets.inserters.vim_input"))
-
 -- snippets list
 snp.snippets = {
   _global = global_snippets(),
