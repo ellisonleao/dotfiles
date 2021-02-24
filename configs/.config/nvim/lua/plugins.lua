@@ -25,6 +25,7 @@ return require("packer").startup(function(use)
       require("colorizer").setup()
     end,
   }
+
   -- use {"NLKNguyen/papercolor-theme"}
   use {"kyazdani42/nvim-web-devicons"}
   use {
@@ -51,8 +52,7 @@ return require("packer").startup(function(use)
   use {"justinmk/vim-dirvish"}
 
   -- local
-  use {"~/code/gruvbox.nvim", requires = {"tjdevries/colorbuddy.vim"}}
-  use {"~/code/twitch.nvim"}
+  use {"~/code/gruvbox.nvim", requires = {"ktjmp/lush.nvim"}}
   use {"~/code/weather.nvim"}
   use {"~/code/glow.nvim"}
 

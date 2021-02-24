@@ -32,10 +32,6 @@ local function try_loadstring(s, component, name)
 end
 
 _G.packer_plugins = {
-  ["colorbuddy.vim"] = {
-    loaded = true,
-    path = "/home/ellison/.local/share/nvim/site/pack/packer/start/colorbuddy.vim"
-  },
   ["emmet-vim"] = {
     loaded = false,
     needs_bufread = false,
@@ -75,6 +71,10 @@ _G.packer_plugins = {
     config = { "\27LJ\2\n2\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0" },
     loaded = true,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/start/lualine.nvim"
+  },
+  ["lush.nvim"] = {
+    loaded = true,
+    path = "/home/ellison/.local/share/nvim/site/pack/packer/start/lush.nvim"
   },
   ["nlua.nvim"] = {
     loaded = true,
@@ -142,10 +142,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
-  ["twitch.nvim"] = {
-    loaded = true,
-    path = "/home/ellison/.local/share/nvim/site/pack/packer/start/twitch.nvim"
-  },
   ["vim-dirvish"] = {
     loaded = true,
     path = "/home/ellison/.local/share/nvim/site/pack/packer/start/vim-dirvish"
@@ -194,35 +190,35 @@ _G.packer_plugins = {
   }
 }
 
+-- Config for: formatter.nvim
+try_loadstring("\27LJ\2\n1\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\22modules.formatter\frequire\0", "config", "formatter.nvim")
 -- Config for: nvim-bufferline.lua
 try_loadstring("\27LJ\2\n8\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\15bufferline\frequire\0", "config", "nvim-bufferline.lua")
+-- Config for: nvim-treesitter
+try_loadstring("\27LJ\2\nA\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\23modules.treesitter\frequire\0", "config", "nvim-treesitter")
 -- Config for: telescope.nvim
 try_loadstring("\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19modules.search\frequire\0", "config", "telescope.nvim")
 -- Config for: nvim-lspconfig
 try_loadstring("\27LJ\2\nH\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0016\0\0\0'\2\2\0B\0\2\1K\0\1\0\16modules.lsp\21modules.snippets\frequire\0", "config", "nvim-lspconfig")
--- Config for: formatter.nvim
-try_loadstring("\27LJ\2\n1\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\22modules.formatter\frequire\0", "config", "formatter.nvim")
--- Config for: gitsigns.nvim
-try_loadstring("\27LJ\2\nD\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\nnumhl\2\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
--- Config for: nvim-treesitter
-try_loadstring("\27LJ\2\nA\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\23modules.treesitter\frequire\0", "config", "nvim-treesitter")
--- Config for: nvim-colorizer.lua
-try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
 -- Config for: lualine.nvim
 try_loadstring("\27LJ\2\n2\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\23modules.statusline\frequire\0", "config", "lualine.nvim")
+-- Config for: gitsigns.nvim
+try_loadstring("\27LJ\2\nD\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\nnumhl\2\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
+-- Config for: nvim-colorizer.lua
+try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
-vim.cmd [[au FileType html ++once lua require("packer.load")({'emmet-vim'}, { ft = "html" }, _G.packer_plugins)]]
-vim.cmd [[au FileType css ++once lua require("packer.load")({'emmet-vim'}, { ft = "css" }, _G.packer_plugins)]]
 vim.cmd [[au FileType jsx ++once lua require("packer.load")({'emmet-vim'}, { ft = "jsx" }, _G.packer_plugins)]]
+vim.cmd [[au FileType zig ++once lua require("packer.load")({'zig.vim'}, { ft = "zig" }, _G.packer_plugins)]]
 vim.cmd [[au FileType gohtml ++once lua require("packer.load")({'emmet-vim'}, { ft = "gohtml" }, _G.packer_plugins)]]
 vim.cmd [[au FileType go ++once lua require("packer.load")({'vim-go'}, { ft = "go" }, _G.packer_plugins)]]
-vim.cmd [[au FileType zig ++once lua require("packer.load")({'zig.vim'}, { ft = "zig" }, _G.packer_plugins)]]
+vim.cmd [[au FileType html ++once lua require("packer.load")({'emmet-vim'}, { ft = "html" }, _G.packer_plugins)]]
+vim.cmd [[au FileType css ++once lua require("packer.load")({'emmet-vim'}, { ft = "css" }, _G.packer_plugins)]]
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
-vim.cmd [[source /home/ellison/.local/share/nvim/site/pack/packer/opt/zig.vim/ftdetect/zig.vim]]
 vim.cmd [[source /home/ellison/.local/share/nvim/site/pack/packer/opt/vim-go/ftdetect/gofiletype.vim]]
+vim.cmd [[source /home/ellison/.local/share/nvim/site/pack/packer/opt/zig.vim/ftdetect/zig.vim]]
 vim.cmd("augroup END")
 END
 

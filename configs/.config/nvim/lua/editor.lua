@@ -86,7 +86,7 @@ end
 local function set_colors()
   vim.g.gruvbox_italic_strings = true
   vim.g.gruvbox_invert_selection = false
-  require("colorbuddy").colorscheme("gruvbox")
+  vim.cmd([[colorscheme gruvbox]])
 end
 
 FILETYPE_HOOKS = {
