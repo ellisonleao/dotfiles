@@ -78,8 +78,8 @@ alias perm='stat -c "%a %n"'
 [[ -f "$HOME/.dockerfunc" ]] && source "$HOME/.dockerfunc"
 
 # dolar/euro to brl latest quotation
-alias dollar="curl -s 'https://api.cotacoes.uol.com/currency/intraday/list?currency=1&fields=bidvalue,date' | jq .docs[0].bidvalue"
-alias euro="curl -s 'https://api.cotacoes.uol.com/currency/intraday/list?currency=5&fields=bidvalue,date' | jq .docs[0].bidvalue"
+alias dollar="rates usd brl"
+alias euro="rates eur brl"
 
 # youtube-dl clip
 download-clip() {
@@ -93,6 +93,8 @@ download-clip() {
 
 alias https="http --verify=no"
 alias restart-wifi="nmcli radio wifi off && nmcli radio wifi on"
+
+alias fixkb="setxkbmap -model abnt2 -layout br"
 
 get-neovim() {
     local folder="$HOME/.local"

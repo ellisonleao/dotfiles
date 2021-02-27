@@ -210,6 +210,7 @@ configure_rust() {
         hyperfine
         bandwhich
         tealdeer
+        rates
     )
     for pkg in "${RUST_CRATES[@]}"; do
         "$CARGO" install "$pkg"
