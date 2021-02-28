@@ -86,6 +86,7 @@ end
 local function set_colors()
   vim.g.gruvbox_italic_strings = true
   vim.g.gruvbox_invert_selection = false
+  vim.g.gruvbox_contrast_dark = "hard"
   vim.cmd([[colorscheme gruvbox]])
 end
 

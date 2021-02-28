@@ -26,7 +26,6 @@ return require("packer").startup(function(use)
     end,
   }
 
-  -- use {"NLKNguyen/papercolor-theme"}
   use {"kyazdani42/nvim-web-devicons"}
   use {
     "nvim-treesitter/nvim-treesitter",
@@ -61,7 +60,14 @@ return require("packer").startup(function(use)
   use {"nvim-lua/plenary.nvim"}
 
   -- editor
-  use {"b3nj5m1n/kommentary"}
+  use {
+    "b3nj5m1n/kommentary",
+    config = function()
+      require("kommentary.config").configure_language("default", {
+        prefer_single_line_comments = true,
+      })
+    end,
+  }
   use {"tpope/vim-surround"}
   use {"tpope/vim-repeat"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
