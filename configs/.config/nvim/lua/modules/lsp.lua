@@ -1,6 +1,6 @@
 local nvim_lsp = require("lspconfig")
 local saga = require("lspsaga")
-saga.init_lsp_saga()
+saga.init_lsp_saga({code_action_prompt = {enable = false}})
 
 -- configure completion
 require("compe").setup {
@@ -23,14 +23,10 @@ require("compe").setup {
     nvim_lsp = true,
     nvim_lua = true,
     spell = true,
-    tags = true,
     snippets_nvim = true,
+    vim_dadbod = true,
   },
 }
-
-vim.cmd [[inoremap <silent><expr> <C-Space> compe#complete() ]]
-vim.cmd [[inoremap <silent><expr> <CR> compe#confirm('<CR>')]]
-vim.cmd [[inoremap <silent><expr> <C-e> compe#close('<C-e>') ]]
 
 local function make_on_attach(config)
   return function(client)
@@ -54,7 +50,12 @@ local function make_on_attach(config)
         [[<Cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>]],
         opts,
       },
-      {"n", "gR", [[<Cmd>lua require('telescope.builtin').lsp_references()<CR>]], opts},
+      {
+        "n",
+        "<leader>gR",
+        [[<Cmd>lua require("telescope.builtin").lsp_references{ shorten_path = true }<CR>]],
+        {noremap = true, silent = true},
+      },
       {"i", "<C-Space>", [[<expr>]], opts},
       {
         "i",
@@ -74,6 +75,15 @@ local function make_on_attach(config)
         [[<Cmd>lua require('lspsaga.diagnostic').lsp_jump_diagnostic_prev() <CR>]],
         opts,
       },
+      {
+        "n",
+        "]e",
+        [[<Cmd>lua require('lspsaga.diagnostic').lsp_jump_diagnostic_prev() <CR>]],
+        opts,
+      },
+      {"n", "<expr> <C-Space>", [[compe#complete() <CR>]], opts},
+      {"n", "<expr> <CR>", [[compe#confirm('<CR>')]], opts},
+      {"n", "<expr> <C-e>", [[compe#close('<C-e>')]], opts},
     }
 
     if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'lua' then
@@ -96,13 +106,6 @@ local function make_on_attach(config)
       config.after(client)
     end
 
-    if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'yaml' then
-      vim.api.nvim_command(
-        [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]])
-
-      vim.api.nvim_command(
-        [[autocmd CursorMoved <buffer> lua vim.lsp.util.buf_clear_references()]])
-    end
   end
 end
 

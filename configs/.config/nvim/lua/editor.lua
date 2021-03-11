@@ -110,12 +110,12 @@ FILETYPE_HOOKS = {
     vim.bo.tabstop = 4
     vim.wo.colorcolumn = "80,120"
 
-    -- disable vim-go snippet engine
+    -- disable vim-go snippet engine and gopls
     vim.g.go_snippet_engine = ""
+    vim.g.go_gopls_enabled = false
 
     -- vim-go vars
     vim.g.go_list_type = "quickfix"
-    vim.g.go_addtags_transform = "camelcase"
     vim.g.go_metalinter_enabled = {}
     vim.g.go_metalinter_autosave_enabled = {}
     vim.g.go_doc_popup_window = true
@@ -130,6 +130,7 @@ FILETYPE_HOOKS = {
   viml = function()
     vim.bo.shiftwidth = 2
     vim.bo.softtabstop = 2
+    vim.bo.tabstop = 2
   end,
   html = function()
     vim.bo.shiftwidth = 4
@@ -161,6 +162,7 @@ set_colors()
 local opts = {noremap = true, silent = true}
 local mappings = {
   {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/editor.lua<CR>]], opts},
+  {"n", "<leader>rep", [[<Cmd>edit $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
   {"n", "<leader>reR", [[<Cmd>lua R("editor")<CR>]], opts},
   {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts},
   {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},

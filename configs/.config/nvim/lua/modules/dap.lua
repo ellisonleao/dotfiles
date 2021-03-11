@@ -1,9 +1,8 @@
 -- dap module
+require("telescope").load_extension("dap")
 local dap = require("dap")
 
 -- python
-require("dap-python").setup("python")
-require('dap-python').test_runner = 'pytest'
 
 dap.adapters.go = {
   type = "executable",

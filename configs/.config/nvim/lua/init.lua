@@ -2,10 +2,8 @@ require("plugins")
 require("editor")
 
 -- helper functions for quick reloading
-RELOAD = require('plenary.reload').reload_module
-
 R = function(name)
-  RELOAD(name)
+  package.loaded[name] = nil
   print("reloaded:", name)
   return require(name)
 end

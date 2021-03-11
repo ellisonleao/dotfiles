@@ -18,6 +18,14 @@ vim.cmd([[autocmd BufWritePost plugins.lua PackerCompile ]])
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim", opt = true}
   use {"alexaandru/nvim-lspupdate"}
+
+  -- tpopes
+  use {"tpope/vim-surround"}
+  use {"tpope/vim-repeat"}
+  use {"tpope/vim-rhubarb"}
+  use {"tpope/vim-fugitive"}
+  use {"tpope/vim-dadbod"}
+
   -- colors, style, icons
   use {
     "norcalli/nvim-colorizer.lua",
@@ -34,10 +42,13 @@ return require("packer").startup(function(use)
     end,
   }
 
+  -- discord
+  use {"andweeb/presence.nvim"}
+
   -- debugging
   use {
     "mfussenegger/nvim-dap",
-    "mfussenegger/nvim-dap-python",
+    "nvim-telescope/telescope-dap.nvim",
     setup = function()
       require("modules.dap")
     end,
@@ -51,7 +62,9 @@ return require("packer").startup(function(use)
   use {"justinmk/vim-dirvish"}
 
   -- local
-  use {"~/code/gruvbox.nvim", requires = {"ktjmp/lush.nvim"}}
+  -- use {"~/code/gruvbox"}
+  -- use {"~/code/vim-airline"}
+  use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
   use {"~/code/weather.nvim"}
   use {"~/code/glow.nvim"}
 
@@ -68,8 +81,7 @@ return require("packer").startup(function(use)
       })
     end,
   }
-  use {"tpope/vim-surround"}
-  use {"tpope/vim-repeat"}
+
   use {"junegunn/fzf", run = ":call fzf#install()"}
   use {
     "mhartington/formatter.nvim",
@@ -82,7 +94,7 @@ return require("packer").startup(function(use)
     config = function()
       require("modules.search")
     end,
-    requires = {"nvim-lua/popup.nvim"},
+    requires = {"nvim-lua/popup.nvim", "nvim-telescope/telescope-fzy-native.nvim"},
   }
 
   -- git
@@ -92,9 +104,6 @@ return require("packer").startup(function(use)
       require("gitsigns").setup {numhl = true}
     end,
   }
-  use {"tpope/vim-rhubarb"}
-  use {"tpope/vim-fugitive"}
-
   -- lsp, completion, linting and snippets
   use {
     "neovim/nvim-lspconfig",
@@ -117,16 +126,6 @@ return require("packer").startup(function(use)
       require("modules.statusline")
     end,
   }
-
-  -- go
-  use {"fatih/vim-go", run = ":GoUpdateBinaries", ft = {"go"}}
-
-  -- zig
-  use {"ziglang/zig.vim", ft = {"zig"}}
-
-  -- html/css
-  use {"mattn/emmet-vim", ft = {"html", "css", "jsx", "gohtml"}}
-
   -- bufferline tabs
   use {
     "akinsho/nvim-bufferline.lua",
@@ -134,5 +133,8 @@ return require("packer").startup(function(use)
       require("bufferline").setup()
     end,
   }
+
+  -- go
+  use {"fatih/vim-go", run = ":GoUpdateBinaries", ft = {"go"}}
 
 end)

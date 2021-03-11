@@ -1,6 +1,7 @@
 env:
   LANG: 'en_US.UTF-8'
   TERM: 'screen-256color'
+
 window:
   decorations: full
   startup_mode: Maximized
@@ -53,52 +54,16 @@ mouse:
       program: xdg-open
     modifiers: None
 
-
-# colors:
-#   # Default colors
-#   primary:
-#     background: '0x1c1c1c'
-#     foreground: '0x808080'
-
-#   # Colors the cursor will use if `custom_cursor_colors` is true
-#   cursor:
-#     text: '0x1c1c1c'
-#     cursor: '0x808080'
-
-#   # Normal colors
-#   normal:
-#     black:   '0x1c1c1c'
-#     red:     '0x585858'
-#     green:   '0xaf87d7'
-#     yellow:  '0xafd700'
-#     blue:    '0xff5faf'
-#     magenta: '0x00afaf'
-#     cyan:    '0xffaf00'
-#     white:   '0x808080'
-
-#   # Bright colors
-#   bright:
-#     black:   '0xd7af5f'
-#     red:     '0x5faf5f'
-#     green:   '0xaf005f'
-#     yellow:  '0x5faf00'
-#     blue:    '0x5fafd7'
-#     magenta: '0xd7875f'
-#     cyan:    '0x5f8787'
-#     white:   '0xd0d0d0'
-
 # Colors (Gruvbox dark)
 colors:
   # Default colors
   primary:
-    # hard contrast: background = '#1d2021'
-    background: '#282828'
-    # soft contrast: background = '#32302f'
+    background: '#1d2021'
     foreground: '#ebdbb2'
 
   # Normal colors
   normal:
-    black:   '#282828'
+    black:   '#1d2021'
     red:     '#cc241d'
     green:   '#98971a'
     yellow:  '#d79921'
