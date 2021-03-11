@@ -81,6 +81,12 @@ alias perm='stat -c "%a %n"'
 alias dollar="rates usd brl"
 alias euro="rates eur brl"
 
+
+function skey() {
+    local geometry=$(slop -n -f '%g')
+    screenkey -s large --bg-color green -t 1 --opacity 0.5 -g "${geometry}"
+}
+
 # youtube-dl clip
 download-clip() {
     # $1: url or Youtube video id
