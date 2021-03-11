@@ -175,7 +175,7 @@ configure_python() {
         docker-compose
         vim-vint
         dbus-python
-        spotify-cli-linux
+        debugpy
     )
 
     print_info "Installing python 3 packages"
