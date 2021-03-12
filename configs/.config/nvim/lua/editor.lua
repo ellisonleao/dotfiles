@@ -61,7 +61,6 @@ local function set_options()
     wildmenu = true,
     wildmode = "list:longest",
     updatetime = 500,
-    expandtab = true,
     autoindent = true,
     smartindent = true,
     shortmess = vim.o.shortmess .. "c",
@@ -81,6 +80,7 @@ local function set_options()
   vim.bo.softtabstop = 2
   vim.bo.tabstop = 2
   vim.bo.swapfile = false
+  vim.bo.expandtab = true
 end
 
 local function set_colors()

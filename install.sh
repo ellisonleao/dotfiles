@@ -285,11 +285,15 @@ add_ppts() {
     # docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
+    # github
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+
     PPTS=(
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
         "ppa:papirus/papirus"
         "ppa:mmstick76/alacritty"
         "ppa:lazygit-team/release"
+        "https://cli.github.com/packages"
     )
 
     for ppt in "${PPTS[@]}"; do
@@ -350,6 +354,7 @@ install_apps() {
         lua
         luarocks
         lazygit
+        gh
     )
     for pkg in "${APT_APPS[@]}"; do
         execute "sudo apt-get install -y $pkg" "$pkg"
