@@ -20,6 +20,9 @@ alias w=workon
 alias git=hub
 alias gs="git sync"
 
+# github
+alias issues="gh issue"
+
 # copy and move files interactive
 alias cp='cp -i'
 alias mv='mv -i'

@@ -43,6 +43,3 @@ fi
 # gvm
 [[ -f ~/.gvm/scripts/gvm ]] && source ~/.gvm/scripts/gvm
 [[ -s "/home/ellison/.gvm/scripts/gvm" ]] && source "/home/ellison/.gvm/scripts/gvm"
-
-# fix abnt2 layout
-setxkbmap -model abnt2 -layout br

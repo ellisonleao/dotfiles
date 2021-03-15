@@ -64,6 +64,7 @@ return require("packer").startup(function(use)
   -- local
   -- use {"~/code/gruvbox"}
   -- use {"~/code/vim-airline"}
+  -- use {"itchyny/lightline.vim"}
   use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
   use {"~/code/weather.nvim"}
   use {"~/code/glow.nvim"}

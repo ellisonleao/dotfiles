@@ -9,7 +9,7 @@ local function set_globals()
   vim.g["test#python#runner"] = "pytest"
   vim.g.floaterm_height = 0.8
   vim.g.floaterm_width = 0.8
-  vim.g.diagnostic_enable_virtual_text = true
+  vim.g.diagnostic_enable_virtual_text = false
   vim.g.startify_custom_header = vim.fn.split(
                                    [[
      .:::.           `oyyo:`  `.--.`                        
@@ -35,7 +35,38 @@ local function set_globals()
                        `oys+.]], "\n")
 end
 
-local function set_options()
+-- helper function until https://github.com/neovim/neovim/pull/13479 arrives
+local opts_info = vim.api.nvim_get_all_options_info()
+local opt = setmetatable({}, {
+  __index = vim.o,
+  __newindex = function(_, key, value)
+    vim.o[key] = value
+    local scope = opts_info[key].scope
+    if scope == "win" then
+      vim.wo[key] = value
+    elseif scope == "buf" then
+      vim.bo[key] = value
+    end
+  end,
+})
+
+local function set_ui_options()
+  opt.termguicolors = true
+  opt.mouse = "a"
+  opt.title = true
+  opt.titlestring = "%{join(split(getcwd(), '/')[-2:], '/')}"
+  opt.number = true
+  opt.relativenumber = true
+  opt.colorcolumn = "80"
+
+  -- colorscheme configs
+  vim.g.gruvbox_italicize_comments = true
+  vim.g.gruvbox_invert_selection = false
+  vim.g.gruvbox_contrast_dark = "hard"
+  vim.cmd([[colorscheme gruvbox]])
+end
+
+local function set_editor_options()
   local options = {
     autoread = true,
     hidden = true,
@@ -52,10 +83,7 @@ local function set_options()
     splitbelow = true,
     splitright = true,
     startofline = false,
-    termguicolors = true,
     textwidth = 88,
-    title = true,
-    titlestring = "%{join(split(getcwd(), '/')[-2:], '/')}",
     viminfo = [[!,'300,<50,s10,h]],
     wildignorecase = true,
     wildmenu = true,
@@ -65,36 +93,32 @@ local function set_options()
     smartindent = true,
     shortmess = vim.o.shortmess .. "c",
     scrolloff = 12,
-    mouse = vim.o.mouse .. "a",
     completeopt = "menu,menuone,noselect",
     clipboard = "unnamedplus",
+    shiftwidth = 2,
+    softtabstop = 2,
+    tabstop = 2,
+    swapfile = false,
+    expandtab = true,
+    foldmethod = "indent",
+    foldlevelstart = 99,
   }
   for k, v in pairs(options) do
-    vim.o[k] = v
+    opt[k] = v
   end
 
-  vim.wo.relativenumber = true
-  vim.wo.number = true
-
-  vim.bo.shiftwidth = 2
-  vim.bo.softtabstop = 2
-  vim.bo.tabstop = 2
-  vim.bo.swapfile = false
-  vim.bo.expandtab = true
 end
 
-local function set_colors()
-  vim.g.gruvbox_italic_strings = true
-  vim.g.gruvbox_invert_selection = false
-  vim.g.gruvbox_contrast_dark = "hard"
-  vim.cmd([[colorscheme gruvbox]])
+local function set_options()
+  set_editor_options()
+  set_ui_options()
 end
 
 FILETYPE_HOOKS = {
   lua = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-    vim.bo.tabstop = 2
+    opt.shiftwidth = 2
+    opt.softtabstop = 2
+    opt.tabstop = 2
   end,
   go = function()
     local opts = {noremap = true}
@@ -105,10 +129,10 @@ FILETYPE_HOOKS = {
       {"n", "<leader>gc", [[<Cmd>GoCoverageToggle<CR>]], opts},
       {"n", "<leader>gg", [[<Cmd>GoGenerate<CR>]], opts},
     }
-    vim.bo.shiftwidth = 4
-    vim.bo.softtabstop = 4
-    vim.bo.tabstop = 4
-    vim.wo.colorcolumn = "80,120"
+    opt.shiftwidth = 4
+    opt.softtabstop = 4
+    opt.tabstop = 4
+    opt.colorcolumn = "80,120"
 
     -- disable vim-go snippet engine and gopls
     vim.g.go_snippet_engine = ""
@@ -128,36 +152,35 @@ FILETYPE_HOOKS = {
     vim.g["test#python#runner"] = "pytest"
   end,
   viml = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-    vim.bo.tabstop = 2
+    opt.shiftwidth = 2
+    opt.softtabstop = 2
+    opt.tabstop = 2
   end,
   html = function()
-    vim.bo.shiftwidth = 4
-    vim.bo.softtabstop = 4
-    vim.api.nvim_set_keymap("i", "<tab>", "emmet#expandAbbrIntelligent('<tab>')",
-                            {expr = true})
+    opt.shiftwidth = 4
+    opt.softtabstop = 4
+    vim.api.nvim_buf_set_keymap(0, "i", "<tab>", "emmet#expandAbbrIntelligent('<tab>')",
+                                {expr = true})
     vim.cmd("EmmetInstall")
     vim.g.user_emmet_install_global = 0
   end,
   proto = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
+    opt.shiftwidth = 2
+    opt.softtabstop = 2
   end,
   yaml = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
+    opt.shiftwidth = 2
+    opt.softtabstop = 2
   end,
   sh = function()
-    vim.bo.shiftwidth = 4
-    vim.bo.tabstop = 4
-    vim.bo.softtabstop = 4
+    opt.shiftwidth = 4
+    opt.tabstop = 4
+    opt.softtabstop = 4
   end,
 }
 
 set_globals()
 set_options()
-set_colors()
 
 local opts = {noremap = true, silent = true}
 local mappings = {
@@ -176,6 +199,8 @@ local mappings = {
   {"n", ",l", [[<C-W><C-L>]], opts},
   {"n", ",d", [[<Cmd>bd!<CR>]], opts},
   {"n", ",c", [[<Cmd>cclose<CR>]], opts},
+  {"n", "<leader>h", [[<Cmd>split<CR>]], opts},
+  {"n", "<leader>v", [[<Cmd>vsplit<CR>]], opts},
   {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts},
   {"v", "<", [[<gv]], opts},
   {"v", ">", [[>gv]], opts},

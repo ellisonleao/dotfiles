@@ -17,5 +17,4 @@ lualine.inactive_sections = {
   lualine_y = {},
   lualine_z = {},
 }
-lualine.extensions = {"fzf"}
 lualine.status()
