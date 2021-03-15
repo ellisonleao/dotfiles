@@ -66,10 +66,19 @@ vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('CR')",
-                        {expr = true, noremap = true})
+
+vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
+vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()",
+                        {expr = true, silent = true, noremap = true})
+
+vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')",
+                        {expr = true, silent = true, noremap = true})
 vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')",
-                        {expr = true, noremap = true})
+                        {expr = true, silent = true, noremap = true})
 
 local function make_on_attach(config)
   return function(client)
@@ -99,7 +108,6 @@ local function make_on_attach(config)
         [[<Cmd>lua require("telescope.builtin").lsp_references{ shorten_path = true }<CR>]],
         {noremap = true, silent = true},
       },
-      {"i", "<C-Space>", [[<expr>]], opts},
       {
         "i",
         "<C-x>",
