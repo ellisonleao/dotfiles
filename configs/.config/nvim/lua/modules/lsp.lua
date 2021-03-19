@@ -80,7 +80,8 @@ vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')",
 vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')",
                         {expr = true, silent = true, noremap = true})
 
-local function make_on_attach(config)
+
+  local function make_on_attach(config)
   return function(client)
     if config.before then
       config.before(client)

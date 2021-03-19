@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# choose a screen region to draw keyboard output
+
+local geometry=$(slop -n -f '%g')
+screenkey -s large --bg-color green -t 1 --opacity 0.5 -g "${geometry}"

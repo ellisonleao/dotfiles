@@ -241,6 +241,7 @@ configure_node() {
         vscode-html-languageserver-bin
         pyright
         fast-cli
+        tree-sitter-cli
         '@bitwarden/cli'
     )
     for pkg in "${NODE_PACKAGES[@]}"; do

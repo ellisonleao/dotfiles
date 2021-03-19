@@ -1,0 +1,10 @@
+#!/bin/bash
+
+declare key=$1
+declare url="https://api.github.com/licenses/${key}"
+declare JQ
+JQ=$(command -v jq)
+res=$(curl -s "$url" | $JQ .body?)
+
+echo "${res}"
+

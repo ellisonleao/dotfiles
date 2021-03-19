@@ -1,0 +1,4 @@
+#!/bin/bash
+
+declare args=$*
+curl -sL "https://www.gitignore.io/api/${args}"

@@ -8,15 +8,12 @@ function M.config()
       "go",
       "python",
       "lua",
-      "html",
       "yaml",
       "json",
       "javascript",
-      "css",
       "bash",
-      "toml",
+      "typescript",
     },
-    disable = {"typescript.tsx", "typescript", "tsx"},
   })
 end
 

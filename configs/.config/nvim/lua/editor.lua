@@ -1,7 +1,7 @@
 local utils = require("modules.utils")
 
 local function set_globals()
-  vim.g.mapleader = "\\"
+  vim.g.mapleader = ","
   vim.g.maplocalleader = ","
   vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
   vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
@@ -184,11 +184,11 @@ set_options()
 
 local opts = {noremap = true, silent = true}
 local mappings = {
-  {"n", "<leader>red", [[<Cmd>edit $HOME/.config/nvim/lua/editor.lua<CR>]], opts},
-  {"n", "<leader>rep", [[<Cmd>edit $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
-  {"n", "<leader>reR", [[<Cmd>lua R("editor")<CR>]], opts},
-  {"n", "<leader>reU", [[<Cmd>PackerSync<CR>]], opts},
-  {"n", "<leader>\\", [[<Cmd>noh<CR>]], opts},
+  {"n", "<leader>E", [[<Cmd>edit $HOME/.config/nvim/lua/editor.lua<CR>]], opts},
+  {"n", "<leader>P", [[<Cmd>edit $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
+  {"n", "<leader>U", [[<Cmd>PackerSync<CR>]], opts},
+  {"n", "<leader>S", [[<Cmd>luafile %<CR>]], opts},
+  {"n", "<leader>,", [[<Cmd>noh<CR>]], opts},
   {"n", ",z", [[<Cmd>bp<CR>]], opts},
   {"n", ",q", [[<Cmd>bp<CR>]], opts},
   {"n", ",x", [[<Cmd>bn<CR>]], opts},

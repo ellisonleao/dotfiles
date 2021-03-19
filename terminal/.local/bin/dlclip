@@ -1,0 +1,4 @@
+#!/bin/bash
+
+declare fmt=${4:-best}
+youtube-dl -f "$fmt" "$1" --postprocessor-args "-ss ${2} -to ${3}" --socket-timeout=2

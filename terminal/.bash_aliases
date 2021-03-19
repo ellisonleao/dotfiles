@@ -45,7 +45,7 @@ alias du='dust'
 alias top='btm'
 alias iftop='sudo ~/.cargo/bin/bandwhich'
 alias ls="ls --color=auto"
-alias la="ls -laF"
+alias la="ls -lahF"
 
 # IP addresses
 alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
