@@ -17,7 +17,6 @@ vim.cmd([[autocmd BufWritePost plugins.lua PackerCompile ]])
 -- load plugins
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim", opt = true}
-  use {"alexaandru/nvim-lspupdate"}
 
   -- tpopes
   use {"tpope/vim-surround"}
@@ -64,7 +63,6 @@ return require("packer").startup(function(use)
   -- local
   -- use {"~/code/gruvbox"}
   -- use {"~/code/vim-airline"}
-  -- use {"itchyny/lightline.vim"}
   use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
   use {"~/code/weather.nvim"}
   use {"~/code/glow.nvim"}
@@ -106,31 +104,31 @@ return require("packer").startup(function(use)
     end,
   }
   -- lsp, completion, linting and snippets
+  use {"kabouzeid/nvim-lspinstall"}
   use {
     "neovim/nvim-lspconfig",
     config = function()
       require("modules.snippets")
       require("modules.lsp")
     end,
-    requires = {
-      "glepnir/lspsaga.nvim",
-      "hrsh7th/nvim-compe",
-      "norcalli/snippets.nvim",
-      "tjdevries/nlua.nvim",
-    },
+    requires = {"glepnir/lspsaga.nvim", "hrsh7th/nvim-compe", "norcalli/snippets.nvim"},
   }
 
   -- statusline
   use {
     "hoob3rt/lualine.nvim",
     config = function()
+
       require("lualine").setup {
         theme = "gruvbox",
         separator = "|",
         sections = {
           lualine_a = {"mode"},
           lualine_b = {"branch"},
-          lualine_c = {"filename", {"diagnostics", sources = {"nvim_lsp"}}},
+          lualine_c = {
+            {"filename", full_path = true},
+            {"diagnostics", sources = {"nvim_lsp"}},
+          },
           lualine_x = {"encoding", "fileformat", "filetype"},
           lualine_y = {"progress"},
           lualine_z = {"location"},
@@ -143,6 +141,7 @@ return require("packer").startup(function(use)
           lualine_y = {},
           lualine_z = {},
         },
+        extensions = {"fugitive"},
       }
     end,
   }
@@ -154,8 +153,5 @@ return require("packer").startup(function(use)
       require("bufferline").setup()
     end,
   }
-
-  -- go
-  use {"fatih/vim-go", run = ":GoUpdateBinaries", ft = {"go"}}
 
 end)
