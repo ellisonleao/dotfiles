@@ -57,7 +57,7 @@ local function set_ui_options()
   opt.titlestring = "%{join(split(getcwd(), '/')[-2:], '/')}"
   opt.number = true
   opt.relativenumber = true
-  opt.colorcolumn = "80"
+  opt.colorcolumn = "120"
 
   -- colorscheme configs
   vim.g.gruvbox_italicize_comments = true
@@ -83,7 +83,7 @@ local function set_editor_options()
     splitbelow = true,
     splitright = true,
     startofline = false,
-    textwidth = 88,
+    textwidth = 120,
     viminfo = [[!,'300,<50,s10,h]],
     wildignorecase = true,
     wildmenu = true,

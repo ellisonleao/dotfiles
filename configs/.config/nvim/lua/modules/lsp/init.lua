@@ -151,10 +151,10 @@ local function on_attach(client, bufnr)
   end
 
   if client.resolved_capabilities.document_formatting then
-    vim.api.nvim_buf_set_keymap("n", "<leader>F",
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>F",
                                 "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   elseif client.resolved_capabilities.document_range_formatting then
-    vim.api.nvim_buf_set_keymap("n", "<leader>F",
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>F",
                                 "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 

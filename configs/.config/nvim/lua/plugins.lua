@@ -114,6 +114,9 @@ return require("packer").startup(function(use)
     requires = {"glepnir/lspsaga.nvim", "hrsh7th/nvim-compe", "norcalli/snippets.nvim"},
   }
 
+  -- vim doc generation
+  use {"mjlbach/babelfish.nvim"}
+
   -- statusline
   use {
     "hoob3rt/lualine.nvim",
