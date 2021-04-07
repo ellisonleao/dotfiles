@@ -205,7 +205,6 @@ configure_rust() {
         fd-find
         hx
         licensor
-        procs
         du-dust
         hyperfine
         bandwhich
@@ -369,7 +368,6 @@ install_apps() {
         shellcheck
         telegram-desktop
         exercism
-        'go --classic'
         'shotcut --classic'
         'slack --classic'
         vlc
