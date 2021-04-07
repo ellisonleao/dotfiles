@@ -1,7 +1,11 @@
 local nvim_lsp = require("lspconfig")
 local saga = require("lspsaga")
 local lspinstall = require("lspinstall")
-saga.init_lsp_saga({code_action_prompt = {enable = false}})
+saga.init_lsp_saga({
+  error_sign = "✗",
+  warn_sign = "⚠",
+  code_action_prompt = {enable = false},
+})
 
 -- configure completion
 require("compe").setup {

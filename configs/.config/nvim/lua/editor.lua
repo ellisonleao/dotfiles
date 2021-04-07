@@ -63,6 +63,7 @@ local function set_ui_options()
   vim.g.gruvbox_italicize_comments = true
   vim.g.gruvbox_invert_selection = false
   vim.g.gruvbox_contrast_dark = "hard"
+  vim.g.gruvbox_sign_column = "bg0"
   vim.cmd([[colorscheme gruvbox]])
 end
 
@@ -159,10 +160,6 @@ FILETYPE_HOOKS = {
   html = function()
     opt.shiftwidth = 4
     opt.softtabstop = 4
-    vim.api.nvim_buf_set_keymap(0, "i", "<tab>", "emmet#expandAbbrIntelligent('<tab>')",
-                                {expr = true})
-    vim.cmd("EmmetInstall")
-    vim.g.user_emmet_install_global = 0
   end,
   proto = function()
     opt.shiftwidth = 2
