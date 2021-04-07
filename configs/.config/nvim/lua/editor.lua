@@ -188,6 +188,7 @@ local mappings = {
   {"n", "<leader>P", [[<Cmd>edit $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
   {"n", "<leader>U", [[<Cmd>PackerSync<CR>]], opts},
   {"n", "<leader>S", [[<Cmd>luafile %<CR>]], opts},
+  {"n", "<leader>R", [[<Cmd>lua RR()<CR>]], opts},
   {"n", "<leader>,", [[<Cmd>noh<CR>]], opts},
   {"n", ",z", [[<Cmd>bp<CR>]], opts},
   {"n", ",q", [[<Cmd>bp<CR>]], opts},
@@ -218,7 +219,6 @@ end
 
 local autocmds = {
   general = {
-    {"BufWritePost init.vim nested source $MYVIMRC"},
     {
       "BufReadPost",
       "*",
