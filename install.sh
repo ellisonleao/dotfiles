@@ -337,7 +337,6 @@ install_apps() {
         stow
         hub
         wget
-        fonts-firacode
         snapd
         jq
         docker-ce
