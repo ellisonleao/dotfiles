@@ -17,6 +17,7 @@ vim.cmd([[autocmd BufWritePost plugins.lua PackerCompile ]])
 -- load plugins
 return require("packer").startup(function(use)
   use {"wbthomason/packer.nvim", opt = true}
+  use {"junegunn/fzf", run = ":call fzf#install()"}
 
   -- tpopes
   use {"tpope/vim-surround"}
@@ -38,18 +39,6 @@ return require("packer").startup(function(use)
     "nvim-treesitter/nvim-treesitter",
     config = function()
       require("modules.treesitter").config()
-    end,
-  }
-
-  -- discord
-  use {"andweeb/presence.nvim"}
-
-  -- debugging
-  use {
-    "mfussenegger/nvim-dap",
-    "nvim-telescope/telescope-dap.nvim",
-    setup = function()
-      require("modules.dap")
     end,
   }
 
@@ -81,7 +70,6 @@ return require("packer").startup(function(use)
     end,
   }
 
-  use {"junegunn/fzf", run = ":call fzf#install()"}
   use {
     "mhartington/formatter.nvim",
     config = function()
@@ -103,6 +91,7 @@ return require("packer").startup(function(use)
       require("gitsigns").setup {numhl = true}
     end,
   }
+
   -- lsp, completion, linting and snippets
   use {"kabouzeid/nvim-lspinstall"}
   use {
@@ -113,9 +102,6 @@ return require("packer").startup(function(use)
     end,
     requires = {"glepnir/lspsaga.nvim", "hrsh7th/nvim-compe", "norcalli/snippets.nvim"},
   }
-
-  -- vim doc generation
-  use {"mjlbach/babelfish.nvim"}
 
   -- statusline
   use {
