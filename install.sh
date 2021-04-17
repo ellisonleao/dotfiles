@@ -347,10 +347,8 @@ install_apps() {
         chrome-gnome-shell
         imagemagick
         dconf-editor
-        papirus-icon-theme
         alacritty
         tmux
-        lua
         luarocks
         lazygit
         gh
@@ -366,7 +364,6 @@ install_apps() {
         bitwarden
         shellcheck
         telegram-desktop
-        exercism
         'shotcut --classic'
         'slack --classic'
         vlc
@@ -382,18 +379,12 @@ install_apps() {
 configure_ui() {
     print_info "Configuring UI"
     # changing default font, themes and backgrounds
-    gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
-    gsettings set org.gnome.desktop.interface gtk-theme "Yaru-dark"
     gsettings set org.gnome.desktop.interface show-battery-percentage true
-    gsettings set org.gnome.desktop.interface text-scaling-factor 0.9
-    gsettings set org.gnome.desktop.interface font-name "Sans 11"
     gsettings set org.gnome.desktop.interface clock-show-date true
-    gsettings set org.gnome.desktop.interface monospace-font-name "Fira Sans 13"
-    gsettings set org.gnome.desktop.screensaver picture-uri "file:///home/ellison/Pictures/pathfinder-rambo.jpg"
     gsettings set org.gnome.desktop.background picture-uri "file:///home/ellison/Pictures/ellie.jpeg"
 
     # custom keyboard bindings
-    gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>c']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>b']"
 
     # media keys bindings
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "['<Alt>p']"
