@@ -12,27 +12,15 @@ local function set_globals()
   vim.g.diagnostic_enable_virtual_text = false
   vim.g.startify_custom_header = vim.fn.split(
                                    [[
-     .:::.           `oyyo:`  `.--.`                        
-    `ys/+sy+.-:///:` :y/.:syoysoo+oss:  ``          ```     
-    .yo```-yso/::/oy//y:```:-.``````/ysysys-    -/oyssys`   
-    .yo````.```````/yyy:`````-:/.````++.``oy/ /ys/-``.ys`   
-    `yo`````.//.````oyy/````/yoys.```.:````+ysy/````-ys.    
-    `ys````.ysys````-yy/````/y/+y:````s:````oy:````-ys`     
-     yy````-y+sy````.yy+````:y/sy.```.yy:````-````:yo`      
-     oy.```:y+yy````-yy+````:y+ys````/yyy:```````/y+        
-     +y-```:yoys````/yyo````:ysy+````sy`oy/`````oy/         
-     /y:```:ysyo````syys````:yyy-```/y/`oy:````.yy`         
-     -y+```:ysy+```.yoyy````.sys```.ys`oy:``````-ys`        
-     .yo```:yyy/```/y:sy``````..```oy:oy/```:+```:yo        
-      yy```/yyy:```sy`oy.```-////+sy/+y/```+yyo.``/y/       
-      oy.``+yyy:``:y+ +y-```/y+::-. -yo``.sy:-ys-``oy-      
-      /y/-oy+:ys//sy. /y/```/y-     `sy:/ys.  `+yo:-ys      
-      `+oo/.  `-:::`  -y+```+y-      `:++:      `:+ss/      
-                      .yo```+y.                             
-                       ys```oy.                             
-                       sy.``sy`                             
-                       /y:.oy/                              
-                       `oys+.]], "\n")
+ ▄▄▄   ▄▄            ▄▄▄  ▄▄▄
+ ███   ██             ██▄▄██
+ ██▀█  ██  ██▄███▄     ████
+ ██ ██ ██  ██▀  ▀██     ██
+ ██  █▄██  ██    ██    ████
+ ██   ███  ███▄▄██▀   ██  ██
+ ▀▀   ▀▀▀  ██ ▀▀▀    ▀▀▀  ▀▀▀
+           ██
+]], "\n")
 end
 
 -- helper function until https://github.com/neovim/neovim/pull/13479 arrives
@@ -120,6 +108,7 @@ FILETYPE_HOOKS = {
     opt.shiftwidth = 2
     opt.softtabstop = 2
     opt.tabstop = 2
+    vim.api.nvim_set_keymap("n", "<leader>S", [[<Cmd>luafile %<CR>]], {noremap = true}) -- execute current lua file
   end,
   go = function()
     local opts = {noremap = true}
@@ -146,7 +135,7 @@ FILETYPE_HOOKS = {
     vim.g.go_doc_popup_window = true
 
     for _, map in pairs(mappings) do
-      vim.api.nvim_buf_set_keymap(0, unpack(map))
+      vim.api.nvim_set_keymap(unpack(map))
     end
   end,
   python = function()
@@ -181,28 +170,23 @@ set_options()
 
 local opts = {noremap = true, silent = true}
 local mappings = {
-  {"n", "<leader>E", [[<Cmd>edit $HOME/.config/nvim/lua/editor.lua<CR>]], opts},
-  {"n", "<leader>P", [[<Cmd>edit $HOME/.config/nvim/lua/plugins.lua<CR>]], opts},
-  {"n", "<leader>U", [[<Cmd>PackerSync<CR>]], opts},
-  {"n", "<leader>S", [[<Cmd>luafile %<CR>]], opts},
-  {"n", "<leader>R", [[<Cmd>lua RR()<CR>]], opts},
-  {"n", "<leader>,", [[<Cmd>noh<CR>]], opts},
-  {"n", "<leader>z", [[<Cmd>bp<CR>]], opts},
-  {"n", "<leader>q", [[<Cmd>bp<CR>]], opts},
-  {"n", "<leader>x", [[<Cmd>bn<CR>]], opts},
-  {"n", "<leader>w", [[<Cmd>bn<CR>]], opts},
-  {"n", "<leader>h", [[<C-W><C-H>]], opts},
-  {"n", "<leader>j", [[<C-W><C-J>]], opts},
-  {"n", "<leader>k", [[<C-W><C-K>]], opts},
-  {"n", "<leader>l", [[<C-W><C-L>]], opts},
-  {"n", "<leader>d", [[<Cmd>bd!<CR>]], opts},
-  {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts},
-  {"n", "<leader>h", [[<Cmd>split<CR>]], opts},
-  {"n", "<leader>v", [[<Cmd>vsplit<CR>]], opts},
-  {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts},
-  {"n", "<leader>gc", [[<Cmd>Git commit<CR>]], opts},
-  {"n", "<leader>gs", [[<Cmd>Gstatus<CR>]], opts},
-  {"n", "<leader>gp", [[<Cmd>Git push<CR>]], opts},
+  {"n", "<leader>E", [[<Cmd>edit $HOME/.config/nvim/lua/editor.lua<CR>]], opts}, -- quick edit editor.lua file
+  {"n", "<leader>P", [[<Cmd>edit $HOME/.config/nvim/lua/plugins.lua<CR>]], opts}, -- quick edit plugins.lua file
+  {"n", "<leader>U", [[<Cmd>PackerSync<CR>]], opts}, -- Update all current plugins
+  {"n", "<leader>R", [[<Cmd>lua RR()<CR>]], opts}, -- reload all custom modules
+  {"n", "<leader>,", [[<Cmd>noh<CR>]], opts}, -- clear search highlight
+  {"n", "<leader>z", [[<Cmd>bp<CR>]], opts}, -- move to the previous buffer
+  {"n", "<leader>q", [[<Cmd>bp<CR>]], opts}, -- move to the previous buffer (same option, different key)
+  {"n", "<leader>x", [[<Cmd>bn<CR>]], opts}, -- move to the next buffer 
+  {"n", "<leader>w", [[<Cmd>bn<CR>]], opts}, -- move to the next buffer (same option, different key)
+  {"n", "<leader>d", [[<Cmd>bd!<CR>]], opts}, -- close all current buffers
+  {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts}, -- close quickfix list
+  {"n", "<leader>h", [[<Cmd>split<CR>]], opts}, -- create horizontal split
+  {"n", "<leader>v", [[<Cmd>vsplit<CR>]], opts}, -- create vertical split
+  {"n", "<leader>q", [[<C-W><C-Q>]], opts}, -- close current buffer
+  {"n", "<leader>gc", [[<Cmd>Git commit<CR>]], opts}, -- shortcut to git commit command
+  {"n", "<leader>gs", [[<Cmd>Gstatus<CR>]], opts}, -- shortcut to git status command
+  {"n", "<leader>gp", [[<Cmd>Git push<CR>]], opts}, -- shortcut to git push command
   {"v", "<", [[<gv]], opts},
   {"v", ">", [[>gv]], opts},
   {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts},
@@ -231,5 +215,4 @@ for filetype, _ in pairs(FILETYPE_HOOKS) do
   autocmds["LuaFileTypeHook_" .. utils.escape_keymap(filetype)] =
     {{"FileType", filetype, ("lua FILETYPE_HOOKS[%q]()"):format(filetype)}};
 end
-
 utils.nvim_create_augroups(autocmds)
