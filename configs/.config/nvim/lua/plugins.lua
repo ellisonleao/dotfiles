@@ -55,6 +55,9 @@ return require("packer").startup(function(use)
   use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
   use {"~/code/weather.nvim"}
   use {"~/code/glow.nvim"}
+  use {"~/code/go.nvim"}
+
+  use {"mjlbach/babelfish.nvim"}
 
   -- plugin development and utils
   use {"vim-test/vim-test"}
@@ -76,12 +79,14 @@ return require("packer").startup(function(use)
       require("modules.formatter")
     end,
   }
+
+  use {"nvim-telescope/telescope-fzf-native.nvim", run = "make"}
   use {
     "nvim-lua/telescope.nvim",
     config = function()
       require("modules.search")
     end,
-    requires = {"nvim-lua/popup.nvim", "nvim-telescope/telescope-fzy-native.nvim"},
+    requires = {"nvim-lua/popup.nvim"},
   }
 
   -- git

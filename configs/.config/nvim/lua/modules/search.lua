@@ -1,6 +1,15 @@
 -- search module
-require("telescope").setup {defaults = {shorten_path = false}}
-require("telescope").load_extension("fzy_native")
+require("telescope").setup {
+  extensions = {
+    fzf = {
+      override_generic_sorter = false,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    },
+  },
+  defaults = {shorten_path = false},
+}
+require("telescope").load_extension("fzf")
 
 -- create mappings
 local opts = {noremap = true}

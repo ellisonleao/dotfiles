@@ -35,6 +35,16 @@ local function global_snippets()
   return {
     todo = snp_utils.force_comment("TODO(ellisonleao)"),
     now = snp_utils.force_comment("${=os.date()}"),
+    npx2 = snp_utils.force_comment([[
+ ▄▄▄   ▄▄            ▄▄▄  ▄▄▄
+ ███   ██             ██▄▄██
+ ██▀█  ██  ██▄███▄     ████
+ ██ ██ ██  ██▀  ▀██     ██
+ ██  █▄██  ██    ██    ████
+ ██   ███  ███▄▄██▀   ██  ██
+ ▀▀   ▀▀▀  ██ ▀▀▀    ▀▀▀  ▀▀▀
+           ██
+    ]]),
     npx = snp_utils.force_comment [[
 		     .:::.           `oyyo:`  `.--.`                        
     `ys/+sy+.-:///:` :y/.:syoysoo+oss:  ``          ```     
