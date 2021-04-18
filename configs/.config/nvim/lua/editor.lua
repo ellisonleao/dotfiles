@@ -177,24 +177,23 @@ local mappings = {
   {"n", "<leader>,", [[<Cmd>noh<CR>]], opts}, -- clear search highlight
   {"n", "<leader>z", [[<Cmd>bp<CR>]], opts}, -- move to the previous buffer
   {"n", "<leader>q", [[<Cmd>bp<CR>]], opts}, -- move to the previous buffer (same option, different key)
-  {"n", "<leader>x", [[<Cmd>bn<CR>]], opts}, -- move to the next buffer 
+  {"n", "<leader>x", [[<Cmd>bn<CR>]], opts}, -- move to the next buffer
   {"n", "<leader>w", [[<Cmd>bn<CR>]], opts}, -- move to the next buffer (same option, different key)
-  {"n", "<leader>d", [[<Cmd>bd!<CR>]], opts}, -- close all current buffers
+  {"n", "<leader>d", [[<C-W><C-Q>]], opts}, -- close current buffer
   {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts}, -- close quickfix list
   {"n", "<leader>h", [[<Cmd>split<CR>]], opts}, -- create horizontal split
   {"n", "<leader>v", [[<Cmd>vsplit<CR>]], opts}, -- create vertical split
-  {"n", "<leader>q", [[<C-W><C-Q>]], opts}, -- close current buffer
   {"n", "<leader>gc", [[<Cmd>Git commit<CR>]], opts}, -- shortcut to git commit command
   {"n", "<leader>gs", [[<Cmd>Gstatus<CR>]], opts}, -- shortcut to git status command
   {"n", "<leader>gp", [[<Cmd>Git push<CR>]], opts}, -- shortcut to git push command
-  {"v", "<", [[<gv]], opts},
-  {"v", ">", [[>gv]], opts},
-  {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts},
-  {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts},
-  {"n", "<leader>n", [[<Cmd>cn<CR>]], opts},
-  {"n", "<leader>p", [[<Cmd>cp<CR>]], opts},
-  {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts},
-  {"n", "<leader>W", [[<Cmd>Weather<CR>]], opts},
+  {"v", "<", [[<gv]], opts}, -- move code forward in visual mode
+  {"v", ">", [[>gv]], opts}, -- move code backwards in visual mode
+  {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts}, -- call test for function in cursor
+  {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts}, -- call test for current file
+  {"n", "<leader>n", [[<Cmd>cn<CR>]], opts}, -- move to next item in quickfix list
+  {"n", "<leader>p", [[<Cmd>cp<CR>]], opts}, -- move to prev item in quickfix list
+  {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts}, -- open lazygit in a floating term
+  {"n", "<leader>W", [[<Cmd>Weather<CR>]], opts}, -- calls weather plugin
 }
 
 for _, map in pairs(mappings) do
