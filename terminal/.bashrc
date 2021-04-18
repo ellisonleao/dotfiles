@@ -29,17 +29,7 @@ if command -v "pyenv" &>/dev/null; then
     fi
 fi
 
-# sg
-# shellcheck source=/dev/null
-[[ -f "$HOME/.ssh/startgrid/aliases" ]] && source "$HOME/.ssh/startgrid/aliases"
-
 # enable bash completion
 # Use bash-completion, if available
 # shellcheck source=/dev/null
 [[ -f "/usr/share/bash-completion/bash_completion" ]] && source /usr/share/bash-completion/bash_completion
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# gvm
-[[ -f ~/.gvm/scripts/gvm ]] && source ~/.gvm/scripts/gvm
-[[ -s "/home/ellison/.gvm/scripts/gvm" ]] && source "/home/ellison/.gvm/scripts/gvm"

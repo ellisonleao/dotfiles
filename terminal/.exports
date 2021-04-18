@@ -16,7 +16,7 @@ export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
 
 # rust
-export PATH=$PATH:"$HOME/.cargo/bin"
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 # fuzzy finder
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
@@ -47,6 +47,12 @@ export PATH="$HOME/.poetry/bin:$PATH"
 export BAT_THEME="ansi-dark"
 
 [[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
+
+# fzf
+[[ -f "$HOME/.fzf.bash" ]] && source ~/.fzf.bash
+
+# gvm
+[[ -f "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 # visual settings
 #export GDK_SCALE=2
