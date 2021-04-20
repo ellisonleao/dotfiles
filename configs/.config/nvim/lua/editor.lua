@@ -179,7 +179,7 @@ local mappings = {
   {"n", "<leader>q", [[<Cmd>bp<CR>]], opts}, -- move to the previous buffer (same option, different key)
   {"n", "<leader>x", [[<Cmd>bn<CR>]], opts}, -- move to the next buffer
   {"n", "<leader>w", [[<Cmd>bn<CR>]], opts}, -- move to the next buffer (same option, different key)
-  {"n", "<leader>d", [[<C-W><C-Q>]], opts}, -- close current buffer
+  {"n", "<leader>d", [[<Cmd>bd<CR>]], opts}, -- close current buffer
   {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts}, -- close quickfix list
   {"n", "<leader>h", [[<Cmd>split<CR>]], opts}, -- create horizontal split
   {"n", "<leader>v", [[<Cmd>vsplit<CR>]], opts}, -- create vertical split
