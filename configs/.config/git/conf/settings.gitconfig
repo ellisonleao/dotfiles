@@ -3,7 +3,6 @@
   pager = delta
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
-  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 
 [pull]
   rebase = true
@@ -18,9 +17,6 @@
 [status]
   short = true
   branch = true
-
-[apply]
-  whitespace = error
 
 [grep]
   linenumber = true
