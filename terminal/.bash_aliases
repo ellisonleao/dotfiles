@@ -35,7 +35,7 @@ alias untar='tar xvf'
 [ -f "$HOME/.ssh/startgrid/aliases" ] && source "$HOME/.ssh/startgrid/aliases"
 
 # modern command replacements
-alias cat='bat -p'
+alias cat='bat --theme=ansi -p'
 alias less='bat -p'
 alias grep='rg'
 alias find='fd'
@@ -87,3 +87,6 @@ alias tb="nc termbin.com 9999"
 
 # shellcheck source=/dev/null
 [[ -f "$HOME/.dockerfunc" ]] && source "$HOME/.dockerfunc"
+
+# phone
+alias phone="scrcpy"

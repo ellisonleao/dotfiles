@@ -49,11 +49,12 @@ return require("packer").startup(function(use)
   -- better directory viewer
   use {"justinmk/vim-dirvish"}
 
+  use {"michaelb/sniprun", run = {"bash ./install.sh"}}
+
   -- local
   -- use {"~/code/gruvbox"}
   -- use {"~/code/vim-airline"}
   use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
-  use {"~/code/weather.nvim"}
   use {"~/code/glow.nvim"}
   use {"~/code/go.nvim"}
 
@@ -74,7 +75,7 @@ return require("packer").startup(function(use)
   }
 
   use {
-    "mhartington/formatter.nvim",
+    "lukas-reineke/format.nvim",
     config = function()
       require("modules.formatter")
     end,
