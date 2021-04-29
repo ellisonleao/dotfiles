@@ -120,6 +120,10 @@ ddgr() {
     docker run -it --rm ${DOCKER_REPO_PREFIX}/ddgr:latest "$@"
 }
 
+dockerize() {
+    docker run --rm --net=host jwilder/dockerize "$@"
+}
+
 osx() {
     docker run -it \
         --device /dev/kvm \
