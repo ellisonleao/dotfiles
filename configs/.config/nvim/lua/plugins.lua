@@ -22,11 +22,7 @@ return require("packer").startup(function(use)
   -- tpopes
   use {"tpope/vim-surround"}
   use {"tpope/vim-repeat"}
-  use {"tpope/vim-rhubarb"}
-  use {"tpope/vim-fugitive"}
-  use {"tpope/vim-dadbod"}
 
-  -- colors, style, icons
   use {
     "norcalli/nvim-colorizer.lua",
     config = function()
@@ -46,23 +42,15 @@ return require("packer").startup(function(use)
   use {"mhinz/vim-startify"}
   use {"voldikss/vim-floaterm"}
 
-  -- better directory viewer
-  use {"justinmk/vim-dirvish"}
-
-  use {"michaelb/sniprun", run = {"bash ./install.sh"}}
-
   -- local
-  -- use {"~/code/gruvbox"}
-  -- use {"~/code/vim-airline"}
   use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
   use {"~/code/glow.nvim"}
   use {"~/code/go.nvim"}
 
-  use {"mjlbach/babelfish.nvim"}
-
   -- plugin development and utils
   use {"vim-test/vim-test"}
   use {"nvim-lua/plenary.nvim"}
+  use {"mjlbach/babelfish.nvim"}
 
   -- editor
   use {
@@ -91,6 +79,12 @@ return require("packer").startup(function(use)
   }
 
   -- git
+  use {
+    "TimUntersberger/neogit",
+    config = function()
+      require("neogit").setup()
+    end,
+  }
   use {
     "lewis6991/gitsigns.nvim",
     config = function()
