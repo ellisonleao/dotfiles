@@ -293,6 +293,7 @@ add_ppts() {
         "ppa:papirus/papirus"
         "ppa:mmstick76/alacritty"
         "ppa:lazygit-team/release"
+        "ppa:peek-developers/stable"
         "https://cli.github.com/packages"
     )
 
@@ -349,6 +350,7 @@ install_apps() {
         gh
         guvcview
         bison
+        peek
     )
     for pkg in "${APT_APPS[@]}"; do
         execute "sudo apt-get install -y $pkg" "$pkg"
