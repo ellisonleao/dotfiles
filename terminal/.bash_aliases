@@ -89,4 +89,8 @@ alias tb="nc termbin.com 9999"
 [[ -f "$HOME/.dockerfunc" ]] && source "$HOME/.dockerfunc"
 
 # phone
-alias phone="scrcpy"
+function phone() {
+    adb tcpip 5555
+    adb connect 192.168.68.100:5555
+    scrcpy &
+}

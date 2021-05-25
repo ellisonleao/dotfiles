@@ -1,6 +1,5 @@
 env:
   LANG: 'en_US.UTF-8'
-  TERM: 'screen-256color'
 
 window:
   decorations: full
@@ -48,11 +47,6 @@ shell:
 mouse:
   double_click: { threshold: 300 }
   triple_click: { threshold: 300 }
-
-  url:
-    launcher:
-      program: xdg-open
-    modifiers: None
 
 # Colors (Gruvbox dark)
 colors:

@@ -10,17 +10,6 @@ local function set_globals()
   vim.g.floaterm_height = 0.8
   vim.g.floaterm_width = 0.8
   vim.g.diagnostic_enable_virtual_text = false
-  vim.g.startify_custom_header = vim.fn.split(
-                                   [[
- ▄▄▄   ▄▄            ▄▄▄  ▄▄▄
- ███   ██             ██▄▄██
- ██▀█  ██  ██▄███▄     ████
- ██ ██ ██  ██▀  ▀██     ██
- ██  █▄██  ██    ██    ████
- ██   ███  ███▄▄██▀   ██  ██
- ▀▀   ▀▀▀  ██ ▀▀▀    ▀▀▀  ▀▀▀
-           ██
-]], "\n")
 end
 
 -- helper function until https://github.com/neovim/neovim/pull/13479 arrives

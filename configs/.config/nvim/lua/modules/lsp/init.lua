@@ -28,8 +28,7 @@ require("compe").setup {
     nvim_lsp = true,
     nvim_lua = true,
     spell = true,
-    snippets_nvim = true,
-    vim_dadbod = true,
+    vsnip = true,
   },
 }
 
@@ -84,9 +83,7 @@ vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')",
                         {expr = true, silent = true, noremap = true})
 vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')",
                         {expr = true, silent = true, noremap = true})
-
 local function on_attach(client, bufnr)
-  -- set omnifunc=
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.lsp.omnifunc")
 
   local opts = {silent = true, noremap = true}
@@ -177,17 +174,26 @@ end
 local function make_config()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
-
+  capabilities.textDocument.completion.completionItem.resolveSupport =
+    {properties = {'documentation', 'detail', 'additionalTextEdits'}}
   return {on_attach = on_attach, capabilities = capabilities}
 
 end
 
 local function setup_servers()
+  local installed_servers = lspinstall.installed_servers()
+  local required_servers = {"lua", "go", "typescript", "python", "bash", "yaml", "vim"}
+  for _, svr in pairs(required_servers) do
+    if not vim.tbl_contains(installed_servers, svr) then
+      lspinstall.install_server(svr)
+    end
+  end
+
   lspinstall.setup()
-  local servers = lspinstall.installed_servers()
+  installed_servers = lspinstall.installed_servers()
   local lua_settings = require("modules.lsp.lua").lua_settings
 
-  for _, server in pairs(servers) do
+  for _, server in pairs(installed_servers) do
     local config = make_config()
     if server == "lua" then
       config.settings = lua_settings

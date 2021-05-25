@@ -22,6 +22,7 @@ return require("packer").startup(function(use)
   -- tpopes
   use {"tpope/vim-surround"}
   use {"tpope/vim-repeat"}
+  use {"tpope/vim-fugitive"}
 
   use {
     "norcalli/nvim-colorizer.lua",
@@ -38,14 +39,15 @@ return require("packer").startup(function(use)
     end,
   }
 
-  -- landing page and float terminals for general usage
-  use {"mhinz/vim-startify"}
+  -- -- landing page and float terminals for general usage
   use {"voldikss/vim-floaterm"}
+  use {"mhinz/vim-startify"}
 
   -- local
   use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
-  use {"~/code/glow.nvim"}
-  use {"~/code/go.nvim"}
+  -- use {"~/code/glow.nvim"}
+  -- use {"~/code/go.nvim"}
+  use {"fatih/vim-go", run = {":GoUpdateBinaries"}}
 
   -- plugin development and utils
   use {"vim-test/vim-test"}
@@ -80,12 +82,6 @@ return require("packer").startup(function(use)
 
   -- git
   use {
-    "TimUntersberger/neogit",
-    config = function()
-      require("neogit").setup()
-    end,
-  }
-  use {
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup {numhl = true}
@@ -94,13 +90,18 @@ return require("packer").startup(function(use)
 
   -- lsp, completion, linting and snippets
   use {"kabouzeid/nvim-lspinstall"}
+  use {"rafamadriz/friendly-snippets"}
   use {
     "neovim/nvim-lspconfig",
     config = function()
-      require("modules.snippets")
       require("modules.lsp")
     end,
-    requires = {"glepnir/lspsaga.nvim", "hrsh7th/nvim-compe", "norcalli/snippets.nvim"},
+    requires = {
+      "glepnir/lspsaga.nvim",
+      "hrsh7th/nvim-compe",
+      "hrsh7th/vim-vsnip",
+      "hrsh7th/vim-vsnip-integ",
+    },
   }
 
   -- statusline
@@ -114,10 +115,7 @@ return require("packer").startup(function(use)
         sections = {
           lualine_a = {"mode"},
           lualine_b = {"branch"},
-          lualine_c = {
-            {"filename", full_path = true},
-            {"diagnostics", sources = {"nvim_lsp"}},
-          },
+          lualine_c = {{"filename", path = 2}, {"diagnostics", sources = {"nvim_lsp"}}},
           lualine_x = {"encoding", "fileformat", "filetype"},
           lualine_y = {"progress"},
           lualine_z = {"location"},
@@ -130,7 +128,7 @@ return require("packer").startup(function(use)
           lualine_y = {},
           lualine_z = {},
         },
-        extensions = {"fugitive"},
+        extensions = {"fugitive", "quickfix"},
       }
     end,
   }
