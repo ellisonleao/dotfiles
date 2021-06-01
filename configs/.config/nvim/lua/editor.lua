@@ -1,4 +1,5 @@
 local utils = require("modules.utils")
+local opt = vim.opt
 
 local function set_globals()
   vim.g.mapleader = ","
@@ -11,21 +12,6 @@ local function set_globals()
   vim.g.floaterm_width = 0.8
   vim.g.diagnostic_enable_virtual_text = false
 end
-
--- helper function until https://github.com/neovim/neovim/pull/13479 arrives
-local opts_info = vim.api.nvim_get_all_options_info()
-local opt = setmetatable({}, {
-  __index = vim.o,
-  __newindex = function(_, key, value)
-    vim.o[key] = value
-    local scope = opts_info[key].scope
-    if scope == "win" then
-      vim.wo[key] = value
-    elseif scope == "buf" then
-      vim.bo[key] = value
-    end
-  end,
-})
 
 local function set_ui_options()
   opt.termguicolors = true
