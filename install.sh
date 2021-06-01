@@ -351,6 +351,8 @@ install_apps() {
         guvcview
         bison
         peek
+        figlet
+        toilet
     )
     for pkg in "${APT_APPS[@]}"; do
         execute "sudo apt-get install -y $pkg" "$pkg"

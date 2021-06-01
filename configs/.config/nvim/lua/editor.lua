@@ -138,6 +138,10 @@ FILETYPE_HOOKS = {
     opt.tabstop = 4
     opt.softtabstop = 4
   end,
+  markdown = function()
+    vim.api.nvim_set_keymap("n", "<leader>toc", [[<Cmd>0read !gh-md-toc %<CR>]],
+                            {noremap = true})
+  end,
 }
 
 set_globals()

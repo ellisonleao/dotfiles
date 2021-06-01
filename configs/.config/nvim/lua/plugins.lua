@@ -16,7 +16,7 @@ vim.cmd([[autocmd BufWritePost plugins.lua PackerCompile ]])
 
 -- load plugins
 return require("packer").startup(function(use)
-  use {"wbthomason/packer.nvim", opt = true}
+  use {"wbthomason/packer.nvim"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
 
   -- tpopes
@@ -45,9 +45,10 @@ return require("packer").startup(function(use)
 
   -- local
   use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
-  -- use {"~/code/glow.nvim"}
+  use {"~/code/glow.nvim", run = ":GlowInstall"}
+  use {"~/code/weather.nvim"}
   -- use {"~/code/go.nvim"}
-  use {"fatih/vim-go", run = {":GoUpdateBinaries"}}
+  use {"fatih/vim-go", run = ":GoUpdateBinaries"}
 
   -- plugin development and utils
   use {"vim-test/vim-test"}
@@ -65,7 +66,7 @@ return require("packer").startup(function(use)
   }
 
   use {
-    "lukas-reineke/format.nvim",
+    "mhartington/formatter.nvim",
     config = function()
       require("modules.formatter")
     end,

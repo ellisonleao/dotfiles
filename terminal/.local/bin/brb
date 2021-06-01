@@ -8,7 +8,7 @@ trap "setterm --cursor on; echo ${clear}; exit; trap -- - SIGINT SIGTERM" SIGTER
 echo "${clear}"
 while true; do
     echo "${top}"
-    figl mono12 <<<"Be right Back $@"
+    toilet -f mono12 <<< "$@" | lolcat
     setterm --cursor off
     sleep 2
 done

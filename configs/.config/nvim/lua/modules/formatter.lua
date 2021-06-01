@@ -1,31 +1,58 @@
 -- formatter modules
-require("format").setup {
-  ["*"] = {
-    {cmd = {"sed -i 's/[ \t]*$//'"}}, -- remove trailing whitespace
-  },
-  lua = {
-    {cmd = {"lua-format -i -c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")}},
-  },
-  go = {{cmd = {"gofmt -w", "goimports -w"}, tempfile_postfix = ".tmp"}},
-  javascript = {{cmd = {"prettier -w"}}},
-  javascriptreact = {{cmd = {"prettier -w"}}},
-  json = {cmd = {"prettier -w --parser=json"}},
-  python = {cmd = {"black -q -"}},
-  markdown = {
-    {cmd = {"prettier -w"}},
-    {
-      cmd = {"black -q -"},
-      start_pattern = "^```python$",
-      end_pattern = "^```$",
-      target = "current",
+local function prettier()
+  return {
+    exe = "prettier",
+    args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
+    stdin = true,
+  }
+end
+
+require("formatter").setup({
+  logging = false,
+  filetype = {
+    lua = {
+      function()
+        return {
+          exe = "lua-format",
+          args = {"-c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")},
+          stdin = true,
+        }
+      end,
+    },
+    python = {
+      function()
+        return {exe = "black", args = {"-q", "-"}, stdin = true}
+      end,
+    },
+    javascript = {prettier},
+    javascriptreact = {prettier},
+    markdown = {prettier},
+    json = {
+      function()
+        return {
+          exe = "prettier",
+          args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), "--parser", "json"},
+          stdin = true,
+        }
+      end,
+    },
+    go = {
+      -- gofmt, goimports
+      function()
+        return {exe = "gofmt", stdin = true}
+      end,
+      function()
+        return {exe = "goimports", stdin = true}
+      end,
     },
   },
-}
+
+})
 
 -- adding format on save autocmd
-vim.cmd([[
+vim.api.nvim_exec([[
 augroup FormatAu
-autocmd!
-autocmd BufWritePost * FormatWrite
+    autocmd!
+    autocmd BufWritePost *.go,*.lua,*.json,*.py,*.js,*.jsx,*.md FormatWrite
 augroup END
-]])
+]], true)
