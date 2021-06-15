@@ -8,22 +8,63 @@ if not packer_exists then
   print("Downloading packer")
   vim.fn.system(string.format("git clone %s %s", repo_url, dest .. "packer.nvim"))
   vim.cmd([[packadd packer.nvim]])
-  vim.cmd("PackerSync")
-  print("packer.nvim installed")
+  vim.schedule_wrap(function()
+    vim.cmd("PackerSync")
+    print("packer.nvim installed")
+  end)
 end
 
 vim.cmd([[autocmd BufWritePost plugins.lua PackerCompile ]])
 
 -- load plugins
 return require("packer").startup(function(use)
+
   use {"wbthomason/packer.nvim"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
 
   -- tpopes
   use {"tpope/vim-surround"}
   use {"tpope/vim-repeat"}
-  use {"tpope/vim-fugitive"}
 
+  -- git
+  use {
+    "tpope/vim-fugitive",
+    requires = {"tpope/vim-rhubarb"},
+    config = function()
+      local opts = {noremap = true, silent = true}
+      local mappings = {
+        {"n", "<leader>gc", [[<Cmd>Git commit<CR>]], opts},
+        {"n", "<leader>gp", [[<Cmd>Git push<CR>]], opts},
+        {"n", "<leader>gs", [[<Cmd>G<CR>]], opts},
+      }
+
+      for _, m in pairs(mappings) do
+        vim.api.nvim_set_keymap(unpack(m))
+      end
+    end,
+  }
+  use {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup {numhl = true}
+    end,
+  }
+
+  -- testing
+  use {
+    "vim-test/vim-test",
+    config = function()
+      local opts = {noremap = true, silent = true}
+      local mappings = {
+        {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts}, -- call test for function in cursor
+        {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts}, -- call test for current file
+      }
+
+      for _, m in pairs(mappings) do
+        vim.api.nvim_set_keymap(unpack(m))
+      end
+    end,
+  }
   use {
     "norcalli/nvim-colorizer.lua",
     config = function()
@@ -31,7 +72,6 @@ return require("packer").startup(function(use)
     end,
   }
 
-  use {"kyazdani42/nvim-web-devicons"}
   use {
     "nvim-treesitter/nvim-treesitter",
     config = function()
@@ -39,20 +79,29 @@ return require("packer").startup(function(use)
     end,
   }
 
-  -- -- landing page and float terminals for general usage
-  use {"voldikss/vim-floaterm"}
-  use {"mhinz/vim-startify"}
-
   -- local
-  use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
+  -- use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
+  -- use {"arcticicestudio/nord-vim"}
+  use {"folke/tokyonight.nvim"}
   use {"~/code/glow.nvim", run = ":GlowInstall"}
-  use {"~/code/weather.nvim"}
-  -- use {"~/code/go.nvim"}
-  use {"fatih/vim-go", run = ":GoUpdateBinaries"}
+  use {
+    "~/code/go.nvim",
+    config = function()
+      local cfg = require("modules.lsp").config()
+      require("go").config({lsp = cfg})
+    end,
+    ft = {"go"},
+  }
 
   -- plugin development and utils
-  use {"vim-test/vim-test"}
   use {"nvim-lua/plenary.nvim"}
+  use {
+    "nvim-lua/telescope.nvim",
+    config = function()
+      require("modules.search")
+    end,
+    requires = {"nvim-lua/popup.nvim"},
+  }
   use {"mjlbach/babelfish.nvim"}
 
   -- editor
@@ -72,23 +121,6 @@ return require("packer").startup(function(use)
     end,
   }
 
-  use {"nvim-telescope/telescope-fzf-native.nvim", run = "make"}
-  use {
-    "nvim-lua/telescope.nvim",
-    config = function()
-      require("modules.search")
-    end,
-    requires = {"nvim-lua/popup.nvim"},
-  }
-
-  -- git
-  use {
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require("gitsigns").setup {numhl = true}
-    end,
-  }
-
   -- lsp, completion, linting and snippets
   use {"kabouzeid/nvim-lspinstall"}
   use {"rafamadriz/friendly-snippets"}
@@ -105,14 +137,14 @@ return require("packer").startup(function(use)
     },
   }
 
-  -- statusline
+  -- visual
+  use {"kyazdani42/nvim-web-devicons"}
+  use {"mhinz/vim-startify"}
   use {
     "hoob3rt/lualine.nvim",
     config = function()
-
       require("lualine").setup {
-        theme = "gruvbox",
-        separator = "|",
+        options = {theme = "tokyonight"},
         sections = {
           lualine_a = {"mode"},
           lualine_b = {"branch"},
@@ -133,12 +165,10 @@ return require("packer").startup(function(use)
       }
     end,
   }
-
-  -- bufferline tabs
   use {
     "akinsho/nvim-bufferline.lua",
     config = function()
-      require("bufferline").setup()
+      require("bufferline").setup({options = {numbers = "both"}})
     end,
   }
 

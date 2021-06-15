@@ -177,7 +177,6 @@ local function make_config()
   capabilities.textDocument.completion.completionItem.resolveSupport =
     {properties = {'documentation', 'detail', 'additionalTextEdits'}}
   return {on_attach = on_attach, capabilities = capabilities}
-
 end
 
 local function setup_servers()
@@ -209,3 +208,5 @@ lspinstall.post_install_hook = function()
   setup_servers()
   vim.cmd("bufdo e")
 end
+
+return {config = make_config}

@@ -5,12 +5,10 @@ local function set_globals()
   vim.g.mapleader = ","
   vim.g.maplocalleader = ","
   vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/3.8.2/bin/python")
-  vim.g.python_host_prog = vim.fn.expand("~/.pyenv/versions/2.7.17/bin/python")
   vim.g["test#strategy"] = "floaterm"
   vim.g["test#python#runner"] = "pytest"
   vim.g.floaterm_height = 0.8
   vim.g.floaterm_width = 0.8
-  vim.g.diagnostic_enable_virtual_text = false
 end
 
 local function set_ui_options()
@@ -23,11 +21,8 @@ local function set_ui_options()
   opt.colorcolumn = "120"
 
   -- colorscheme configs
-  vim.g.gruvbox_italicize_comments = true
-  vim.g.gruvbox_invert_selection = false
-  vim.g.gruvbox_contrast_dark = "hard"
-  vim.g.gruvbox_sign_column = "bg0"
-  vim.cmd([[colorscheme gruvbox]])
+  vim.g.tokyonight_style = "night"
+  vim.cmd("colorscheme tokyonight")
 end
 
 local function set_editor_options()
@@ -88,26 +83,14 @@ FILETYPE_HOOKS = {
   go = function()
     local opts = {noremap = true}
     local mappings = {
-      {"n", "<leader>lk", [[<Cmd>call go#lsp#Restart()<CR>]], opts},
-      {"n", "<leader>l", [[<Cmd>GoMetaLinter<CR>]], opts},
       {"n", "<leader>ga", [[<Cmd>GoAlternate<CR>]], opts},
-      {"n", "<leader>gc", [[<Cmd>GoCoverageToggle<CR>]], opts},
-      {"n", "<leader>gg", [[<Cmd>GoGenerate<CR>]], opts},
+      {"n", "<leader>gt", [[<Cmd>GoTestNearest<CR>]], opts},
+      {"n", "<leader>gT", [[<Cmd>GoTest<CR>]], opts},
     }
     opt.shiftwidth = 4
     opt.softtabstop = 4
     opt.tabstop = 4
     opt.colorcolumn = "80,120"
-
-    -- disable vim-go snippet engine and gopls
-    vim.g.go_snippet_engine = ""
-    vim.g.go_gopls_enabled = false
-
-    -- vim-go vars
-    vim.g.go_list_type = "quickfix"
-    vim.g.go_metalinter_enabled = {}
-    vim.g.go_metalinter_autosave_enabled = {}
-    vim.g.go_doc_popup_window = true
 
     for _, map in pairs(mappings) do
       vim.api.nvim_set_keymap(unpack(map))
@@ -162,17 +145,10 @@ local mappings = {
   {"n", "<leader>c", [[<Cmd>cclose<CR>]], opts}, -- close quickfix list
   {"n", "<leader>h", [[<Cmd>split<CR>]], opts}, -- create horizontal split
   {"n", "<leader>v", [[<Cmd>vsplit<CR>]], opts}, -- create vertical split
-  {"n", "<leader>gc", [[<Cmd>Git commit<CR>]], opts}, -- shortcut to git commit command
-  {"n", "<leader>gs", [[<Cmd>Gstatus<CR>]], opts}, -- shortcut to git status command
-  {"n", "<leader>gp", [[<Cmd>Git push<CR>]], opts}, -- shortcut to git push command
   {"v", "<", [[<gv]], opts}, -- move code forward in visual mode
   {"v", ">", [[>gv]], opts}, -- move code backwards in visual mode
-  {"n", "<leader>t", [[<Cmd>TestNearest<CR>]], opts}, -- call test for function in cursor
-  {"n", "<leader>tT", [[<Cmd>TestFile<CR>]], opts}, -- call test for current file
   {"n", "<leader>n", [[<Cmd>cn<CR>]], opts}, -- move to next item in quickfix list
   {"n", "<leader>p", [[<Cmd>cp<CR>]], opts}, -- move to prev item in quickfix list
-  {"n", "<leader>G", [[<Cmd>FloatermNew --width=0.8 --height=0.8 lazygit<CR>]], opts}, -- open lazygit in a floating term
-  {"n", "<leader>W", [[<Cmd>Weather<CR>]], opts}, -- calls weather plugin
 }
 
 for _, map in pairs(mappings) do
@@ -190,7 +166,7 @@ local autocmds = {
 }
 
 for filetype, _ in pairs(FILETYPE_HOOKS) do
-  autocmds["LuaFileTypeHook_" .. utils.escape_keymap(filetype)] =
+  autocmds["FTHook_" .. utils.escape_keymap(filetype)] =
     {{"FileType", filetype, ("lua FILETYPE_HOOKS[%q]()"):format(filetype)}};
 end
 utils.nvim_create_augroups(autocmds)

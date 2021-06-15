@@ -41,4 +41,6 @@ RR = function()
   for _, pkg in pairs(packages) do
     R(pkg)
   end
+
+  vim.cmd("PackerCompile")
 end
