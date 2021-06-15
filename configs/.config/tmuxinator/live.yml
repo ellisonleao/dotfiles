@@ -1,0 +1,18 @@
+# /home/ellison/.config/tmuxinator/live.yml
+
+name: live
+root: ~/
+
+windows:
+  - countdown:
+      layout: 330f,174x39,0,0[174x19,0,0,16,174x19,0,20,18]
+      panes:
+        - countdown 5m && tmux kill-window 
+        - banner "Ja comecamos..."
+  - editor:
+      layout: 00fd,174x39,0,0{120x39,0,0,25,53x39,121,0[53x16,121,0,26,53x5,121,17,27,53x16,121,23,28]}
+      panes:
+        - vim
+        - weechat
+        - msg test
+        - spotify & 

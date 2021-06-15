@@ -378,6 +378,17 @@ install_apps() {
     install_neovim
 }
 
+configure_ruby() {
+    GEMS=(
+        tmuxinator
+    )
+
+    for pkg in "${GEMS[@]}"; do
+        execute "sudo gem install $pkg" "$pkg"
+    done
+}
+
+
 configure_ui() {
     print_info "Configuring UI"
     # changing default font, themes and backgrounds
@@ -409,6 +420,8 @@ main() {
     configure_python
 
     configure_rust
+
+    configure_ruby
 
     configure_node
 
