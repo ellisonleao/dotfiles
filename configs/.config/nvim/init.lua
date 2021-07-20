@@ -1,46 +1,31 @@
-require("plugins")
-require("editor")
--- pretty print lua tables
+require("bootstrap") -- plugins configs
+require("editor") -- editor configs
+
+-- Global functions
+
+-- general print using inspect
 P = function(v)
   print(vim.inspect(v))
   return v
 end
+
+-- print table values
 PP = function(...)
   local vars = vim.tbl_map(vim.inspect, {...})
   print(unpack(vars))
 end
--- reload all active lsp clients
-RLSP = function()
-  vim.schedule_wrap(function()
-    vim.lsp.stop_client(vim.lsp.get_active_clients())
-    vim.api.nvim_command("edit")
-  end)
+
+-- helper function for quick reloading a lua module and optionally its subpackages
+R = function(name, all_submodules)
+  local reload = require("plenary.reload").reload_module
+  return reload(name, all_submodules)
 end
--- helper function for quick reloading a lua module
-R = function(name)
-  if package.loaded[name] ~= nil then
-    package.loaded[name] = nil
-    print("reloaded:", name)
-    return require(name)
-  else
-    vim.api.nvim_err_writeln(string.format("package does not exist: %s", name))
-  end
-end
+
 -- reload all my custom modules
 RR = function()
-  local packages = {
-    "plugins",
-    "editor",
-    "modules.treesitter",
-    "modules.formatter",
-    "modules.search",
-    "modules.utils",
-    "modules.lsp",
-    "modules.lsp.lua",
-  }
-  for _, pkg in pairs(packages) do
-    R(pkg)
-  end
-
+  R("editor")
+  R("bootstrap")
+  R("plugins", true)
   vim.cmd("PackerCompile")
+  print("neovimfiles reloaded")
 end

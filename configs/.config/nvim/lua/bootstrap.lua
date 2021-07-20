@@ -5,22 +5,39 @@ if not packer_exists then
 
   vim.fn.mkdir(dest, "p")
 
-  print("Downloading packer")
+  print("Downloading packer..")
   vim.fn.system(string.format("git clone %s %s", repo_url, dest .. "packer.nvim"))
   vim.cmd([[packadd packer.nvim]])
   vim.schedule_wrap(function()
     vim.cmd("PackerSync")
-    print("packer.nvim installed")
+    print("plugins installed")
   end)
 end
 
-vim.cmd([[autocmd BufWritePost plugins.lua PackerCompile ]])
+vim.cmd([[autocmd BufWritePost bootstrap.lua PackerCompile]])
 
 -- load plugins
 return require("packer").startup(function(use)
 
   use {"wbthomason/packer.nvim"}
   use {"junegunn/fzf", run = ":call fzf#install()"}
+  use {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+  }
+
+  -- calendar and task list
+  use {
+    "kristijanhusak/orgmode.nvim",
+    config = function()
+      require("orgmode").setup {
+        org_agenda_files = {"~/.orgmode/*"},
+        org_default_notes_file = {"~/.orgmode/notes.org"},
+      }
+    end,
+  }
 
   -- tpopes
   use {"tpope/vim-surround"}
@@ -65,30 +82,14 @@ return require("packer").startup(function(use)
       end
     end,
   }
-  use {
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup()
-    end,
-  }
-
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    config = function()
-      require("modules.treesitter").config()
-    end,
-  }
 
   -- local
-  -- use {"~/code/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
-  -- use {"arcticicestudio/nord-vim"}
-  use {"folke/tokyonight.nvim"}
-  use {"~/code/glow.nvim", run = ":GlowInstall"}
+  use {"~/code/glow.nvim", run = "GlowInstall"}
   use {
     "~/code/go.nvim",
     config = function()
-      local cfg = require("modules.lsp").config()
-      require("go").config({lsp = cfg})
+      require("go").config({lsp = require("plugins.lsp").config()})
+      -- require("go").config()
     end,
     ft = {"go"},
   }
@@ -98,11 +99,12 @@ return require("packer").startup(function(use)
   use {
     "nvim-lua/telescope.nvim",
     config = function()
-      require("modules.search")
+      require("plugins.telescope")
     end,
     requires = {"nvim-lua/popup.nvim"},
   }
   use {"mjlbach/babelfish.nvim"}
+  use {"folke/lua-dev.nvim"}
 
   -- editor
   use {
@@ -117,29 +119,47 @@ return require("packer").startup(function(use)
   use {
     "mhartington/formatter.nvim",
     config = function()
-      require("modules.formatter")
+      require("plugins.formatter")
     end,
   }
 
   -- lsp, completion, linting and snippets
-  use {"kabouzeid/nvim-lspinstall"}
   use {"rafamadriz/friendly-snippets"}
+  use {
+    "glepnir/lspsaga.nvim",
+    config = function()
+      require("plugins.lspsaga")
+    end,
+  }
+  use {
+    "hrsh7th/nvim-compe",
+    config = function()
+      require("plugins.compe")
+    end,
+    event = "InsertEnter",
+  }
   use {
     "neovim/nvim-lspconfig",
     config = function()
-      require("modules.lsp")
+      require("plugins.lsp")
     end,
     requires = {
-      "glepnir/lspsaga.nvim",
-      "hrsh7th/nvim-compe",
       "hrsh7th/vim-vsnip",
       "hrsh7th/vim-vsnip-integ",
+      "kabouzeid/nvim-lspinstall",
     },
   }
+  use {"Pocco81/TrueZen.nvim"}
 
   -- visual
+  use {"folke/tokyonight.nvim"}
   use {"kyazdani42/nvim-web-devicons"}
-  use {"mhinz/vim-startify"}
+  use {
+    "mhinz/vim-startify",
+    config = function()
+      vim.g.startify_bookmarks = {"~/.config/nvim/lua"}
+    end,
+  }
   use {
     "hoob3rt/lualine.nvim",
     config = function()
@@ -165,6 +185,8 @@ return require("packer").startup(function(use)
       }
     end,
   }
+
+  -- buffer tabs at top
   use {
     "akinsho/nvim-bufferline.lua",
     config = function()
@@ -172,4 +194,11 @@ return require("packer").startup(function(use)
     end,
   }
 
+  -- treesitter
+  use {
+    "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("plugins.treesitter").config()
+    end,
+  }
 end)

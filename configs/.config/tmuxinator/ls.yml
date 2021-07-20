@@ -1,0 +1,18 @@
+# /home/ellison/.config/tmuxinator/ls.yml
+
+name: loadsmart
+
+windows:
+  - server:
+      layout: main-vertical
+      root: ~/code/ls/kamion_server
+      panes:
+        - vim
+        - docker-compose up
+        -
+  - dashboard:
+      layout: main-vertical 
+      root: ~/code/ls/kamion_dashboard
+      panes:
+        - vim
+        - make up 

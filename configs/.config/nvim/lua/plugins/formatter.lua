@@ -12,11 +12,12 @@ require("formatter").setup({
   filetype = {
     lua = {
       function()
-        return {
-          exe = "lua-format",
-          args = {"-c " .. vim.fn.expand("~/.config/nvim/lua/.lua-format")},
-          stdin = true,
-        }
+        -- check if current folder has a lua formatter file
+        local cfg = vim.fn.findfile(".lua-format")
+        if cfg == "" then
+          cfg = vim.fn.expand("~/.config/nvim/lua/.lua-format")
+        end
+        return {exe = "lua-format", args = {"-c " .. cfg}, stdin = true}
       end,
     },
     python = {
@@ -36,8 +37,16 @@ require("formatter").setup({
         }
       end,
     },
+    yaml = {
+      function()
+        return {
+          exe = "prettier",
+          args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), "--parser", "yaml"},
+          stdin = true,
+        }
+      end,
+    },
     go = {
-      -- gofmt, goimports
       function()
         return {exe = "gofmt", stdin = true}
       end,
@@ -50,9 +59,9 @@ require("formatter").setup({
 })
 
 -- adding format on save autocmd
-vim.api.nvim_exec([[
+vim.cmd([[
 augroup FormatAu
     autocmd!
-    autocmd BufWritePost *.go,*.lua,*.json,*.py,*.js,*.jsx,*.md FormatWrite
+    autocmd BufWritePost * FormatWrite
 augroup END
-]], true)
+]])

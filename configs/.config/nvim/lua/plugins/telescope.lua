@@ -1,5 +1,18 @@
 -- search module
-require("telescope").setup {defaults = {shorten_path = false}}
+require("telescope").setup({
+  defaults = {
+    vimgrep_arguments = {
+      "rg",
+      "-L",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+    },
+  },
+})
 
 -- create mappings
 local opts = {noremap = true}
