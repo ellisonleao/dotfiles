@@ -3,6 +3,7 @@
 .netrwhist
 .uuid
 terminal/.local/share/fonts/*
+terminal/.local/bin/get-cal
 !terminal/.local/share/fonts/FiraCode/
 !terminal/.local/share/fonts/JetBrainsMono/
 !terminal/.local/share/fonts/Hack/

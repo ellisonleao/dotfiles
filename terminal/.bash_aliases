@@ -30,10 +30,6 @@ alias mv='mv -i'
 # untar
 alias untar='tar xvf'
 
-# startgrid
-# shellcheck source=/dev/null
-[ -f "$HOME/.ssh/startgrid/aliases" ] && source "$HOME/.ssh/startgrid/aliases"
-
 # modern command replacements
 alias cat='bat --theme=ansi -p'
 alias less='bat -p'
@@ -58,7 +54,7 @@ alias httpdump="sudo tcpdump -i wlp2s0 -n -s 0 -w - | grep -a -o -E \"Host\\: .*
 # weather
 alias weather="curl http://wttr.in/Curitiba?0F1qn"
 
-# unixtime to human format
+# human to unixtime format
 alias tounixtime="python -c \"import time,datetime,sys;print(time.mktime(datetime.datetime.strptime(sys.argv[1], '%d-%m-%Y').timetuple()));\""
 
 # http server
@@ -91,6 +87,6 @@ alias tb="nc termbin.com 9999"
 # phone
 function phone() {
     adb tcpip 5555
-    adb connect 192.168.68.100:5555
+    adb connect 192.168.68.101:5555
     scrcpy &
 }

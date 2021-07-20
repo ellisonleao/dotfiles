@@ -2,10 +2,11 @@
 
 folder="$HOME/.local"
 filename="nvim-linux64.tar.gz"
-url="https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
+# url="https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz"
+url="https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz"
 
 pushd "$folder"
-	wget -q "$url"
+	wget -q "$url" -O "$filename"
 	tar xvf "$filename"
 	ln -fs "$folder/nvim-linux64/bin/nvim" "$folder/bin"
 	rm "$filename"
