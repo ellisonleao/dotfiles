@@ -34,7 +34,7 @@ export PATH=$PATH:$HOME/.local/bin
 
 # luarocks
 if command -v "luarocks" &>/dev/null; then
-    eval $(luarocks path)
+	eval $(luarocks path)
 fi
 
 # Rust
