@@ -54,6 +54,10 @@ export BAT_THEME="ansi-dark"
 # gvm
 [[ -f "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
+# man pages
+export MANPAGER='nvim +Man!'
+export MANWIDTH=999
+
 # visual settings
 #export GDK_SCALE=2
 #export GDK_DPI_SCALE=0.3
