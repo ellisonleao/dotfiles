@@ -8,8 +8,6 @@ The main configs are for:
 - Visual settings and keyboard shorcuts for GNOME3
 - Terminal settings (for Alacritty terminal + tmux)
 
-![](./.github/terminal.png)
-
 ## Installing
 
 _P.S: Only working on Ubuntu and related distros for now_
