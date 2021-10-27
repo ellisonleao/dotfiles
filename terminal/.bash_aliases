@@ -1,6 +1,6 @@
 #!/bin/bash
 # editor
-alias vim=~/.local/bin/nvim
+alias vim=~/.local/neovim/build/bin/nvim
 alias vi=vim
 alias v=vim
 
