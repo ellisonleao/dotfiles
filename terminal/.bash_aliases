@@ -106,3 +106,5 @@ function jira() {
 
   xdg-open "https://${1}.atlassian.net/browse/${branch}"
 }
+
+[[ -f "$HOME/.work_aliases" ]] && source "$HOME/.work_aliases"
