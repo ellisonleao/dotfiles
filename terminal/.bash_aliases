@@ -1,6 +1,6 @@
 #!/bin/bash
 # editor
-alias vim=~/.local/neovim/build/bin/nvim
+alias vim=$(which nvim)
 alias vi=vim
 alias v=vim
 
@@ -35,11 +35,10 @@ alias cat='bat --theme=ansi -p'
 alias less='bat -p'
 alias grep='rg'
 alias find='fd'
-alias hexdump='hx'
 alias time='hyperfine'
 alias du='dust'
 alias top='btm'
-alias iftop='sudo ~/.cargo/bin/bandwhich'
+alias iftop='sudo bandwhich'
 alias ls="ls --color=auto"
 alias la="ls -lahF"
 
@@ -48,7 +47,7 @@ alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias ips="sudo ifconfig -a | grep -o 'inet6\\? \\(addr:\\)\\?\\s\\?\\(\\(\\([0-9]\\+\\.\\)\\{3\\}[0-9]\\+\\)\\|[a-fA-F0-9:]\\+\\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # View HTTP traffic
-alias sniff="sudo ngrep -d 'wlp2s0' -t '^(GET|POST) ' 'tcp and port 80'"
+alias sniff="sudo ngrep -d 'wlan0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i wlp2s0 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
 
 # weather

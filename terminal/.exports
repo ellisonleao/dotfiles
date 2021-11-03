@@ -58,6 +58,12 @@ export BAT_THEME="ansi-dark"
 export MANPAGER='nvim +Man!'
 export MANWIDTH=999
 
+# gpg
+export GPG_TTY=$(tty)
+
+# browser
+export BROWSER=google-chrome-stable
+
 # visual settings
 #export GDK_SCALE=2
 #export GDK_DPI_SCALE=0.3
