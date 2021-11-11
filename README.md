@@ -10,7 +10,7 @@ The main configs are for:
 
 ## Installing
 
-_P.S: Only working on Ubuntu and related distros for now_
+_P.S: Only working on Arch bases distros_
 
 1. `git clone https://github.com/ellisonleao/dotfiles --recursive`
 2. `cd dotfiles`

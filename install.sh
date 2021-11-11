@@ -3,401 +3,223 @@
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
 print_error() {
-    printf "\\e[0;31m%s\\e[0m\\n" " [ ✖ ] $1 $2"
+	printf "\\e[0;31m%s\\e[0m\\n" " [ ✖ ] $1 $2"
 }
 
 print_info() {
-    printf "\\e[0;35m%s\\e[0m\\n" "$1"
+	printf "\\e[0;35m%s\\e[0m\\n" "$1"
 }
 
 print_result() {
-    if [ "$1" -eq 0 ]; then
-        printf "\\e[0;32m%s\\e[0m\\n" " [ ✔ ] $2"
-    else
-        print_error "$2"
-    fi
+	if [ "$1" -eq 0 ]; then
+		printf "\\e[0;32m%s\\e[0m\\n" " [ ✔ ] $2"
+	else
+		print_error "$2"
+	fi
 
-    return "$1"
+	return "$1"
 }
 
 ask_for_sudo() {
-    sudo -v &>/dev/null
-    # Update existing `sudo` time stamp until this script has finished
-    # https://gist.github.com/cowboy/3118588
-    while true; do
-        sudo -n true
-        sleep 60
-        kill -0 "$$" || exit
-    done &>/dev/null &
+	sudo -v &>/dev/null
+	# Update existing `sudo` time stamp until this script has finished
+	# https://gist.github.com/cowboy/3118588
+	while true; do
+		sudo -n true
+		sleep 60
+		kill -0 "$$" || exit
+	done &>/dev/null &
 
 }
 
 verify_os() {
-    if [ ! "$(uname -s)" == "Linux" ]; then
-        echo "Sorry, this script is intended only for Ubuntu based distros!"
-        exit 1
-    fi
+	if [ ! "$(uname -s)" == "Linux" ]; then
+		echo "Sorry, this script is intended only for Arch based distros!"
+		exit 1
+	fi
 }
 
 show_spinner() {
-    local -r FRAMES='/-\|'
-    # shellcheck disable=SC2034
-    local -r NUMBER_OR_FRAMES=${#FRAMES}
-    local -r CMDS="$2"
-    local -r MSG="$3"
-    local -r PID="$1"
-    local i=0
-    local frameText=""
+	local -r FRAMES='/-\|'
+	# shellcheck disable=SC2034
+	local -r NUMBER_OR_FRAMES=${#FRAMES}
+	local -r CMDS="$2"
+	local -r MSG="$3"
+	local -r PID="$1"
+	local i=0
+	local frameText=""
 
-    # Display spinner while the commands are being executed.
-    while kill -0 "$PID" &>/dev/null; do
-        frameText="   [${FRAMES:i++%NUMBER_OR_FRAMES:1}] $MSG"
-        printf "%s" "$frameText"
-        sleep 0.2
-        printf "\\r"
-    done
+	# Display spinner while the commands are being executed.
+	while kill -0 "$PID" &>/dev/null; do
+		frameText="   [${FRAMES:i++%NUMBER_OR_FRAMES:1}] $MSG"
+		printf "%s" "$frameText"
+		sleep 0.2
+		printf "\\r"
+	done
 }
 
 set_trap() {
-    trap -p "$1" | grep "$2" &>/dev/null || trap '$2' "$1"
+	trap -p "$1" | grep "$2" &>/dev/null || trap '$2' "$1"
 }
 
 execute() {
-    local -r CMDS="$1"
-    local -r MSG="${2:-$1}"
-    local -r TMP_FILE="$(mktemp /tmp/XXXXX)"
-    local exitCode=0
-    local cmdsPID=""
+	local -r CMDS="$1"
+	local -r MSG="${2:-$1}"
+	local -r TMP_FILE="$(mktemp /tmp/XXXXX)"
+	local exitCode=0
+	local cmdsPID=""
 
-    # If the current process is ended,
-    # also end all its subprocesses.
-    set_trap "EXIT" "kill_all_subprocesses"
+	# If the current process is ended,
+	# also end all its subprocesses.
+	set_trap "EXIT" "kill_all_subprocesses"
 
-    # Execute commands in background
-    eval "$CMDS" \
-        &>/dev/null \
-        2>"$TMP_FILE" &
+	# Execute commands in background
+	eval "$CMDS" \
+		&>/dev/null \
+		2>"$TMP_FILE" &
 
-    cmdsPID=$!
+	cmdsPID=$!
 
-    show_spinner "$cmdsPID" "$CMDS" "$MSG"
-    wait "$cmdsPID" &>/dev/null
-    exitCode=$?
-    print_result $exitCode "$MSG"
+	show_spinner "$cmdsPID" "$CMDS" "$MSG"
+	wait "$cmdsPID" &>/dev/null
+	exitCode=$?
+	print_result $exitCode "$MSG"
 
-    if [ $exitCode -ne 0 ]; then
-        print_error_stream <"$TMP_FILE"
-    fi
+	if [ $exitCode -ne 0 ]; then
+		print_error_stream <"$TMP_FILE"
+	fi
 
-    rm -rf "$TMP_FILE"
-    return $exitCode
+	rm -rf "$TMP_FILE"
+	return $exitCode
 }
 
 print_error_stream() {
-    while read -r line; do
-        print_error "↳ ERROR: $line"
-    done
+	while read -r line; do
+		print_error "↳ ERROR: $line"
+	done
 }
 
 cmd_exists() {
-    command -v "$1" &>/dev/null
-    return $?
+	command -v "$1" &>/dev/null
+	return $?
 }
 
 package_is_installed() {
-    PACKAGE="$1"
-    PROGRAM="$2"
-    if [ "$PROGRAM" == "apt" ]; then
-        dpkg -s "$PACKAGE" &>/dev/null
-    elif [ "$PROGRAM" == "snap" ]; then
-        snap list | grep "$PACKAGE" &>/dev/null
-    fi
+	pacman -Qi "$PACKAGE" &>/dev/null
 }
 
 # --------------------------------------------------------------------
 # | Main Functions                                                   |
 # --------------------------------------------------------------------
 
-create_folders() {
-    mkdir -p ~/.local/bin
-    mkdir -p ~/.local/share/applications
-}
-
 configure_terminal() {
-    if [[ -f "$HOME/.bashrc" ]]; then
-        rm "$HOME/.bashrc"
-    fi
+	if [[ -f "$HOME/.bashrc" ]]; then
+		rm "$HOME/.bashrc"
+		rm "$HOME/.bash_profile"
+	fi
 
-    print_info "Configuring terminal"
-    for item in "configs terminal ui"; do
-        execute "stow -R ${item}" "Creating ${item} symlink"
-    done
+	print_info "Configuring terminal"
+	for item in "configs terminal ui"; do
+		execute "stow -R ${item}" "Creating ${item} symlink"
+	done
 }
 
 configure_python() {
-    print_info "Configuring python environment.."
+	print_info "Configuring python environment.."
 
-    # pyenv prereqs
-    # shellcheck disable=SC2033
-    sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
-        libreadline-dev libsqlite3-dev llvm libncurses5-dev \
-        libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
-        python-openssl python3-dev libdbus-glib-1-dev libgirepository1.0-dev
+	yay -S python-pip python
 
-    if [[ ! -d "$HOME/.pyenv" ]]; then
-        execute "curl -fs https://pyenv.run | bash" "Installing pyenv"
-    fi
+	PKGS=(
+		black
+		neovim
+		ptipython
+		httpie
+	)
 
-    # shellcheck source=/dev/null
-    source "$HOME/.bashrc"
+	print_info "Installing python 3 packages"
+	for pkg in "${PKGS[@]}"; do
+		pip install "$pkg" --timeout=2
+	done
 
-    if ! cmd_exists "pyenv"; then
-        export PATH="$HOME/.pyenv/bin:$PATH"
-        eval "$(pyenv init -)"
-        eval "$(pyenv virtualenv-init -)"
-    fi
-
-    # virtualenvwrapper
-    if [[ ! -d "$(pyenv root)/plugins/pyenv-virtualenvwrapper" ]]; then
-        git clone "https://github.com/pyenv/pyenv-virtualenvwrapper.git" "$(pyenv root)/plugins/pyenv-virtualenvwrapper"
-    fi
-
-    execute "pyenv install 3.8.2" "Installing Python 3.8"
-    execute "pyenv global 3.8.2" "Set global python"
-
-    PKGS=(
-        black
-        flake8
-        awscli
-        neovim
-        ptipython
-        docker-compose
-        vim-vint
-        dbus-python
-        debugpy
-    )
-
-    print_info "Installing python 3 packages"
-    for pkg in "${PKGS[@]}"; do
-        pip install "$pkg" --timeout=2
-    done
-
-}
-
-configure_rust() {
-    print_info "Installing rust"
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-    # shellcheck source=/dev/null
-    source "$HOME/.bashrc"
-
-    CARGO=$(which cargo)
-    if ! cmd_exists "cargo"; then
-        CARGO="$HOME/.cargo/bin/cargo"
-    fi
-
-    print_info "Installing rust crates"
-    RUST_CRATES=(
-        bat
-        exa
-        ripgrep
-        fd-find
-        hx
-        licensor
-        du-dust
-        hyperfine
-        bandwhich
-        tealdeer
-        rates
-        git-delta
-    )
-    for pkg in "${RUST_CRATES[@]}"; do
-        "$CARGO" install "$pkg"
-    done
-
-    # special case
-    "$CARGO" install --git https://github.com/ClementTsang/bottom
 }
 
 configure_node() {
-    NPM=$(which npm)
-    if ! cmd_exists "n"; then
-        execute "curl -L https://git.io/n-install | N_PREFIX=~/.local/n bash -s -- -y -n" "Installing n"
-        NPM="$HOME/.local/n/bin/npm"
-    fi
+	NPM=$(which npm)
+	if ! cmd_exists "n"; then
+		execute "curl -L https://git.io/n-install | N_PREFIX=~/.local/n bash -s -- -y -n" "Installing n"
+		NPM="$HOME/.local/n/bin/npm"
+	fi
 
-    # shellcheck source=/dev/null
-    source "$HOME/.bashrc"
+	# shellcheck source=/dev/null
+	source "$HOME/.bashrc"
 
-    print_info "Installing node packages"
-    NODE_PACKAGES=(
-        npm
-        eslint
-        prettier
-        bash-language-server
-        typescript
-        typescript-language-server
-        vscode-html-languageserver-bin
-        pyright
-        fast-cli
-        tree-sitter-cli
-        '@bitwarden/cli'
-    )
-    for pkg in "${NODE_PACKAGES[@]}"; do
-        "$NPM" install -i "$pkg"
-    done
+	print_info "Installing node packages"
+	NODE_PACKAGES=(
+		prettier
+		typescript
+		fast-cli
+	)
+	for pkg in "${NODE_PACKAGES[@]}"; do
+		"$NPM" install -i "$pkg"
+	done
 
-}
-
-configure_keys() {
-    print_info "Installing Keybase"
-
-    if [[ -f "$HOME/.ssh/id_rsa" ]]; then
-        print_info "key already imported"
-        return 0
-    fi
-    FILE="keybase_amd64.deb"
-
-    # download keybase
-    if [[ ! -f "$FILE" ]]; then
-        curl --remote-name https://prerelease.keybase.io/nightly/$FILE
-        execute "sudo dpkg -i $FILE" "Installing Keybase"
-        sudo apt install --fix-broken
-    else
-        print_info "keybase file already exists, skipping download."
-    fi
-
-    # login
-    keybase login
-
-    # import private keys
-    keybase pgp export -s | gpg --allow-secret-key-import --import -
-    # import ssh configs
-    git clone keybase://private/ellison/ssh ~/.ssh
-    chmod 0400 ~/.ssh/id_rsa
-    ssh-add
-}
-
-add_ppts() {
-    print_info "adding additional apt sources"
-    sudo apt install apt-transport-https curl
-
-    # docker
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-    # github
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-
-    PPTS=(
-        "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
-        "ppa:papirus/papirus"
-        "ppa:mmstick76/alacritty"
-        "ppa:lazygit-team/release"
-        "ppa:peek-developers/stable"
-        "https://cli.github.com/packages"
-    )
-
-    for ppt in "${PPTS[@]}"; do
-        sudo add-apt-repository -y "$ppt"
-    done
-
-    sudo apt-get update
-    print_result $? "adding additional apt sources"
-}
-
-install_neovim() {
-    print_info "Neovim"
-    NPATH="$HOME/.local"
-    FILENAME="nvim-linux64.tar.gz"
-    # download latest nightly
-    curl -fLo "$NPATH" --create-dirs \
-        "https://github.com/neovim/neovim/releases/download/$VERSION/$FILENAME"
-
-    # extract and remove tar
-    tar xvf "$NPATH/$FILENAME" -C "$NPATH"
-    rm "$NPATH/$FILENAME"
-
-    # create symlinks
-    ln -fs "$NPATH/nvim-linux64/bin/nvim" "$NPATH/bin/"
 }
 
 install_apps() {
-    add_ppts
 
-    print_info "Installing APT/Snap apps"
+	print_info "Installing apps"
 
-    # apt
-    APT_APPS=(
-        git
-        curl
-        stow
-        hub
-        wget
-        snapd
-        jq
-        docker-ce
-        docker-ce-cli
-        containerd.io
-        transmission
-        gnome-tweaks
-        chrome-gnome-shell
-        imagemagick
-        dconf-editor
-        alacritty
-        tmux
-        luarocks
-        lazygit
-        gh
-        guvcview
-        bison
-        peek
-        figlet
-        toilet
-    )
-    for pkg in "${APT_APPS[@]}"; do
-        execute "sudo apt-get install -y $pkg" "$pkg"
-    done
+	APPS=(
+		alacritty
+		aws-cli
+		bandwhich
+		bash-completion
+		bat
+		chrome-gnome-shell
+		discord
+		docker
+		docker-compose
+		dust
+		exercism-bin
+		fd
+		figlet
+		git-delta
+		github-cli
+		gnome-calendar
+		go
+		google-chrome
+		google-cloud-sdk
+		guvcview
+		hub
+		hyperfine
+		jq
+		lolcat
+		lua-busted
+		neofetch
+		neovim-nightly-bin
+		nerd-fonts-jetbrains-mono
+		obs-studio
+		pritunl-client-electron
+		python-pip
+		ripgrep
+		rtl88xxau-aircrack-dkms-git
+		shfmt-bin
+		slack-desktop
+		spotify
+		stow
+		stylua
+		telegram-desktop
+		tldr
+		tmux
+		transmission-gtk
+		vlc
+	)
 
-    # snaps
-    SNAPS=(
-        spotify
-        shfmt
-        bitwarden
-        shellcheck
-        telegram-desktop
-        'shotcut --classic'
-        'slack --classic'
-        vlc
-        obs-studio
-    )
-
-    for pkg in "${SNAPS[@]}"; do
-        execute "sudo snap install $pkg" "$pkg"
-    done
-
-    install_neovim
-}
-
-configure_ruby() {
-    GEMS=(
-        tmuxinator
-    )
-
-    for pkg in "${GEMS[@]}"; do
-        execute "sudo gem install $pkg" "$pkg"
-    done
-}
-
-
-configure_ui() {
-    print_info "Configuring UI"
-    # changing default font, themes and backgrounds
-    gsettings set org.gnome.desktop.interface show-battery-percentage true
-    gsettings set org.gnome.desktop.interface clock-show-date true
-    gsettings set org.gnome.desktop.background picture-uri "file:///home/ellison/Pictures/ellie.jpeg"
-
-    # custom keyboard bindings
-    gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>b']"
+	for pkg in "${APT_APPS[@]}"; do
+		if ! package_is_installed "$pkg"; then
+			execute "yay -S $pkg" "$pkg"
+		fi
+	done
 }
 
 # ----------------------------------------------------------------------
@@ -405,29 +227,19 @@ configure_ui() {
 # ----------------------------------------------------------------------
 
 main() {
-    verify_os
+	verify_os
 
-    ask_for_sudo
+	ask_for_sudo
 
-    create_folders
+	install_apps
 
-    configure_keys
+	configure_terminal
 
-    install_apps
+	configure_python
 
-    configure_terminal
+	configure_node
 
-    configure_python
-
-    configure_rust
-
-    configure_ruby
-
-    configure_node
-
-    configure_ui
-
-    echo "Success! Please restart the terminal to see the changes!"
+	echo "Success! Please restart the terminal to see the changes!"
 }
 
 main

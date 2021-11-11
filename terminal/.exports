@@ -51,20 +51,12 @@ export BAT_THEME="ansi-dark"
 # fzf
 [[ -f "$HOME/.fzf.bash" ]] && source ~/.fzf.bash
 
-# gvm
-[[ -f "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-
 # man pages
 export MANPAGER='nvim +Man!'
 export MANWIDTH=999
 
-# gpg
-export GPG_TTY=$(tty)
-
 # browser
 export BROWSER=google-chrome-stable
 
-# visual settings
-#export GDK_SCALE=2
-#export GDK_DPI_SCALE=0.3
-#export QT_AUTO_SCREEN_SCALE_FACTOR=1
+# GPP
+export GPG_TTY=$(tty)
