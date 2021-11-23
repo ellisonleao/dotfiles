@@ -213,6 +213,7 @@ install_apps() {
 		tmux
 		transmission-gtk
 		vlc
+		bottom
 	)
 
 	for pkg in "${APT_APPS[@]}"; do

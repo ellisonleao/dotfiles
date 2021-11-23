@@ -1,12 +1,10 @@
 [alias]
 # View abbreviated SHA, description, and history graph of the latest 20 commits
 l = log \
-    --graph \
     --abbrev-commit \
     --decorate \
-    --all \
     --date=format:'%d-%m-%Y %H:%M' \
-    --format=format:'%C(blue)%ad%C(reset) %C(yellow)%h%C(reset) %C(white)%s%C(reset) %C(blue)%an%C(reset) %C(bold yellow)%d%C(reset)'
+    --format=oneline
 
 s = status -s
 
