@@ -60,7 +60,7 @@ alias tounixtime="python -c \"import time,datetime,sys;print(time.mktime(datetim
 alias httpserver="python -m http.server"
 
 # youtube-dl
-alias dl="youtube-dl --socket-timeout=2"
+alias dl="yt-dlp"
 
 alias xclip="xclip -se c"
 
