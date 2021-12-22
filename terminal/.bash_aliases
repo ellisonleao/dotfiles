@@ -90,20 +90,4 @@ function phone() {
     scrcpy &
 }
 
-function jira() {
-  if [[ $# -eq 0 ]]; then
-    echo "project missing"
-    return
-  fi
-
-  local project="$1"
-  local branch=$(git rev-parse --abbrev-ref HEAD)
-  if [[ -z $branch ]]; then
-    echo "branch not found"
-    return
-  fi
-
-  xdg-open "https://${1}.atlassian.net/browse/${branch}"
-}
-
 [[ -f "$HOME/.work_aliases" ]] && source "$HOME/.work_aliases"
