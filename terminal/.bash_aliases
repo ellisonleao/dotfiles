@@ -17,7 +17,6 @@ alias sudo='sudo '
 alias w=workon
 
 # git
-alias git=hub
 alias gs="git sync"
 
 # github
