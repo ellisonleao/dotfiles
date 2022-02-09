@@ -17,3 +17,4 @@ terminal/.local/bin/pygmentize
 terminal/.local/bin/sqlformat
 terminal/.local/bin/tabulate
 terminal/.local/bin/tilt
+terminal/.local/bin/yamllint
