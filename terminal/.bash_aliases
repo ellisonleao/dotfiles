@@ -84,9 +84,9 @@ alias tb="nc termbin.com 9999"
 
 # phone
 function phone() {
-    adb tcpip 5555
-    adb connect 192.168.68.101:5555
-    scrcpy &
+	adb tcpip 5555
+	adb connect 192.168.68.101:5555
+	scrcpy &
 }
 
 [[ -f "$HOME/.work_aliases" ]] && source "$HOME/.work_aliases"
