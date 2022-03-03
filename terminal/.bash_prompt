@@ -1,7 +1,6 @@
 # setup color variables
 color_is_on=
 color_red=
-color_green=
 color_yellow=
 color_blue=
 color_white=
@@ -13,7 +12,6 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	color_is_on=true
 	color_black="\[$(/usr/bin/tput setaf 0)\]"
 	color_red="\[$(/usr/bin/tput setaf 1)\]"
-	color_green="\[$(/usr/bin/tput setaf 2)\]"
 	color_yellow="\[$(/usr/bin/tput setaf 3)\]"
 	color_blue="\[$(/usr/bin/tput setaf 6)\]"
 	color_white="\[$(/usr/bin/tput setaf 7)\]"
@@ -24,16 +22,16 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	color_error_off="$(/usr/bin/tput sgr0)"
 
 	# set user color
-	case `id -u` in
-		0) color_user=$color_red ;;
-		*) color_user=$color_green ;;
+	case $(id -u) in
+	0) color_user=$color_red ;;
+	*) color_user=$color_blue ;;
 	esac
 fi
 
 # User color
 case $(id -u) in
-	0) user_color="$color_red" ;;  # root
-	*) user_color="$color_green" ;;
+0) user_color="$color_red" ;; # root
+*) user_color="$color_blue" ;;
 esac
 
 # Symbols
@@ -64,7 +62,7 @@ function prompt_command() {
 		if [ -n "$dirty" ]; then
 			git_prompt=" $color_red$prompt_dirty_symbol$branch$color_off"
 		else
-			git_prompt=" $color_green$prompt_clean_symbol$branch$color_off"
+			git_prompt=" $color_blue$prompt_clean_symbol$branch$color_off"
 		fi
 	fi
 
@@ -76,12 +74,13 @@ function prompt_command() {
 
 	# Format prompt
 	first_line="$venv_prompt$color_white\w$color_off$git_prompt"
-	PS1="${first_line}\n${color_green}${prompt_symbol}${color_off} "
+	PS1="${first_line}\n${color_blue}${prompt_symbol}${color_off} "
 
 	# Terminal title
 	local title="$(basename "$PWD")"
 	[ -n "$remote" ] && title="$title \xE2\x80\x94 $HOSTNAME"
-	echo -ne "\033]0;$title"; echo -ne "\007"
+	echo -ne "\033]0;$title"
+	echo -ne "\007"
 }
 
 # Show awesome prompt only if Git is istalled

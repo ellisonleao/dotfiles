@@ -42,35 +42,70 @@ mouse:
   double_click: { threshold: 300 }
   triple_click: { threshold: 300 }
 
-# TokyoNight Alacritty Colors
+
+# github Alacritty Colors
 colors:
   # Default colors
   primary:
-    background: '0x1a1b26'
-    foreground: '0xc0caf5'
+    background: '0xffffff'
+    foreground: '0x24292f'
 
   # Normal colors
   normal:
-    black:   '0x15161E'
-    red:     '0xf7768e'
-    green:   '0x9ece6a'
-    yellow:  '0xe0af68'
-    blue:    '0x7aa2f7'
-    magenta: '0xbb9af7'
-    cyan:    '0x7dcfff'
-    white:   '0xa9b1d6'
+    black:   '0x24292e'
+    red:     '0xd73a49'
+    green:   '0x28a745'
+    yellow:  '0xdbab09'
+    blue:    '0x0366d6'
+    magenta: '0x5a32a3'
+    cyan:    '0x0598bc'
+    white:   '0x6a737d'
 
   # Bright colors
   bright:
-    black:   '0x414868'
-    red:     '0xf7768e'
-    green:   '0x9ece6a'
-    yellow:  '0xe0af68'
-    blue:    '0x7aa2f7'
-    magenta: '0xbb9af7'
-    cyan:    '0x7dcfff'
-    white:   '0xc0caf5'
+    black:   '0x959da5'
+    red:     '0xcb2431'
+    green:   '0x22863a'
+    yellow:  '0xb08800'
+    blue:    '0x005cc5'
+    magenta: '0x5a32a3'
+    cyan:    '0x3192aa'
+    white:   '0xd1d5da'
 
   indexed_colors:
-    - { index: 16, color: '0xff9e64' }
-    - { index: 17, color: '0xdb4b4b' }
+    - { index: 16, color: '0xd18616' }
+    - { index: 17, color: '0xcb2431' }
+
+#
+# # TokyoNight Alacritty Colors
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x1a1b26'
+#     foreground: '0xc0caf5'
+#
+#   # Normal colors
+#   normal:
+#     black:   '0x15161E'
+#     red:     '0xf7768e'
+#     green:   '0x9ece6a'
+#     yellow:  '0xe0af68'
+#     blue:    '0x7aa2f7'
+#     magenta: '0xbb9af7'
+#     cyan:    '0x7dcfff'
+#     white:   '0xa9b1d6'
+#
+#   # Bright colors
+#   bright:
+#     black:   '0x414868'
+#     red:     '0xf7768e'
+#     green:   '0x9ece6a'
+#     yellow:  '0xe0af68'
+#     blue:    '0x7aa2f7'
+#     magenta: '0xbb9af7'
+#     cyan:    '0x7dcfff'
+#     white:   '0xc0caf5'
+#
+#   indexed_colors:
+#     - { index: 16, color: '0xff9e64' }
+#     - { index: 17, color: '0xdb4b4b' }
