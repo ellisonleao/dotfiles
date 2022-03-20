@@ -41,3 +41,7 @@ dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 contributors = shortlog --summary --numbered
 
 cf = checkout -f
+
+sw = switch -c
+
+go = switch

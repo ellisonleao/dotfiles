@@ -44,7 +44,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.poetry/bin:$PATH"
 
 # cat output
-export BAT_THEME="ansi-dark"
+export BAT_THEME="GitHub"
 
 [[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
 

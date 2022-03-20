@@ -19,3 +19,4 @@ terminal/.local/bin/tabulate
 terminal/.local/bin/tilt
 terminal/.local/bin/yamllint
 terminal/.local/bin/nightly
+terminal/.local/bin/clog

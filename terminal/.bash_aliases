@@ -30,8 +30,7 @@ alias mv='mv -i'
 alias untar='tar xvf'
 
 # modern command replacements
-alias cat='bat --theme=ansi -p'
-alias less='bat -p'
+alias cat='bat -p'
 alias grep='rg'
 alias find='fd'
 alias time='hyperfine'
