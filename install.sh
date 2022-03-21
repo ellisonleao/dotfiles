@@ -188,7 +188,6 @@ install_apps() {
 		gnome-calendar
 		go
 		google-chrome
-		google-cloud-sdk
 		guvcview
 		hub
 		hyperfine
