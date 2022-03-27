@@ -138,7 +138,7 @@ configure_python() {
 
 	print_info "Installing python 3 packages"
 	for pkg in "${PKGS[@]}"; do
-		pip install "$pkg" --timeout=2
+		pip install "$pkg"
 	done
 
 }
