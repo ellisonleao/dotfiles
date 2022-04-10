@@ -73,7 +73,7 @@ function prompt_command() {
 	fi
 
 	# Format prompt
-	first_line="$venv_prompt$color_white\w$color_off$git_prompt"
+	first_line="$venv_prompt$color_black\w$color_off$git_prompt"
 	PS1="${first_line}\n${color_blue}${prompt_symbol}${color_off} "
 
 	# Terminal title

@@ -17,7 +17,9 @@ alias sudo='sudo '
 alias w=workon
 
 # git
-alias gs="git sync"
+alias gco="git commit"
+alias gp="git pull"
+alias gpu="git push"
 
 # github
 alias issues="gh issue"

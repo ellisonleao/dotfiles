@@ -15,9 +15,6 @@ export N_PREFIX="$HOME/.local/n"
 export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
 
-# rust
-[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-
 # fuzzy finder
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 
@@ -46,10 +43,8 @@ export PATH="$HOME/.poetry/bin:$PATH"
 # cat output
 export BAT_THEME="GitHub"
 
-[[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
-
 # fzf
-[[ -f "$HOME/.fzf.bash" ]] && source ~/.fzf.bash
+[[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
 
 # man pages
 export MANPAGER='nvim +Man!'
@@ -58,5 +53,6 @@ export MANWIDTH=999
 # browser
 export BROWSER=google-chrome-stable
 
-# GPP
-export GPG_TTY=$(tty)
+# GPG
+GPG_TTY=$(tty)
+export GPG_TTY

@@ -119,28 +119,15 @@ configure_terminal() {
 	fi
 
 	print_info "Configuring terminal"
-	for item in "configs terminal ui"; do
-		execute "stow -R ${item}" "Creating ${item} symlink"
-	done
+	execute "stow -R configs" "Creating configs symlinks"
+	execute "stow -R terminal" "Creating terminal symlinks"
+	execute "stow -R ui" "Creating ui symlinks"
 }
 
 configure_python() {
 	print_info "Configuring python environment.."
-
 	yay -S python-pip python
-
-	PKGS=(
-		black
-		neovim
-		ptipython
-		httpie
-	)
-
-	print_info "Installing python 3 packages"
-	for pkg in "${PKGS[@]}"; do
-		pip install "$pkg"
-	done
-
+	pip install neovim
 }
 
 configure_node() {
@@ -170,10 +157,11 @@ install_apps() {
 	print_info "Installing apps"
 
 	APPS=(
-		alacritty
+		wezterm
 		aws-cli
 		bandwhich
 		bash-completion
+		shellcheck
 		bat
 		chrome-gnome-shell
 		discord
@@ -195,13 +183,9 @@ install_apps() {
 		lolcat
 		lua-busted
 		neofetch
-		neovim-nightly-bin
 		nerd-fonts-jetbrains-mono
 		obs-studio
-		pritunl-client-electron
-		python-pip
 		ripgrep
-		rtl88xxau-aircrack-dkms-git
 		shfmt-bin
 		slack-desktop
 		spotify
@@ -213,12 +197,14 @@ install_apps() {
 		transmission-gtk
 		vlc
 		bottom
+		httpie
+		python
+		python-pip
+		python-black
 	)
 
-	for pkg in "${APT_APPS[@]}"; do
-		if ! package_is_installed "$pkg"; then
-			execute "yay -S $pkg" "$pkg"
-		fi
+	for pkg in "${APPS[@]}"; do
+		execute "yay -S --noconfirm $pkg" "$pkg"
 	done
 }
 
