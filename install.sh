@@ -193,7 +193,6 @@ install_apps() {
 		stylua
 		telegram-desktop
 		tldr
-		tmux
 		transmission-gtk
 		vlc
 		bottom
