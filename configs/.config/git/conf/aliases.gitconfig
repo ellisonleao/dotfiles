@@ -1,10 +1,9 @@
 [alias]
-# View abbreviated SHA, description, and history graph of the latest 20 commits
 l = log \
     --abbrev-commit \
     --decorate \
     --date=format:'%d-%m-%Y %H:%M' \
-    --format=oneline
+    --format='%C(black)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d'
 
 s = status -s
 
@@ -28,14 +27,6 @@ credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
 reb = "!r() { git rebase -i HEAD~$1; }; r"
 
-fb = "!f() { git branch -a --contains $1; }; f"
-
-ft = "!f() { git describe --always --contains $1; }; f"
-
-fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
-
-fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
-
 dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
 contributors = shortlog --summary --numbered
@@ -43,5 +34,3 @@ contributors = shortlog --summary --numbered
 cf = checkout -f
 
 sw = switch -c
-
-go = switch

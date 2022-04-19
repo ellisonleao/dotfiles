@@ -22,4 +22,5 @@ return {
   font = wezterm.font("JetBrains Mono"),
   font_size = 13,
   exit_behavior = "Close",
+  audible_bell = "Disabled",
 }
