@@ -20,6 +20,7 @@ alias w=workon
 alias gco="git commit"
 alias gp="git pull"
 alias gpu="git push"
+alias gsy="hub sync"
 
 # github
 alias issues="gh issue"
@@ -37,7 +38,7 @@ alias grep='rg'
 alias find='fd'
 alias time='hyperfine'
 alias du='dust'
-alias top='btm'
+alias top='btm --color default-light'
 alias iftop='sudo bandwhich'
 alias ls="ls --color=auto"
 alias la="ls -lahF"
@@ -58,6 +59,7 @@ alias tounixtime="python -c \"import time,datetime,sys;print(time.mktime(datetim
 
 # http server
 alias httpserver="python -m http.server"
+alias http="http -s default"
 
 # youtube-dl
 alias dl="yt-dlp"
