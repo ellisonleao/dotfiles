@@ -17,6 +17,8 @@ export PATH=$PATH:$GOPATH/bin
 
 # fuzzy finder
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+[[ \$- == *i* ]] && source "/usr/share/fzf/completion.bash" 2> /dev/null
+[[ -f "/usr/share/fzf/key-bindings.bash" ]] && source "/usr/share/fzf/key-bindings.bash"
 
 # pyenv
 export EDITOR=nvim

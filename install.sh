@@ -200,11 +200,18 @@ install_apps() {
 		python
 		python-pip
 		python-black
+		fzf
+		neovim
 	)
 
 	for pkg in "${APPS[@]}"; do
 		execute "yay -S --noconfirm $pkg" "$pkg"
 	done
+}
+
+function configure_neovim() {
+	nvim --headless -c 'packadd packer.nvim' -c 'quitall'
+	nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 }
 
 # ----------------------------------------------------------------------
@@ -223,6 +230,8 @@ main() {
 	configure_python
 
 	configure_node
+
+	configure_neovim
 
 	echo "Success! Please restart the terminal to see the changes!"
 }
