@@ -9,6 +9,7 @@
 
 [push]
   followtags = true
+  autoSetupRemote = true
 
 [commit]
   gpgsign = true
