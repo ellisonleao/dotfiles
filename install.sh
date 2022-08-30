@@ -187,6 +187,7 @@ install_apps() {
 		obs-studio
 		ripgrep
 		shfmt-bin
+		pgformatter
 		slack-desktop
 		spotify
 		stow

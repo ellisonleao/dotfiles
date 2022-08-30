@@ -1,126 +1,46 @@
 #!/bin/bash
 
-DOCKER_REPO_PREFIX=ellisonleao
-
-# helpers
 dcleanup() {
-    local containers
-    mapfile -t containers < <(docker ps -aq 2>/dev/null)
-    docker rm "${containers[@]}" 2>/dev/null
-    local volumes
-    mapfile -t volumes < <(docker ps --filter status=exited -q 2>/dev/null)
-    docker rm -v "${volumes[@]}" 2>/dev/null
-    local images
-    mapfile -t images < <(docker images --filter dangling=true -q 2>/dev/null)
-    docker rmi "${images[@]}" 2>/dev/null
+	local containers
+	mapfile -t containers < <(docker ps -aq 2>/dev/null)
+	docker rm "${containers[@]}" 2>/dev/null
+	local volumes
+	mapfile -t volumes < <(docker ps --filter status=exited -q 2>/dev/null)
+	docker rm -v "${volumes[@]}" 2>/dev/null
+	local images
+	mapfile -t images < <(docker images --filter dangling=true -q 2>/dev/null)
+	docker rmi "${images[@]}" 2>/dev/null
 }
 
 dnuke() {
-    dcleanup
-    yes | docker volume prune
-    yes | docker network prune
+	dcleanup
+	yes | docker volume prune
+	yes | docker network prune
 }
 
 del_stopped() {
-    local name=$1
-    local state
-    state=$(docker inspect --format "{{.State.Running}}" "$name" 2>/dev/null)
+	local name=$1
+	local state
+	state=$(docker inspect --format "{{.State.Running}}" "$name" 2>/dev/null)
 
-    if [[ "$state" == "false" ]]; then
-        docker rm "$name"
-    fi
+	if [[ "$state" == "false" ]]; then
+		docker rm "$name"
+	fi
 }
 
 rmctr() {
-    # shellcheck disable=SC2068
-    docker rm -f $@ 2>/dev/null || true
+	# shellcheck disable=SC2068
+	docker rm -f $@ 2>/dev/null || true
 }
 
 relies_on() {
-    for container in "$@"; do
-        local state
-        state=$(docker inspect --format "{{.State.Running}}" "$container" 2>/dev/null)
+	for container in "$@"; do
+		local state
+		state=$(docker inspect --format "{{.State.Running}}" "$container" 2>/dev/null)
 
-        if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
-            echo "$container is not running, starting it for you."
-            $container
-        fi
-    done
-}
-
-##################
-# MAIN FUNCTIONS #
-##################
-
-# CLI
-
-lazydocker() {
-    docker run --rm -it -v \
-        /var/run/docker.sock:/var/run/docker.sock \
-        lazyteam/lazydocker
-}
-
-howdoi() {
-    docker run --rm -t --name=howdoi ${DOCKER_REPO_PREFIX}/howdoi "$@"
-}
-
-wrk() {
-    docker run --rm -t --name=wrk ${DOCKER_REPO_PREFIX}/wrk "$@"
-}
-
-nmap() {
-    docker run --rm -t --net=host --name=nmap ${DOCKER_REPO_PREFIX}/nmap "$@"
-}
-
-hey() {
-    docker run --rm -t --net=host --name=hey ${DOCKER_REPO_PREFIX}/hey "$@"
-}
-
-changelog() {
-    docker run -it --rm -v "$(pwd)":/usr/local/src/app \
-        ferrarimarco/github-changelog-generator "$@"
-}
-
-mongo() {
-    docker run -it --rm --net=host mongo:bionic mongo "$@"
-}
-
-mongoimport() {
-    docker run -it --rm --net=host mongo:bionic mongoimport "$@"
-}
-
-mongorestore() {
-    docker run -it --rm --net=host mongo:bionic mongorestore "$@"
-}
-
-subfinder() {
-    docker run --rm --net=host ${DOCKER_REPO_PREFIX}/subfinder:latest "$@"
-}
-
-dnsperf() {
-    docker run --rm --net=host ${DOCKER_REPO_PREFIX}/dnsperf:latest
-}
-
-kindlegen() {
-  docker run -it --rm \
-    --volume "$PWD:/home/kindlegen" \
-    --name kindlegen \
-    koenrh/kindlegen "$@"
-}
-
-ddgr() {
-    docker run -it --rm ${DOCKER_REPO_PREFIX}/ddgr:latest "$@"
-}
-
-dockerize() {
-    docker run --rm --net=host jwilder/dockerize "$@"
-}
-
-osx() {
-    docker run -it \
-        --device /dev/kvm \
-        -p 50922:10022 \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
-        -e "DISPLAY=${DISPLAY:-:0.0}" \
-        sickcodes/docker-osx:big-sur
+		if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
+			echo "$container is not running, starting it for you."
+			$container
+		fi
+	done
 }
