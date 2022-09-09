@@ -142,7 +142,6 @@ configure_node() {
 
 	print_info "Installing node packages"
 	NODE_PACKAGES=(
-		prettier
 		typescript
 		fast-cli
 	)
@@ -161,7 +160,6 @@ install_apps() {
 		aws-cli
 		bandwhich
 		bash-completion
-		shellcheck
 		bat
 		chrome-gnome-shell
 		discord
@@ -186,12 +184,10 @@ install_apps() {
 		nerd-fonts-jetbrains-mono
 		obs-studio
 		ripgrep
-		shfmt-bin
 		pgformatter
 		slack-desktop
 		spotify
 		stow
-		stylua
 		telegram-desktop
 		tldr
 		transmission-gtk
@@ -200,7 +196,6 @@ install_apps() {
 		httpie
 		python
 		python-pip
-		python-black
 		fzf
 		neovim
 	)
