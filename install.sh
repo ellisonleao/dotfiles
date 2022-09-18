@@ -198,6 +198,7 @@ install_apps() {
 		fzf
 		neovim
 		gitsign
+		noto-fonts-emoji
 	)
 
 	for pkg in "${APPS[@]}"; do
