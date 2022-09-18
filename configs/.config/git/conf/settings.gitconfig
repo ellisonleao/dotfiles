@@ -54,6 +54,3 @@
 
 [help]
   autocorrect = 1
-
-[gitsign]
-  connectorID = https://github.com/login/oauth
