@@ -199,6 +199,7 @@ install_apps() {
 		neovim
 		gitsign
 		noto-fonts-emoji
+		postgresql-libs
 	)
 
 	for pkg in "${APPS[@]}"; do
