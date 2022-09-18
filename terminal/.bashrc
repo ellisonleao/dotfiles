@@ -1,5 +1,4 @@
-# shellcheck source=/dev/null
-source ~/.exports
+source "$HOME/.exports"
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -20,13 +19,12 @@ shopt -s nocaseglob
 # shellcheck source=/dev/null
 [[ -f "$HOME/.bash_prompt" ]] && source "$HOME/.bash_prompt"
 
-
 if command -v "pyenv" &>/dev/null; then
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-    if [ -d "$PYENV_ROOT/plugins/pyenv-virtualenvwrapper" ]; then
-        pyenv virtualenvwrapper_lazy
-    fi
+	eval "$(pyenv init -)"
+	eval "$(pyenv virtualenv-init -)"
+	if [ -d "$PYENV_ROOT/plugins/pyenv-virtualenvwrapper" ]; then
+		pyenv virtualenvwrapper_lazy
+	fi
 fi
 
 # enable bash completion

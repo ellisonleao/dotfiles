@@ -45,9 +45,6 @@ export PATH="$HOME/.poetry/bin:$PATH"
 # cat output
 export BAT_THEME="GitHub"
 
-# fzf
-[[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
-
 # man pages
 export MANPAGER='nvim +Man!'
 export MANWIDTH=999

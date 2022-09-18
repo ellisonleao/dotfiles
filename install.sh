@@ -161,10 +161,9 @@ install_apps() {
 		bandwhich
 		bash-completion
 		bat
-		chrome-gnome-shell
+		gnome-browser-connector
 		discord
 		docker
-		docker-compose
 		dust
 		exercism-bin
 		fd
