@@ -197,6 +197,7 @@ install_apps() {
 		python-pip
 		fzf
 		neovim
+		gitsign
 	)
 
 	for pkg in "${APPS[@]}"; do
