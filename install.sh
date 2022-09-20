@@ -197,7 +197,6 @@ install_apps() {
 		python-pip
 		fzf
 		neovim
-		gitsign
 		noto-fonts-emoji
 		postgresql-libs
 	)

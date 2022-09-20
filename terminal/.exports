@@ -55,6 +55,3 @@ export BROWSER=google-chrome-stable
 # GPG
 GPG_TTY=$(tty)
 export GPG_TTY
-
-# gitsign
-export GITSIGN_CONNECTOR_ID=https://github.com/login/oauth
