@@ -156,7 +156,7 @@ install_apps() {
 	print_info "Installing apps"
 
 	APPS=(
-		wezterm
+		wezterm-nightly-bin
 		aws-cli
 		bandwhich
 		bash-completion
@@ -199,6 +199,7 @@ install_apps() {
 		neovim
 		noto-fonts-emoji
 		postgresql-libs
+		starship
 	)
 
 	for pkg in "${APPS[@]}"; do

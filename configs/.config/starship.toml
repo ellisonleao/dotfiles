@@ -1,0 +1,54 @@
+# FIRST LINE/ROW: Info & Status
+
+[directory]
+style = "bold"
+truncation_length = 0
+truncate_to_repo = false
+
+[git_status]
+modified = "*"
+untracked = "?"
+style = "red"
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+deleted = "x"
+
+# Last param in the first line/row
+[cmd_duration]
+min_time = 10_000  # Show command duration over 10,000 milliseconds (=10 sec)
+format = "took [$duration]($style)"
+disabled = false
+
+# SECOND LINE/ROW: Prompt
+#
+# Somethere at the beginning
+[battery]
+full_symbol = " "
+charging_symbol = " "
+discharging_symbol = " "
+
+[[battery.display]]  # "bold red" style when capacity is between 0% and 10%
+threshold = 15
+style = "bold red"
+
+[[battery.display]]  # "bold yellow" style when capacity is between 10% and 30%
+threshold = 50
+style = "bold yellow"
+
+[[battery.display]]  # "bold green" style when capacity is between 10% and 30%
+threshold = 80
+style = "bold green"
+
+# SYMBOLS
+
+[git_branch]
+style = "bold fg:#32a852"
+symbol = " "
+
+[golang]
+style = "bold fg:#29beb0"
+symbol = " "
+
+[lua]
+format = "[☾ ](bold blue) "
