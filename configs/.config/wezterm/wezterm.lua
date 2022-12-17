@@ -18,7 +18,7 @@ return {
     { key = "p", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = -1 }) },
     { key = "n", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = 1 }) },
   },
-  color_scheme = "Github",
+  color_scheme = "Google Light (base16)",
   font = wezterm.font("JetBrainsMono Nerd Font Mono"),
   custom_block_glyphs = false,
   font_size = 13,
