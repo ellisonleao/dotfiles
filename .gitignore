@@ -2,3 +2,4 @@
 .vim
 .netrwhist
 .uuid
+.luarc.json
