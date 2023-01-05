@@ -38,7 +38,7 @@ alias grep='rg'
 alias find='fd'
 alias time='hyperfine'
 alias du='dust'
-alias top='btm --color default-light'
+alias top='btm'
 alias iftop='sudo bandwhich'
 alias ls="ls --color=auto"
 alias la="ls -lahF"
