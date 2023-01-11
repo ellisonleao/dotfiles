@@ -156,7 +156,7 @@ install_apps() {
 	print_info "Installing apps"
 
 	APPS=(
-		wezterm-nightly-bin
+		wezterm-git
 		aws-cli
 		bandwhich
 		bash-completion
