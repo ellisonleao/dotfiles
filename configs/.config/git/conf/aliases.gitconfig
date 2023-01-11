@@ -1,9 +1,5 @@
 [alias]
-l = log \
-    --abbrev-commit \
-    --decorate \
-    --date=format:'%d-%m-%Y %H:%M' \
-    --format='%C(black)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d'
+l = log --oneline
 
 s = status -s
 
