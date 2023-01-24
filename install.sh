@@ -156,6 +156,7 @@ install_apps() {
 	print_info "Installing apps"
 
 	APPS=(
+		base-devel
 		wezterm-git
 		aws-cli
 		bandwhich
@@ -200,6 +201,7 @@ install_apps() {
 		noto-fonts-emoji
 		postgresql-libs
 		starship
+		zoxide
 	)
 
 	for pkg in "${APPS[@]}"; do

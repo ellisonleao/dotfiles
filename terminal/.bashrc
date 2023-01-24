@@ -25,3 +25,11 @@ shopt -s nocaseglob
 
 # load starship prompt
 eval "$(starship init bash)"
+
+# zoxide
+if command -v zoxide &>/dev/null; then
+	export _ZO_DATA=${HOME}/.cache/zoxide
+	export _ZO_ECHO=1
+
+	eval "$(zoxide init bash)"
+fi

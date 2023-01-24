@@ -1,4 +1,6 @@
 #!/bin/bash
+# shellcheck disable=1094,2193
+export EDITOR=nvim
 
 # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth:erasedups
@@ -21,12 +23,11 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 [[ -f "/usr/share/fzf/key-bindings.bash" ]] && source "/usr/share/fzf/key-bindings.bash"
 
 # pyenv
-export EDITOR=nvim
-export WORKON_HOME=~/.virtualenvs
-export PROJECT_HOME=~/code
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # local folder
 export PATH=$PATH:$HOME/.local/bin

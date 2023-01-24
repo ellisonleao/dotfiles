@@ -14,8 +14,9 @@ dcleanup() {
 
 dnuke() {
 	dcleanup
-	yes | docker volume prune
-	yes | docker network prune
+	docker rmi -f "$(docker images -aq)"
+	docker volume prune -f
+	docker network prune -f
 }
 
 del_stopped() {

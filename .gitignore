@@ -3,3 +3,6 @@
 .netrwhist
 .uuid
 .luarc.json
+terminal/.local/bin/virtualenv*
+terminal/.local/bin/pip*
+terminal/.local/bin/pyproject*
