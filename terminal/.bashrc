@@ -24,7 +24,9 @@ shopt -s nocaseglob
 [[ -f "/usr/share/bash-completion/bash_completion" ]] && source /usr/share/bash-completion/bash_completion
 
 # load starship prompt
-eval "$(starship init bash)"
+if command -v starship &>/dev/null; then
+	eval "$(starship init bash)"
+fi
 
 # zoxide
 if command -v zoxide &>/dev/null; then
