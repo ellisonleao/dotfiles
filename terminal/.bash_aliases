@@ -74,7 +74,10 @@ alias dollar="rates usd brl"
 alias euro="rates eur brl"
 
 # to wifi issues
-alias restart-wifi="nmcli radio wifi off && nmcli radio wifi on"
+function restart-wifi() {
+	sudo systemctl stop NetworkManager
+	sudo systemctl restart NetworkManager
+}
 
 # damn abnt2!
 alias fixkb="setxkbmap -model abnt2 -layout br"
