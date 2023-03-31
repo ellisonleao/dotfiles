@@ -157,7 +157,6 @@ install_apps() {
 
 	APPS=(
 		base-devel
-		wezterm-git
 		aws-cli
 		bandwhich
 		bash-completion

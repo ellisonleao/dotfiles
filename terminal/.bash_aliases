@@ -69,10 +69,6 @@ alias xclip="xclip -se c"
 # file permission in octec value
 alias perm='stat -c "%a %n"'
 
-# dolar/euro to brl latest quotation
-alias dollar="rates usd brl"
-alias euro="rates eur brl"
-
 # to wifi issues
 function restart-wifi() {
 	sudo systemctl stop NetworkManager
@@ -93,6 +89,11 @@ function phone() {
 	adb tcpip 5555
 	adb connect 192.168.68.101:5555
 	scrcpy &
+}
+
+# python venv
+function activate() {
+	source ".venv/bin/activate"
 }
 
 [[ -f "$HOME/.work_aliases" ]] && source "$HOME/.work_aliases"
