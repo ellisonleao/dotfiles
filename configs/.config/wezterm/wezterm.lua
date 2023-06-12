@@ -19,7 +19,7 @@ return {
     { key = "n", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = 1 }) },
   },
   color_scheme = "Google Light (base16)",
-  font = wezterm.font("JetBrainsMono Nerd Font Mono"),
+  font = wezterm.font("JetBrainsMono Nerd Font"),
   custom_block_glyphs = false,
   font_size = 13,
   exit_behavior = "Close",
