@@ -4,6 +4,9 @@
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
 
+[init]
+  defaultBranch = main
+
 [pull]
   rebase = true
 
@@ -46,3 +49,6 @@
 
 [help]
   autocorrect = 1
+
+[http]
+  cookiefile = $HOME/.gitcookies

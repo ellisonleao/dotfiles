@@ -1,8 +1,6 @@
 [include]
-    path = ./conf/user.gitconfig
-    path = ./conf/settings.gitconfig
-    path = ./conf/aliases.gitconfig
-    path = ./conf/colors.gitconfig
-    path = ./conf/urls.gitconfig
-[init]
-	defaultBranch = main
+  path = ./conf/user.gitconfig
+  path = ./conf/settings.gitconfig
+  path = ./conf/aliases.gitconfig
+  path = ./conf/colors.gitconfig
+  path = ./conf/urls.gitconfig
