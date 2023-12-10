@@ -165,7 +165,6 @@ install_apps() {
 		discord
 		docker
 		dust
-		exercism-bin
 		fd
 		figlet
 		git-delta
@@ -188,7 +187,6 @@ install_apps() {
 		spotify
 		stow
 		telegram-desktop
-		tldr
 		transmission-gtk
 		vlc
 		bottom
