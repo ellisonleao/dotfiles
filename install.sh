@@ -208,11 +208,6 @@ install_apps() {
 	done
 }
 
-function configure_neovim() {
-	nvim --headless -c 'packadd packer.nvim' -c 'quitall'
-	nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-}
-
 # ----------------------------------------------------------------------
 # | Main                                                               |
 # ----------------------------------------------------------------------
@@ -229,8 +224,6 @@ main() {
 	configure_python
 
 	configure_node
-
-	configure_neovim
 
 	echo "Success! Please restart the terminal to see the changes!"
 }
