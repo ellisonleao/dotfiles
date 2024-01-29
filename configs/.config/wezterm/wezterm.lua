@@ -1,6 +1,7 @@
 local wezterm = require("wezterm")
 
 return {
+  default_prog = { "/bin/bash" },
   leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 },
   keys = {
     { key = "h", mods = "LEADER", action = wezterm.action({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
