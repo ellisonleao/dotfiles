@@ -126,8 +126,7 @@ configure_terminal() {
 
 configure_python() {
 	print_info "Configuring python environment.."
-	yay -S python-pip python
-	pip install neovim
+	yay -S python-pip python python-neovim
 }
 
 configure_node() {
@@ -144,6 +143,7 @@ configure_node() {
 	NODE_PACKAGES=(
 		typescript
 		fast-cli
+		neovim
 	)
 	for pkg in "${NODE_PACKAGES[@]}"; do
 		"$NPM" install -i "$pkg"
@@ -178,7 +178,6 @@ install_apps() {
 		jq
 		lolcat
 		lua-busted
-		neofetch
 		nerd-fonts-jetbrains-mono
 		obs-studio
 		ripgrep
@@ -194,7 +193,6 @@ install_apps() {
 		python
 		python-pip
 		fzf
-		neovim
 		noto-fonts-emoji
 		postgresql-libs
 		starship

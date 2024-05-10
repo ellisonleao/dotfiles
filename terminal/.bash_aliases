@@ -1,9 +1,4 @@
 #!/bin/bash
-# editor
-alias vim=$(which nvim)
-alias vi=vim
-alias v=vim
-
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -96,3 +91,28 @@ function activate() {
 }
 
 [[ -f "$HOME/.work_aliases" ]] && source "$HOME/.work_aliases"
+
+function update-nvim() {
+	target=${1:-nightly}
+	tmp_bin=/tmp/nvim.appimage.${target}
+	previous=$(nvim --version | grep '^NVIM')
+	url="https://github.com/neovim/neovim/releases/download/${target}/nvim.appimage"
+	echo "[update-nvim] target version  ${target}"
+	echo "[update-nvim] current version ${previous}"
+	echo "[update-nvim] downloading file ${url}"
+	curl --output "${tmp_bin}" --silent -L "${url}"
+	file_type=$(file "${tmp_bin}")
+	if [[ $file_type =~ .*executable.* ]]; then
+		mv "${tmp_bin}" ~/.local/bin/nvim
+		chmod +x ~/.local/bin/nvim
+		current=$(nvim --version | grep '^NVIM')
+		echo "[update-nvim] installed version ${current}"
+	else
+		echo "[update-nvim] Invalid file ${file_type}; exiting"
+		return 1
+	fi
+}
+
+# editor
+alias vim=~/.local/bin/nvim
+alias v=vim

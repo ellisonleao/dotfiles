@@ -1,5 +1,12 @@
 local wezterm = require("wezterm")
 
+local colorscheme = function()
+  if tonumber(os.date("%H")) >= 18 then
+    return "OneDark (base16)"
+  end
+  return "One Light (Gogh)"
+end
+
 return {
   default_prog = { "/bin/bash" },
   leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 },
@@ -19,7 +26,7 @@ return {
     { key = "p", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = -1 }) },
     { key = "n", mods = "LEADER", action = wezterm.action({ ActivateTabRelative = 1 }) },
   },
-  color_scheme = "Google Light (base16)",
+  color_scheme = colorscheme(),
   font = wezterm.font("JetBrainsMono Nerd Font"),
   custom_block_glyphs = false,
   font_size = 13,
