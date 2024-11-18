@@ -1,0 +1,15 @@
+theme = GruvboxDark
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+fullscreen = true
+
+# keep iterm keybinds
+keybind = ctrl+b>c=new_tab
+keybind = ctrl+b>h=new_split:down
+keybind = ctrl+b>v=new_split:right
+keybind = ctrl+b>up=goto_split:top
+keybind = ctrl+b>down=goto_split:bottom
+keybind = ctrl+b>left=goto_split:left
+keybind = ctrl+b>right=goto_split:right
+keybind = ctrl+b>n=next_tab
+keybind = ctrl+b>p=previous_tab
