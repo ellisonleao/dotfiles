@@ -4,6 +4,13 @@
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
 
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  side-by-side = true
+
 [init]
   defaultBranch = main
 
@@ -32,6 +39,7 @@
 [merge]
   log = true
   tool = nvimmerge
+  conflictstyle = diff3
 
 [mergetool "nvimmerge"]
   cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
@@ -42,6 +50,7 @@
   tool = nvimdiff
   renames = copies
   submodule = log
+  colorMoved = default
 
 [difftool "nvimdiff"]
   cmd = nvim -d $LOCAL $REMOTE

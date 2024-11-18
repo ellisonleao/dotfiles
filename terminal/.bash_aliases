@@ -28,11 +28,11 @@ alias mv='mv -i'
 alias untar='tar xvf'
 
 # modern command replacements
-alias cat='bat -p'
+alias cat='bat -p --theme=gruvbox-dark'
 alias grep='rg'
 alias find='fd'
 alias du='dust'
-alias top='btm'
+alias top='btop'
 alias iftop='sudo bandwhich'
 alias ls="ls --color=auto"
 alias la="ls -lahF"
@@ -53,7 +53,7 @@ alias tounixtime="python -c \"import time,datetime,sys;print(time.mktime(datetim
 
 # http server
 alias httpserver="python -m http.server"
-alias http="http -s default"
+alias http="http -s default --verify=no"
 
 # youtube-dl
 alias dl="yt-dlp"
@@ -65,8 +65,8 @@ alias perm='stat -c "%a %n"'
 
 # to wifi issues
 function restart-wifi() {
-	sudo systemctl stop NetworkManager
-	sudo systemctl restart NetworkManager
+        sudo systemctl stop NetworkManager
+        sudo systemctl restart NetworkManager
 }
 
 # damn abnt2!
@@ -80,37 +80,38 @@ alias tb="nc termbin.com 9999"
 
 # phone
 function phone() {
-	adb tcpip 5555
-	adb connect 192.168.68.101:5555
-	scrcpy &
+        adb tcpip 5555
+        adb connect 192.168.68.101:5555
+        scrcpy &
 }
 
 # python venv
 function activate() {
-	source ".venv/bin/activate"
+        [[ -f ".venv/bin/activate" ]] && source ".venv/bin/activate"
+        [[ -f "venv/bin/activate" ]] && source "venv/bin/activate"
 }
 
 [[ -f "$HOME/.work_aliases" ]] && source "$HOME/.work_aliases"
 
 function update-nvim() {
-	target=${1:-nightly}
-	tmp_bin=/tmp/nvim.appimage.${target}
-	previous=$(nvim --version | grep '^NVIM')
-	url="https://github.com/neovim/neovim/releases/download/${target}/nvim.appimage"
-	echo "[update-nvim] target version  ${target}"
-	echo "[update-nvim] current version ${previous}"
-	echo "[update-nvim] downloading file ${url}"
-	curl --output "${tmp_bin}" --silent -L "${url}"
-	file_type=$(file "${tmp_bin}")
-	if [[ $file_type =~ .*executable.* ]]; then
-		mv "${tmp_bin}" ~/.local/bin/nvim
-		chmod +x ~/.local/bin/nvim
-		current=$(nvim --version | grep '^NVIM')
-		echo "[update-nvim] installed version ${current}"
-	else
-		echo "[update-nvim] Invalid file ${file_type}; exiting"
-		return 1
-	fi
+        target=${1:-nightly}
+        tmp_bin=/tmp/nvim.appimage.${target}
+        previous=$(nvim --version | grep '^NVIM')
+        url="https://github.com/neovim/neovim/releases/download/${target}/nvim.appimage"
+        echo "[update-nvim] target version  ${target}"
+        echo "[update-nvim] current version ${previous}"
+        echo "[update-nvim] downloading file ${url}"
+        curl --output "${tmp_bin}" --silent -L "${url}"
+        file_type=$(file "${tmp_bin}")
+        if [[ $file_type =~ .*executable.* ]]; then
+                mv "${tmp_bin}" ~/.local/bin/nvim
+                chmod +x ~/.local/bin/nvim
+                current=$(nvim --version | grep '^NVIM')
+                echo "[update-nvim] installed version ${current}"
+        else
+                echo "[update-nvim] Invalid file ${file_type}; exiting"
+                return 1
+        fi
 }
 
 # editor
