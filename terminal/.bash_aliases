@@ -8,9 +8,6 @@ alias .....="cd ../../../.."
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
-# virtualenvwrapper
-alias w=workon
-
 # git
 alias gco="git commit"
 alias gp="git pull"
@@ -32,7 +29,6 @@ alias cat='bat -p --theme=gruvbox-dark'
 alias grep='rg'
 alias find='fd'
 alias du='dust'
-alias top='btop'
 alias iftop='sudo bandwhich'
 alias ls="ls --color=auto"
 alias la="ls -lahF"
@@ -65,12 +61,8 @@ alias perm='stat -c "%a %n"'
 
 # to wifi issues
 function restart-wifi() {
-        sudo systemctl stop NetworkManager
         sudo systemctl restart NetworkManager
 }
-
-# damn abnt2!
-alias fixkb="setxkbmap -model abnt2 -layout br"
 
 # terminal pastebin
 alias tb="nc termbin.com 9999"
@@ -78,17 +70,18 @@ alias tb="nc termbin.com 9999"
 # shellcheck source=/dev/null
 [[ -f "$HOME/.dockerfunc" ]] && source "$HOME/.dockerfunc"
 
-# phone
-function phone() {
-        adb tcpip 5555
-        adb connect 192.168.68.101:5555
-        scrcpy &
-}
-
 # python venv
+# shellcheck source=/dev/null
 function activate() {
         [[ -f ".venv/bin/activate" ]] && source ".venv/bin/activate"
         [[ -f "venv/bin/activate" ]] && source "venv/bin/activate"
+}
+
+function new-venv() {
+        uv venv --python="$1"
+        activate
+        uv pip install django-types djangorestframework-types
+        [[ -f "./requirements-dev.txt" ]] && uv pip install -r requirements-dev.txt
 }
 
 [[ -f "$HOME/.work_aliases" ]] && source "$HOME/.work_aliases"
@@ -97,7 +90,7 @@ function update-nvim() {
         target=${1:-nightly}
         tmp_bin=/tmp/nvim.appimage.${target}
         previous=$(nvim --version | grep '^NVIM')
-        url="https://github.com/neovim/neovim/releases/download/${target}/nvim.appimage"
+        url="https://github.com/neovim/neovim/releases/download/${target}/nvim-linux-x86_64.appimage"
         echo "[update-nvim] target version  ${target}"
         echo "[update-nvim] current version ${previous}"
         echo "[update-nvim] downloading file ${url}"
@@ -117,3 +110,7 @@ function update-nvim() {
 # editor
 alias vim=~/.local/bin/nvim
 alias v=vim
+alias vi=vim
+
+# k3s
+[[ -f "/etc/rancher/k3s/k3s.yaml" ]] && alias k3ctl='kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml'

@@ -22,29 +22,11 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 [[ \$- == *i* ]] && source "/usr/share/fzf/completion.bash" 2>/dev/null
 [[ -f "/usr/share/fzf/key-bindings.bash" ]] && source "/usr/share/fzf/key-bindings.bash"
 
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
 # local folder
 export PATH=$PATH:$HOME/.local/bin
 
-# luarocks
-if command -v "luarocks" &>/dev/null; then
-	eval "$(luarocks path)"
-fi
-
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
-
-# Poetry
-export PATH="$HOME/.poetry/bin:$PATH"
-
-# cat output
-export BAT_THEME="GitHub"
 
 # man pages
 export MANPAGER='nvim +Man!'
@@ -55,6 +37,3 @@ export BROWSER=google-chrome-stable
 
 # ssh-agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-
-# flyio
-[[ -d "$HOME/.fly/bin" ]] && export PATH="$HOME/.fly/bin:$PATH"

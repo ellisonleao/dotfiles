@@ -10,6 +10,7 @@
 [delta]
   navigate = true
   side-by-side = true
+  dark = true
 
 [init]
   defaultBranch = main
