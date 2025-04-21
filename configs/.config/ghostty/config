@@ -1,7 +1,18 @@
-theme = GruvboxDark
+title = Ghostty
 font-family = JetBrainsMono Nerd Font
+font-synthetic-style = bold,italic,bold-italic
 font-size = 13
-fullscreen = true
+freetype-load-flags = hinting,force-autohint,monochrome,autohint
+theme = GruvboxDark
+working-directory = inherit
+confirm-close-surface = false
+# This will be used to set the `TERM` environment variable.
+# HACK: We set this with an `xterm` prefix because vim uses that to enable key
+# protocols (specifically this will enable `modifyOtherKeys`), among other
+# features. An option exists in vim to modify this: `:set
+# keyprotocol=ghostty:kitty`, however a bug in the implementation prevents it
+# from working properly. https://github.com/vim/vim/pull/13211 fixes this.
+term = xterm-ghostty
 
 # keep iterm keybinds
 keybind = ctrl+b>c=new_tab
