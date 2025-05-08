@@ -27,7 +27,6 @@ alias untar='tar xvf'
 # modern command replacements
 alias cat='bat -p --theme=gruvbox-dark'
 alias grep='rg'
-alias find='fd'
 alias du='dust'
 alias iftop='sudo bandwhich'
 alias ls="ls --color=auto"

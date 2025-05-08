@@ -9,10 +9,6 @@ export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 
-# node
-export N_PREFIX="$HOME/.local/n"
-[[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
-
 # golang
 export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
@@ -37,3 +33,12 @@ export BROWSER=google-chrome-stable
 
 # ssh-agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
