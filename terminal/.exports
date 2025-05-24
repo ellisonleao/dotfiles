@@ -10,8 +10,7 @@ export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 
 # golang
-export GOPATH=~/go
-export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:/usr/local/go/bin
 
 # local folder
 export PATH=$PATH:$HOME/.local/bin
