@@ -49,3 +49,6 @@ export NVM_DIR="$HOME/.nvm"
 if command -v npm &>/dev/null; then
   eval "$(npm completion)"
 fi
+
+# opencode
+export PATH=/home/ellison/.opencode/bin:$PATH

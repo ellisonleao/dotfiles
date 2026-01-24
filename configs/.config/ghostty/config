@@ -1,9 +1,8 @@
 title = Ghostty
 font-family = JetBrainsMono Nerd Font
-font-synthetic-style = bold,italic,bold-italic
+# font-family = Myna
 font-size = 13
-freetype-load-flags = hinting,force-autohint,monochrome,autohint
-theme = GruvboxDark
+theme = Gruvbox Dark
 working-directory = inherit
 confirm-close-surface = false
 # This will be used to set the `TERM` environment variable.
