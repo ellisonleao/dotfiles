@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(git checkout *)",
+      "Bash(coderabbit review *)",
+      "Bash(git pull *)"
+    ],
+    "deny": [
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(curl *)"
+    ],
+    "defaultMode": "auto"
+  },
+  "effortLevel": "high",
+  "theme": "dark-ansi",
+  "skipAutoPermissionPrompt": true
+}
