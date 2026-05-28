@@ -20,5 +20,8 @@
   },
   "effortLevel": "high",
   "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "enabledPlugins": {
+    "coderabbit@claude-plugins-official": true
+  }
 }
