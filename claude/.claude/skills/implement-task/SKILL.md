@@ -51,15 +51,13 @@ git checkout -b task/OD-<KEY>-<short-context>
   ```bash
   npm run neutron:lint
   ```
-- For Neutron schema changes, follow the `add-neutron-entity-table` skill.
-- For frontend changes, follow `helios-appointment-calendar` or other relevant skills.
 
 ### 5. Add tests where needed
 
 | Layer                                     | Tool                                                        | Notes                                  |
 | ----------------------------------------- | ----------------------------------------------------------- | -------------------------------------- |
 | Unit / integration (Neutron, `libs/core`) | `npx jest <path> --no-coverage`                             | Run in sandbox                         |
-| Testcontainer controller specs            | Tell user to run locally                                    | Cannot run in sandbox                  |
+| Testcontainer controller specs            | `npx jest <path> --no-coverage`                             | Run in sandbox                         |
 | Frontend unit tests (Helios, Luna, etc.)  | `npx vitest run --config vitest.config.ts --project=<name>` | See `frontend-unit-tests-vitest` skill |
 | E2E / Playwright (`e2e/`)                 | Do **not** run — edit files only                            | Tell user to execute locally           |
 
@@ -68,12 +66,13 @@ git checkout -b task/OD-<KEY>-<short-context>
 
 ### 6. CodeRabbit review
 
-use `code-review` skill to review the code
+Code review the code after all the changes
 
 ### 7. Final check before handing off
 
 - Run the linter on all changed files.
 - Run unit tests for changed modules.
+- Make sure CodeRabbit review is passing.
 - Summarize what was implemented, what was skipped, and what the user should
   run/verify locally.
 - **Do not commit.** Present the changes and wait for explicit user approval.
@@ -84,10 +83,3 @@ use `code-review` skill to review the code
 - No auto-commit; never use `git commit` without explicit user request.
 - Conventional changelog format when the user does ask to commit:
   `type(scope): OD-<KEY> short description` (first line ≤ 72 chars).
-- Open PRs as drafts into `staging` only when user explicitly asks.
-
-## Jira MCP
-
-- Cloud ID: `opendock.atlassian.net`
-- Tools: `getJiraIssue`, `searchJiraIssuesUsingJql`, `addCommentToJiraIssue`
-- Project key: **OD**
