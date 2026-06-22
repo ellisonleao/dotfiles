@@ -2,7 +2,7 @@
 name: implement-task
 description: >-
   Implement a task based on a Jira card in the Opendock Nova monorepo: read the
-  card description, create a branch from staging as task/OD-XXXX-short-context,
+  card description, create a branch from staging as task/XX-XXXX-short-context,
   incrementally implement the changes, and add tests where needed. Does not
   commit changes. Use when the user asks to implement, work on, or start a Jira
   ticket in the OD project.
@@ -38,11 +38,11 @@ changes, adds tests, and stops before committing. Follow
 ```bash
 git checkout staging 
 git pull
-git checkout -b task/OD-<KEY>-<short-context>
+git checkout -b task/<SQUAD-PREFIX>-<KEY>-<short-context>
 ```
 
 - `<short-context>` is 2–5 hyphenated lowercase words describing the change.
-- Example: `task/OD-1234-add-carrier-eta-field`
+- Example: `task/PL-1234-add-carrier-eta-field`
 
 ### 4. Implement incrementally
 
@@ -57,7 +57,7 @@ git checkout -b task/OD-<KEY>-<short-context>
 | Layer                                     | Tool                                                        | Notes                                  |
 | ----------------------------------------- | ----------------------------------------------------------- | -------------------------------------- |
 | Unit / integration (Neutron, `libs/core`) | `npx jest <path> --no-coverage`                             | Run in sandbox                         |
-| Testcontainer controller specs            | `npx jest <path> --no-coverage`                             | Run in sandbox                         |
+| Testcontainer controller and service specs| `npx jest <path> --no-coverage`                             | Run in sandbox                         |
 | Frontend unit tests (Helios, Luna, etc.)  | `npx vitest run --config vitest.config.ts --project=<name>` | See `frontend-unit-tests-vitest` skill |
 | E2E / Playwright (`e2e/`)                 | Do **not** run — edit files only                            | Tell user to execute locally           |
 
@@ -76,10 +76,3 @@ Code review the code after all the changes
 - Summarize what was implemented, what was skipped, and what the user should
   run/verify locally.
 - **Do not commit.** Present the changes and wait for explicit user approval.
-
-## Key conventions
-
-- Branch: `task/OD-<KEY>-<short-context>` off `staging`.
-- No auto-commit; never use `git commit` without explicit user request.
-- Conventional changelog format when the user does ask to commit:
-  `type(scope): OD-<KEY> short description` (first line ≤ 72 chars).
