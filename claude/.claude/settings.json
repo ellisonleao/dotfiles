@@ -9,7 +9,8 @@
       "Bash(npx *)",
       "Bash(git checkout *)",
       "Bash(coderabbit review *)",
-      "Bash(git pull *)"
+      "Bash(git pull *)",
+      "Bash(gh gist *)"
     ],
     "deny": [
       "Bash(git commit *)",
@@ -18,10 +19,10 @@
     ],
     "defaultMode": "auto"
   },
-  "effortLevel": "high",
-  "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true,
   "enabledPlugins": {
     "coderabbit@claude-plugins-official": true
-  }
+  },
+  "effortLevel": "xhigh",
+  "theme": "dark-ansi",
+  "skipAutoPermissionPrompt": true
 }
