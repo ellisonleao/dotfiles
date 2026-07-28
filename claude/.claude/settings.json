@@ -19,6 +19,7 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "opus[1m]",
   "enabledPlugins": {
     "coderabbit@claude-plugins-official": true
   },
