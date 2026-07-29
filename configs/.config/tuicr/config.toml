@@ -1,0 +1,5 @@
+theme = "gruvbox-dark"
+leader = ","
+
+[forge]
+comment_type_prefix = false

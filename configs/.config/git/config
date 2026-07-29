@@ -4,3 +4,5 @@
   path = ./conf/aliases.gitconfig
   path = ./conf/colors.gitconfig
   path = ./conf/urls.gitconfig
+[coderabbit]
+	machineId = cli/0e83f139ffbc4de3944f1e120e98d24e
