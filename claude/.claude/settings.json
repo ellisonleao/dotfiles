@@ -25,5 +25,6 @@
   },
   "effortLevel": "xhigh",
   "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "autoMemoryEnabled": false
 }
