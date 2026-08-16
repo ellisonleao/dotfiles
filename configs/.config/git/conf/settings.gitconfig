@@ -62,3 +62,6 @@
 
 [http]
   cookiefile = $HOME/.gitcookies
+
+[submodule]
+  recurse = true
