@@ -113,3 +113,6 @@ alias vi=vim
 
 # ghostty xdg-open does not works
 alias xdg-open='gio open'
+
+# watch to work with aliases
+alias watch='watch '
